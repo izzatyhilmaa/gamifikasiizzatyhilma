@@ -7,256 +7,263 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; overflow-x: hidden; touch-action: manipulation; }
+    /* Mencegah scroll di seluruh body */
+    body { font-family: 'Inter', sans-serif; overflow: hidden; touch-action: manipulation; }
     
-    /* Peringatan Landscape Mode untuk HP */
-    #landscape-warning { display: none; }
-    @media screen and (orientation: portrait) and (max-width: 896px) {
-        #landscape-warning { display: flex !important; }
-        #main-game-container { display: none !important; }
+    /* Peringatan Potret Mode (Muncul 5 detik lalu menghilang agar aman di Laptop) */
+    #orientation-warning { display: none; }
+    @media screen and (orientation: landscape) and (max-height: 600px) {
+        #orientation-warning { 
+            display: flex !important; 
+            animation: warnFadeOut 5s forwards;
+        }
+    }
+    @keyframes warnFadeOut {
+        0%, 80% { opacity: 1; pointer-events: auto; visibility: visible; }
+        100% { opacity: 0; pointer-events: none; visibility: hidden; }
     }
 
     @keyframes driveRight { from { transform: translateX(-20vw); } to { transform: translateX(120vw); } }
     @keyframes driveLeft { from { transform: translateX(120vw); } to { transform: translateX(-20vw); } }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
     .animate-float { animation: float 3s ease-in-out infinite; }
     
-    /* Animasi Subtitle Tuna Rungu */
-    @keyframes fadeSubtitle { 0% { opacity: 0; bottom: 10px; } 20% { opacity: 1; bottom: 40px; } 80% { opacity: 1; bottom: 40px; } 100% { opacity: 0; bottom: 60px; } }
+    /* Animasi Subtitle */
+    @keyframes fadeSubtitle { 0% { opacity: 0; bottom: 5px; } 20% { opacity: 1; bottom: 20px; } 80% { opacity: 1; bottom: 20px; } 100% { opacity: 0; bottom: 40px; } }
     .subtitle-anim { animation: fadeSubtitle 2.5s ease-out forwards; }
+    
+    /* Utility class tinggi dinamis untuk layar penuh tanpa scroll */
+    .h-dvh { height: 100dvh; }
   </style>
 </head>
-<body class="bg-gray-900 text-white select-none">
+<body class="bg-gray-900 text-white select-none relative h-dvh w-full">
 
-  <!-- PERINGATAN LANDSCAPE UTK HP -->
-  <div id="landscape-warning" class="fixed inset-0 z-[100] bg-blue-600 flex-col items-center justify-center text-center p-8">
-      <div class="text-[8rem] mb-6 animate-pulse">🔄</div>
-      <h1 class="text-4xl font-black text-white mb-4">Mohon Putar HP Kamu!</h1>
-      <p class="text-xl text-blue-100 font-bold">Traffic Lite Z dirancang khusus untuk layar mendatar (Landscape) agar bermain lebih seru dan luas.</p>
+  <!-- PERINGATAN POTRET UTK HP -->
+  <div id="orientation-warning" class="fixed inset-0 z-[100] bg-blue-600 flex-col items-center justify-center text-center p-6">
+      <div class="text-[6rem] mb-4 animate-pulse">📱</div>
+      <h1 class="text-3xl font-black text-white mb-2">Mohon Berdirikan HP Kamu!</h1>
+      <p class="text-lg text-blue-100 font-bold">Traffic Lite Z kini dirancang khusus untuk layar berdiri (Potret) agar nyaman dimainkan satu tangan.</p>
   </div>
 
-  <div id="main-game-container">
+  <div id="main-game-container" class="h-full w-full relative">
     
-    <!-- TOMBOL MUSIC ON/OFF (GLOBAL) -->
-    <button id="btn-music-toggle" onclick="toggleMusic()" class="fixed top-4 right-4 z-[90] bg-gray-700 text-white px-4 py-2 rounded-full font-bold shadow-lg border-2 border-white/20 active:scale-95 transition-transform text-sm sm:text-base flex items-center gap-2">
+    <!-- TOMBOL MUSIC ON/OFF -->
+    <button id="btn-music-toggle" onclick="toggleMusic()" class="fixed top-2 right-2 z-[90] bg-gray-700 text-white px-3 py-1.5 rounded-full font-bold shadow-lg border-2 border-white/20 active:scale-95 transition-transform text-xs flex items-center gap-1">
         🔇 Musik: OFF
     </button>
 
-    <!-- SUBTITLE LAYER (Untuk Mode Tuna Rungu) -->
+    <!-- SUBTITLE LAYER -->
     <div id="subtitle-layer" class="fixed bottom-0 left-0 right-0 z-[60] flex flex-col items-center pointer-events-none"></div>
 
     <!-- BACKGROUND KOTA -->
     <div id="city-bg" class="fixed inset-0 z-0 overflow-hidden bg-gradient-to-b from-sky-400 to-blue-800 pointer-events-none">
-      <div class="absolute top-10 right-10 text-yellow-300 animate-[spin_20s_linear_infinite] drop-shadow-[0_0_50px_rgba(253,224,71,1)]">
-        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4.5a8 8 0 100 16 8 8 0 000-16zM12 2v2M12 20v2M4.22 4.22l1.42 1.42M16.96 16.96l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M16.96 7.04l1.42-1.42"/></svg>
+      <div class="absolute top-8 right-8 text-yellow-300 animate-[spin_20s_linear_infinite] drop-shadow-[0_0_40px_rgba(253,224,71,1)]">
+        <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4.5a8 8 0 100 16 8 8 0 000-16zM12 2v2M12 20v2M4.22 4.22l1.42 1.42M16.96 16.96l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M16.96 7.04l1.42-1.42"/></svg>
       </div>
-      <div class="absolute bottom-32 left-0 right-0 h-64 flex items-end justify-around opacity-40">
-        <div class="w-24 h-48 bg-indigo-900 rounded-t-xl"></div>
-        <div class="w-32 h-64 bg-indigo-800 rounded-t-xl"></div>
-        <div class="w-40 h-56 bg-indigo-800 rounded-t-xl"></div>
+      <div class="absolute bottom-20 left-0 right-0 h-40 flex items-end justify-around opacity-40">
+        <div class="w-16 h-24 bg-indigo-900 rounded-t-lg"></div>
+        <div class="w-20 h-32 bg-indigo-800 rounded-t-lg"></div>
+        <div class="w-24 h-28 bg-indigo-800 rounded-t-lg"></div>
       </div>
-      <div class="absolute bottom-0 w-full h-32 bg-gray-900 border-t-4 border-gray-600 shadow-[0_-20px_40px_rgba(0,0,0,0.6)]">
-        <div class="w-full h-full flex flex-col justify-center"><div class="w-full h-2 border-t-8 border-dashed border-yellow-500 opacity-60"></div></div>
+      <div class="absolute bottom-0 w-full h-20 bg-gray-900 border-t-2 border-gray-600 shadow-[0_-10px_20px_rgba(0,0,0,0.6)]">
+        <div class="w-full h-full flex flex-col justify-center"><div class="w-full h-1 border-t-4 border-dashed border-yellow-500 opacity-60"></div></div>
       </div>
-      <div class="absolute bottom-4 left-0 text-red-500 text-6xl" style="animation: driveRight 12s linear infinite;">🚗</div>
-      <div class="absolute bottom-16 right-0 text-cyan-400 text-6xl" style="animation: driveLeft 16s linear infinite;">🚙</div>
+      <div class="absolute bottom-2 left-0 text-red-500 text-4xl" style="animation: driveRight 10s linear infinite;">🚗</div>
+      <div class="absolute bottom-10 right-0 text-cyan-400 text-4xl" style="animation: driveLeft 14s linear infinite;">🚙</div>
     </div>
 
-    <div class="relative z-10 min-h-screen flex flex-col justify-between">
+    <!-- SEMUA SCREEN GAME DI SINI -->
+    <div class="relative z-10 h-full w-full flex flex-col items-center justify-center max-w-md mx-auto">
       
       <!-- 1. SPLASH SCREEN -->
-      <div id="screen-splash" class="flex flex-col items-center justify-center min-h-screen text-center bg-black/60 p-6">
-        <div class="animate-float">
-          <h1 class="text-5xl sm:text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-green-400 via-yellow-300 to-cyan-400 drop-shadow-lg mb-4">TRAFFIC LITE Z</h1>
-          <p class="text-lg sm:text-2xl font-black tracking-widest text-cyan-300 uppercase bg-black/40 px-6 sm:px-8 py-2 rounded-full border border-cyan-500/50 inline-block">"Bermain, Belajar, Peduli"</p>
+      <div id="screen-splash" class="absolute inset-0 flex flex-col items-center justify-center text-center bg-black/60 p-4">
+        <div class="animate-float mb-8">
+          <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-green-400 via-yellow-300 to-cyan-400 drop-shadow-lg leading-tight mb-2">TRAFFIC<br>LITE Z</h1>
+          <p class="text-sm font-black tracking-widest text-cyan-300 uppercase bg-black/40 px-4 py-1.5 rounded-full border border-cyan-500/50 inline-block">"Bermain, Belajar, Peduli"</p>
         </div>
-        <button onclick="startGame()" class="mt-8 md:mt-16 px-8 sm:px-12 py-4 sm:py-5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-black text-xl sm:text-2xl active:scale-90 hover:scale-110 transition-transform shadow-[0_0_40px_rgba(34,211,238,0.8)] border-2 border-cyan-300 animate-pulse text-white">MULAI PETUALANGAN</button>
+        <button onclick="startGame()" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-black text-xl active:scale-90 transition-transform shadow-[0_0_30px_rgba(34,211,238,0.8)] border-2 border-cyan-300 animate-pulse text-white">MULAI / LANJUTKAN</button>
       </div>
 
       <!-- 2. MODE SELECT -->
-      <div id="screen-mode" class="hidden flex flex-col items-center justify-center min-h-screen p-6 bg-black/80">
-        <h2 class="text-3xl sm:text-4xl font-black text-white mb-6 sm:mb-8">Pilih Mode Karakter</h2>
-        <div class="flex flex-row justify-center gap-4 sm:gap-6 max-w-5xl w-full">
-          <div onclick="selectMode('UMUM')" class="cursor-pointer p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-blue-600 border-4 border-white/20 active:scale-95 transition text-center shadow-xl flex-1">
-            <div class="text-5xl sm:text-6xl mb-2 sm:mb-4">👦</div><h3 class="text-xl sm:text-3xl font-black">Umum</h3>
+      <div id="screen-mode" class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 bg-black/80">
+        <h2 class="text-2xl font-black text-white mb-6 text-center">Pilih Mode Karakter</h2>
+        <div class="flex flex-col gap-4 w-full px-4">
+          <div onclick="selectMode('UMUM')" class="cursor-pointer p-4 rounded-2xl bg-blue-600 border-2 border-white/20 active:scale-95 transition text-center shadow-lg flex items-center justify-center gap-4">
+            <div class="text-5xl">👦</div><h3 class="text-2xl font-black flex-1 text-left">Mode Umum</h3>
           </div>
-          <div onclick="selectMode('RUNGU')" class="cursor-pointer p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-purple-600 border-4 border-white/20 active:scale-95 transition text-center shadow-xl flex-1">
-            <div class="text-5xl sm:text-6xl mb-2 sm:mb-4">🧏</div><h3 class="text-xl sm:text-3xl font-black">Rungu</h3>
+          <div onclick="selectMode('RUNGU')" class="cursor-pointer p-4 rounded-2xl bg-purple-600 border-2 border-white/20 active:scale-95 transition text-center shadow-lg flex items-center justify-center gap-4">
+            <div class="text-5xl">🧏</div>
+            <div class="flex-1 text-left"><h3 class="text-2xl font-black">Tuna Rungu</h3><p class="text-xs font-bold text-purple-200">Ada Subtitle Suara</p></div>
           </div>
-          <div onclick="selectMode('DAKSA')" class="cursor-pointer p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-green-600 border-4 border-white/20 active:scale-95 transition text-center shadow-xl flex-1">
-            <div class="text-5xl sm:text-6xl mb-2 sm:mb-4">♿</div><h3 class="text-xl sm:text-3xl font-black">Daksa</h3>
+          <div onclick="selectMode('DAKSA')" class="cursor-pointer p-4 rounded-2xl bg-green-600 border-2 border-white/20 active:scale-95 transition text-center shadow-lg flex items-center justify-center gap-4">
+            <div class="text-5xl">♿</div><h3 class="text-2xl font-black flex-1 text-left">Tuna Daksa</h3>
           </div>
         </div>
       </div>
 
-      <!-- 3. DASHBOARD -->
-      <div id="screen-dashboard" class="hidden p-4 md:p-6 min-h-screen flex flex-col items-center w-full mx-auto">
-        <div class="w-full max-w-6xl flex justify-between items-center bg-black/70 p-3 sm:p-4 rounded-3xl border border-white/20 mb-4 sm:mb-6 gap-2 sm:gap-4 flex-wrap">
-          <div class="flex flex-col">
-            <div class="bg-yellow-500 px-3 sm:px-4 py-1 rounded-full text-black font-black text-sm sm:text-base">LVL <span id="hud-level">1</span></div>
-            <div class="w-24 sm:w-32 h-2 bg-gray-900 rounded-full mt-2 border border-gray-700 overflow-hidden"><div id="hud-xp-bar" class="h-full bg-cyan-400" style="width: 0%"></div></div>
-          </div>
-          <div class="text-orange-400 font-black text-sm sm:text-lg bg-black/50 px-3 sm:px-4 py-1 sm:py-2 rounded-xl">🔥 <span id="hud-streak">0</span> Hari</div>
-          <div class="text-yellow-400 font-black text-sm sm:text-xl">🪙 <span id="hud-coins">500</span></div>
+      <!-- 3. DASHBOARD (PAS TANPA SCROLL) -->
+      <div id="screen-dashboard" class="hidden absolute inset-0 p-3 flex flex-col bg-black/40">
+        <!-- Top HUD -->
+        <div class="flex items-center justify-between bg-black/70 p-2.5 rounded-2xl border border-white/20 mb-3 shrink-0">
           <div class="flex flex-col items-center">
-             <span id="hud-mode" class="text-cyan-400 font-black text-sm sm:text-base px-3 sm:px-4 rounded-full border border-cyan-500/50">UMUM</span>
-             <button onclick="nav('MODE')" class="text-[10px] sm:text-xs text-gray-400 hover:text-white mt-1 active:scale-90">Ganti Mode</button>
+            <div class="bg-yellow-500 px-2 py-0.5 rounded-full text-black font-black text-[10px]">LVL <span id="hud-level">1</span></div>
+            <div class="w-16 h-1.5 bg-gray-900 rounded-full mt-1 border border-gray-700 overflow-hidden"><div id="hud-xp-bar" class="h-full bg-cyan-400" style="width: 0%"></div></div>
+          </div>
+          <div class="text-orange-400 font-black text-[10px] bg-black/50 px-2 py-1 rounded-lg">🔥 <span id="hud-streak">0</span>x</div>
+          <div class="text-yellow-400 font-black text-sm">🪙 <span id="hud-coins">500</span></div>
+          <div class="flex flex-col items-end">
+             <span id="hud-mode" class="text-cyan-400 font-black text-[10px] px-2 rounded-full border border-cyan-500/50">UMUM</span>
+             <button onclick="nav('MODE')" class="text-[9px] text-gray-400 mt-0.5 active:scale-90">Ganti</button>
           </div>
         </div>
 
-        <div class="flex flex-row gap-4 sm:gap-6 w-full max-w-6xl h-full">
-          <!-- Pet Area -->
-          <div class="flex-1 bg-gray-800 p-4 sm:p-8 rounded-[2rem] border-2 border-gray-700 text-center relative flex flex-col justify-center items-center">
-            <div id="pet-bubble" onclick="hidePetBubble()" class="absolute top-4 bg-white text-black px-4 py-2 rounded-2xl rounded-bl-none font-bold text-xs shadow-lg animate-bounce cursor-pointer z-10 active:scale-95">💬 Selalu pakai Helm ya!</div>
-            <div class="text-6xl sm:text-8xl mb-2 sm:mb-4 relative inline-block animate-float mt-8">
-               🐣
-               <div id="pet-accessory" class="absolute -top-4 right-0 text-3xl sm:text-4xl"></div>
+        <!-- Main Content Area (Pet + Menu) -->
+        <div class="flex flex-col gap-3 flex-1 min-h-0 pb-12">
+          
+          <!-- Pet Area (Flex 1, mengambil ruang) -->
+          <div class="flex-1 bg-gray-800 p-4 rounded-[2rem] border-2 border-gray-700 relative flex flex-col justify-center items-center shadow-lg">
+            <div id="pet-bubble" onclick="hidePetBubble()" class="absolute top-2 bg-white text-black px-3 py-1 rounded-xl rounded-bl-none font-bold text-[10px] shadow-lg animate-bounce active:scale-95">💬 Pakai Helm ya!</div>
+            <div class="text-6xl mb-1 relative inline-block animate-float mt-2">
+               🐣 <div id="pet-accessory" class="absolute -top-3 right-0 text-2xl"></div>
             </div>
-            <div class="block bg-orange-500 px-4 py-1 rounded-full text-black font-black text-xs sm:text-sm mb-4 mx-auto w-max">Pet Bayi</div>
-            <div id="daily-lock-status" class="text-red-400 font-bold mb-2 text-xs sm:text-sm animate-pulse">🔒 Selesaikan Misi!</div>
-            <button onclick="nav('DAILY')" id="btn-daily-action" class="w-full py-3 sm:py-4 bg-green-500 rounded-2xl font-black text-white text-sm sm:text-xl shadow-lg border-2 border-green-300 active:scale-95 transition-transform">MISI HARIAN</button>
+            <div class="bg-orange-500 px-3 py-0.5 rounded-full text-black font-black text-[10px] mb-2">Pet Bayi</div>
+            <div id="daily-lock-status" class="text-red-400 font-bold mb-2 text-[10px] animate-pulse">🔒 Selesaikan Misi!</div>
+            <button onclick="nav('DAILY')" id="btn-daily-action" class="w-full py-2.5 bg-green-500 rounded-xl font-black text-white text-sm shadow border border-green-300 active:scale-95 transition-transform">MISI HARIAN</button>
           </div>
-          <!-- Menu (Teks disesuaikan agar tidak tumpah/keluar dari kotak) -->
-          <div class="flex-[2] grid grid-cols-2 gap-3 sm:gap-4">
-            <div id="menu-games" onclick="goToGames()" class="cursor-pointer p-3 sm:p-6 rounded-3xl bg-blue-600 flex flex-col justify-end gap-1 sm:gap-2 border-2 border-gray-800 opacity-50 grayscale transition-all text-left active:scale-95 overflow-hidden">
-              <div class="text-3xl sm:text-4xl">🎮</div><h3 class="font-black text-sm sm:text-xl text-white leading-tight break-words">Main Game</h3>
+
+          <!-- Menu Games (Grid 2x2 pas di bawah pet) -->
+          <div class="grid grid-cols-2 gap-2 shrink-0 h-40">
+            <div id="menu-games" onclick="goToGames()" class="cursor-pointer p-3 rounded-2xl bg-blue-600 flex flex-col justify-center items-center gap-1 border border-gray-800 opacity-50 grayscale active:scale-95 shadow">
+              <div class="text-3xl">🎮</div><h3 class="font-black text-xs text-white text-center">Main Game</h3>
             </div>
-            <div onclick="nav('LIBRARY')" class="cursor-pointer p-3 sm:p-6 rounded-3xl bg-orange-600 flex flex-col justify-end gap-1 sm:gap-2 border-2 border-white/20 hover:border-white transition-all text-left active:scale-95 overflow-hidden">
-              <div class="text-3xl sm:text-4xl">📖</div><h3 class="font-black text-sm sm:text-xl text-white leading-tight break-words">Perpustakaan</h3>
+            <div onclick="nav('LIBRARY')" class="cursor-pointer p-3 rounded-2xl bg-orange-600 flex flex-col justify-center items-center gap-1 border border-white/20 active:scale-95 shadow">
+              <div class="text-3xl">📖</div><h3 class="font-black text-xs text-white text-center">Pustaka</h3>
             </div>
-            <div onclick="nav('SHOP')" class="cursor-pointer p-3 sm:p-6 rounded-3xl bg-pink-600 flex flex-col justify-end gap-1 sm:gap-2 border-2 border-white/20 hover:border-white transition-all text-left active:scale-95 overflow-hidden">
-              <div class="text-3xl sm:text-4xl">🛍️</div><h3 class="font-black text-sm sm:text-xl text-white leading-tight break-words">Toko Pet</h3>
+            <div onclick="nav('SHOP')" class="cursor-pointer p-3 rounded-2xl bg-pink-600 flex flex-col justify-center items-center gap-1 border border-white/20 active:scale-95 shadow">
+              <div class="text-3xl">🛍️</div><h3 class="font-black text-xs text-white text-center">Toko Pet</h3>
             </div>
-            <div onclick="nav('BADGES')" class="cursor-pointer p-3 sm:p-6 rounded-3xl bg-yellow-600 flex flex-col justify-end gap-1 sm:gap-2 border-2 border-white/20 hover:border-white transition-all text-left active:scale-95 overflow-hidden">
-              <div class="text-3xl sm:text-4xl">🏆</div><h3 class="font-black text-sm sm:text-xl text-white leading-tight break-words">Progres</h3>
+            <div onclick="nav('BADGES')" class="cursor-pointer p-3 rounded-2xl bg-yellow-600 flex flex-col justify-center items-center gap-1 border border-white/20 active:scale-95 shadow">
+              <div class="text-3xl">🏆</div><h3 class="font-black text-xs text-white text-center">Progres</h3>
             </div>
           </div>
+
         </div>
       </div>
 
-      <!-- 4. DAILY CHALLENGE -->
-      <div id="screen-daily" class="hidden relative z-30 min-h-screen bg-black/95 flex flex-col items-center justify-center p-4">
-        <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 p-3 rounded-full text-white active:scale-90">❌</button>
-        <div id="daily-quiz-box" class="max-w-3xl w-full bg-gray-900 rounded-[2rem] p-6 sm:p-8 border-4 border-cyan-500 text-center">
-           <h2 id="daily-quiz-title" class="text-cyan-400 font-black mb-2">SOAL 1 / 5</h2>
-           <h3 id="daily-quiz-question" class="text-xl sm:text-3xl font-black mb-6 sm:mb-8"></h3>
-           <div id="daily-quiz-options" class="flex flex-col gap-3 sm:gap-4 w-full max-h-[50vh] overflow-y-auto"></div>
+      <!-- 4. DAILY CHALLENGE (Tanpa Scroll) -->
+      <div id="screen-daily" class="hidden absolute inset-0 bg-black/95 flex flex-col items-center justify-center p-3">
+        <button onclick="nav('DASHBOARD')" class="absolute top-3 left-3 bg-gray-800 p-2 rounded-full text-white text-xs active:scale-90">❌</button>
+        
+        <div id="daily-quiz-box" class="w-full bg-gray-900 rounded-3xl p-4 border-2 border-cyan-500 flex flex-col h-[80%] max-h-[500px]">
+           <h2 id="daily-quiz-title" class="text-cyan-400 font-black text-xs mb-1 text-center shrink-0">SOAL 1 / 5</h2>
+           <h3 id="daily-quiz-question" class="text-sm font-black mb-3 text-center shrink-0"></h3>
+           <!-- Pilihan jawaban memanfaatkan flex-1 agar pas memenuhi sisa ruang secara proporsional -->
+           <div id="daily-quiz-options" class="flex flex-col gap-2 flex-1 justify-center"></div>
         </div>
-        <div id="daily-result-box" class="hidden max-w-xl w-full bg-gray-900 rounded-3xl p-8 text-center border-4 border-white/20">
-          <h2 id="daily-result-status" class="text-5xl font-black mb-4">LULUS! 🎉</h2>
-          <p id="daily-result-score" class="text-2xl font-bold mb-6">Skor: 0 / 5</p>
-          <button id="btn-daily-retry" onclick="retryDaily()" class="hidden w-full py-4 mb-3 bg-orange-500 rounded-2xl font-black text-xl active:scale-95">Ulang Kuis</button>
-          <button onclick="nav('DASHBOARD')" class="w-full py-4 bg-gray-800 rounded-2xl font-black text-xl border-2 border-gray-600 active:scale-95">Kembali</button>
+
+        <div id="daily-result-box" class="hidden w-full bg-gray-900 rounded-3xl p-6 text-center border-2 border-white/20">
+          <h2 id="daily-result-status" class="text-3xl font-black mb-2">LULUS! 🎉</h2>
+          <p id="daily-result-score" class="text-sm font-bold mb-4">Skor: 0 / 5</p>
+          <button id="btn-daily-retry" onclick="retryDaily()" class="hidden w-full py-3 mb-2 bg-orange-500 rounded-xl font-black text-sm active:scale-95">Ulang Kuis</button>
+          <button onclick="nav('DASHBOARD')" class="w-full py-3 bg-blue-600 rounded-xl font-black text-white text-sm border border-blue-400 active:scale-95 shadow">Lanjutkan</button>
         </div>
       </div>
 
       <!-- 5. GAMES HUB -->
-      <div id="screen-games" class="hidden relative z-20 min-h-screen bg-black/95 p-4 sm:p-6 overflow-y-auto">
-        <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 p-3 rounded-full text-white active:scale-90">❌ Kembali</button>
-        <div class="max-w-6xl mx-auto pt-16 pb-20">
-          <h1 class="text-3xl sm:text-5xl font-black mb-6 sm:mb-10 text-center text-cyan-400">ZONA MINI GAMES</h1>
-          <div id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"></div>
+      <div id="screen-games" class="hidden absolute inset-0 bg-black/95 p-3 flex flex-col">
+        <div class="flex items-center gap-3 mb-4 shrink-0 mt-8">
+            <button onclick="nav('DASHBOARD')" class="bg-gray-800 p-2 rounded-full text-white text-xs active:scale-90">❌ Kembali</button>
+            <h1 class="text-xl font-black text-cyan-400 flex-1 text-center">ZONA MINI GAMES</h1>
+            <div class="w-8"></div>
         </div>
+        <!-- Grid list game dengan scroll internal jika game banyak -->
+        <div id="games-grid" class="grid grid-cols-1 gap-3 flex-1 overflow-y-auto pb-6 pr-1"></div>
       </div>
 
       <!-- 6. GAME PLAYER ARENA -->
-      <div id="screen-player" class="hidden relative z-30 min-h-screen bg-gray-900 flex flex-col items-center justify-center p-2 sm:p-4">
-        <button onclick="nav('GAMES')" class="absolute z-50 top-4 left-4 bg-red-600 px-4 py-2 rounded-full text-white font-black border-2 border-white/50 shadow-lg active:scale-90">❌ Keluar</button>
+      <div id="screen-player" class="hidden absolute inset-0 bg-gray-900 flex flex-col items-center p-3 pt-12 pb-6">
+        <button onclick="nav('GAMES')" class="absolute z-50 top-3 left-3 bg-red-600 px-3 py-1.5 rounded-full text-white font-black text-xs border border-white/50 active:scale-90">❌ Keluar</button>
 
-        <div id="game-play-area" class="w-full max-w-4xl bg-black/70 p-3 sm:p-10 rounded-3xl border-4 border-white/10 flex flex-col items-center justify-center relative overflow-hidden z-40 max-h-[90vh]"></div>
+        <!-- Area Game Utama: Fleksibel namun dibatasi agar tidak bocor -->
+        <div id="game-play-area" class="w-full flex-1 bg-black/70 p-3 rounded-2xl border-2 border-white/10 flex flex-col items-center justify-center relative overflow-hidden z-40 max-h-[600px]"></div>
 
-        <!-- Fun Fact / Kuis Milestone (Tiap kelipatan 3) -->
-        <div id="game-funfact-area" class="hidden w-full max-w-2xl bg-blue-900 p-6 sm:p-8 rounded-3xl border-4 border-cyan-400 text-center z-40">
-           <h3 class="text-xl sm:text-2xl font-bold text-yellow-400 mb-4">LEVEL CLEAR! Waktunya Belajar 🧠</h3>
-           <div id="game-ff-icon" class="text-4xl sm:text-6xl mb-4">🦓</div>
-           <h2 id="game-ff-title" class="text-2xl sm:text-4xl font-black mb-4 text-white">Zebra Cross</h2>
-           <p id="game-ff-text" class="text-sm sm:text-xl font-medium text-blue-100 mb-6 sm:mb-8"></p>
-           <button onclick="showBonusQuiz()" class="w-full py-3 sm:py-4 bg-cyan-500 rounded-full font-black text-lg sm:text-2xl active:scale-95">Lanjut Kuis Bonus ➔</button>
+        <!-- Fun Fact Area -->
+        <div id="game-funfact-area" class="hidden w-full bg-blue-900 p-4 rounded-2xl border-2 border-cyan-400 text-center z-40 mt-auto shrink-0">
+           <h3 class="text-sm font-bold text-yellow-400 mb-1">LEVEL CLEAR! Waktunya Belajar</h3>
+           <div id="game-ff-icon" class="text-3xl mb-1">🧠</div>
+           <p id="game-ff-text" class="text-xs font-medium text-blue-100 mb-3"></p>
+           <button onclick="showBonusQuiz()" class="w-full py-2 bg-cyan-500 rounded-xl font-black text-sm active:scale-95">Kuis Bonus ➔</button>
         </div>
 
-        <div id="game-bonus-quiz-area" class="hidden w-full max-w-3xl bg-gray-900 p-6 sm:p-8 rounded-3xl border-4 border-yellow-400 text-center z-40 max-h-[90vh] overflow-y-auto">
-           <h3 class="text-lg sm:text-xl font-bold text-yellow-400 mb-4 sm:mb-6">KUIS BONUS MILESTONE (Syarat Lanjut)</h3>
-           <h2 id="game-bq-question" class="text-xl sm:text-3xl font-black text-white mb-6 sm:mb-8"></h2>
-           <div id="game-bq-options" class="flex flex-col gap-3 sm:gap-4"></div>
+        <!-- Bonus Quiz -->
+        <div id="game-bonus-quiz-area" class="hidden w-full bg-gray-900 p-4 rounded-2xl border-2 border-yellow-400 text-center z-40 flex flex-col max-h-full">
+           <h3 class="text-xs font-bold text-yellow-400 mb-2">KUIS MILESTONE</h3>
+           <h2 id="game-bq-question" class="text-sm font-black text-white mb-4"></h2>
+           <div id="game-bq-options" class="flex flex-col gap-2 flex-1 justify-center"></div>
         </div>
 
-        <div id="game-win-area" class="hidden text-center bg-black/95 p-6 sm:p-10 rounded-3xl border-4 border-green-400 z-40 w-full max-w-2xl">
-           <h1 class="text-5xl sm:text-6xl font-black mb-4 text-green-400 animate-bounce">BERHASIL! 🌟</h1>
-           <p id="game-win-rewards" class="text-yellow-400 font-black text-lg sm:text-2xl mb-8"></p>
-           <button id="btn-next-lvl" class="w-full py-3 sm:py-4 bg-green-500 text-white font-black text-xl sm:text-2xl rounded-full mb-4 active:scale-95 shadow-lg shadow-green-500/50">Level Berikutnya ➔</button>
+        <div id="game-win-area" class="hidden text-center bg-black/95 p-6 rounded-2xl border-2 border-green-400 z-40 w-full mt-auto">
+           <h1 class="text-3xl font-black mb-2 text-green-400 animate-bounce">BERHASIL! 🌟</h1>
+           <p id="game-win-rewards" class="text-yellow-400 font-black text-sm mb-4"></p>
+           <button id="btn-next-lvl" class="w-full py-3 bg-green-500 text-white font-black text-sm rounded-xl mb-2 active:scale-95">Level Berikutnya ➔</button>
+           <button onclick="nav('GAMES')" class="w-full py-3 bg-blue-600 text-white font-black text-sm rounded-xl active:scale-95 border border-blue-400">Lanjutkan ke Menu</button>
         </div>
-        <div id="game-lost-area" class="hidden text-center bg-black/95 p-6 sm:p-10 rounded-3xl border-4 border-red-500 z-40 w-full max-w-2xl">
-           <h1 class="text-5xl sm:text-6xl font-black mb-4 text-red-500">GAGAL 💔</h1>
-           <p class="text-lg sm:text-xl text-gray-300 mb-8">Jangan menyerah, coba lagi!</p>
-           <button id="btn-replay" class="w-full py-3 sm:py-4 bg-orange-500 text-white font-black text-xl sm:text-2xl rounded-full mb-4 active:scale-95">Coba Lagi ➔</button>
+        <div id="game-lost-area" class="hidden text-center bg-black/95 p-6 rounded-2xl border-2 border-red-500 z-40 w-full mt-auto">
+           <h1 class="text-3xl font-black mb-2 text-red-500">GAGAL 💔</h1>
+           <p class="text-sm text-gray-300 mb-4">Coba lagi, kamu pasti bisa!</p>
+           <button id="btn-replay" class="w-full py-3 bg-orange-500 text-white font-black text-sm rounded-xl mb-2 active:scale-95">Coba Lagi ➔</button>
+           <button onclick="nav('GAMES')" class="w-full py-3 bg-blue-600 text-white font-black text-sm rounded-xl active:scale-95 border border-blue-400">Lanjutkan ke Menu</button>
         </div>
       </div>
 
       <!-- 7. LIBRARY -->
-      <div id="screen-library" class="hidden relative z-20 min-h-screen bg-black/95 p-4 sm:p-6 overflow-y-auto">
-        <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 p-3 rounded-full text-white active:scale-90">❌ Kembali</button>
-        <div class="max-w-5xl mx-auto pt-16 pb-20 text-center">
-          <h1 class="text-3xl sm:text-4xl font-black text-orange-400 mb-2">Buku Edukasi</h1>
-          <p id="lib-status" class="text-gray-400 mb-8 font-bold">Terbuka: 10 / 1000</p>
-          <div id="library-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left"></div>
-        </div>
+      <div id="screen-library" class="hidden absolute inset-0 bg-black/95 p-3 flex flex-col">
+        <button onclick="nav('DASHBOARD')" class="absolute top-3 left-3 bg-gray-800 p-2 rounded-full text-white text-xs active:scale-90">❌</button>
+        <h1 class="text-xl font-black text-orange-400 mb-1 mt-8 text-center shrink-0">Buku Edukasi</h1>
+        <p id="lib-status" class="text-[10px] text-gray-400 mb-3 text-center font-bold shrink-0">Terbuka: 10 / 1000</p>
+        <div id="library-list" class="flex-1 overflow-y-auto flex flex-col gap-2 pb-6 pr-1"></div>
       </div>
 
       <!-- 8. SHOP -->
-      <div id="screen-shop" class="hidden relative z-20 min-h-screen bg-black/95 p-4 sm:p-6 text-center pt-20 text-white overflow-y-auto">
-          <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 p-3 rounded-full active:scale-90">❌</button>
-          <h1 class="text-3xl sm:text-4xl font-black text-pink-400 mb-6">Toko Pet (🪙 <span id="shop-coins-display">0</span>)</h1>
-          <div id="shop-items-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"></div>
+      <div id="screen-shop" class="hidden absolute inset-0 bg-black/95 p-3 flex flex-col text-center">
+          <button onclick="nav('DASHBOARD')" class="absolute top-3 left-3 bg-gray-800 p-2 rounded-full text-white text-xs active:scale-90">❌</button>
+          <h1 class="text-xl font-black text-pink-400 mb-4 mt-8 shrink-0">Toko Pet (🪙 <span id="shop-coins-display">0</span>)</h1>
+          <div id="shop-items-grid" class="grid grid-cols-2 gap-2 flex-1 overflow-y-auto pb-6 pr-1"></div>
       </div>
 
       <!-- 9. BADGES & PROGRES -->
-      <div id="screen-badges" class="hidden relative z-20 min-h-screen bg-black/95 p-4 sm:p-6 text-center pt-20 text-white overflow-y-auto">
-          <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 p-3 rounded-full active:scale-90">❌</button>
-          <h1 class="text-3xl sm:text-4xl font-black text-yellow-400 mb-4 sm:mb-6">Progres & Pencapaian</h1>
-          <p id="badges-lvl-info" class="text-sm sm:text-xl mb-8 font-bold text-gray-400">Mainkan terus untuk membuka lencana epik!</p>
-          <div id="badges-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto"></div>
+      <div id="screen-badges" class="hidden absolute inset-0 bg-black/95 p-3 flex flex-col text-center">
+          <button onclick="nav('DASHBOARD')" class="absolute top-3 left-3 bg-gray-800 p-2 rounded-full text-white text-xs active:scale-90">❌</button>
+          <h1 class="text-xl font-black text-yellow-400 mb-1 mt-8 shrink-0">Pencapaian</h1>
+          <p id="badges-lvl-info" class="text-[10px] mb-4 font-bold text-gray-400 shrink-0">Main terus buka lencana!</p>
+          <div id="badges-grid" class="grid grid-cols-2 gap-2 flex-1 overflow-y-auto pb-6 pr-1"></div>
       </div>
 
     </div>
   </div>
 
   <script>
-    // --- AUDIO SYSTEM (Web Audio API - Semangat Vibes) ---
+    // --- AUDIO SYSTEM (Semangat Vibes) ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
     let isMusicOn = false;
     let bgmInterval = null;
     let bgmNoteIndex = 0;
     
-    // Nada Pentatonik Ceria untuk BGM (Berulang)
-    const bgmNotes = [
-        523.25, 659.25, 783.99, 880.00, // C E G A
-        783.99, 659.25, 523.25, 587.33, // G E C D
-        523.25, 659.25, 783.99, 1046.50,// C E G C(high)
-        880.00, 783.99, 659.25, 587.33  // A G E D
-    ];
+    const bgmNotes = [ 523.25, 659.25, 783.99, 880.00, 783.99, 659.25, 523.25, 587.33, 523.25, 659.25, 783.99, 1046.50, 880.00, 783.99, 659.25, 587.33 ];
 
-    function initAudio() { 
-        if(!audioCtx) { audioCtx = new AudioContext(); } 
-        if(audioCtx.state === 'suspended') { audioCtx.resume(); } 
-    }
+    function initAudio() { if(!audioCtx) { audioCtx = new AudioContext(); } if(audioCtx.state === 'suspended') { audioCtx.resume(); } }
     
-    // Looping BGM Sequencer
     function playBGMNote() {
         if(!audioCtx || !isMusicOn) return;
         const freq = bgmNotes[bgmNoteIndex];
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.value = freq;
+        osc.type = 'triangle'; osc.frequency.value = freq;
         osc.connect(gain); gain.connect(audioCtx.destination);
-        
-        gain.gain.setValueAtTime(0.03, audioCtx.currentTime); // Volume kecil agar tidak menutupi SFX
+        gain.gain.setValueAtTime(0.02, audioCtx.currentTime); 
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
-        
-        osc.start(audioCtx.currentTime);
-        osc.stop(audioCtx.currentTime + 0.2);
-        
+        osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.2);
         bgmNoteIndex = (bgmNoteIndex + 1) % bgmNotes.length;
     }
 
@@ -265,7 +272,7 @@
         const btn = document.getElementById('btn-music-toggle');
         if (isMusicOn) {
             initAudio();
-            if(!bgmInterval) bgmInterval = setInterval(playBGMNote, 300); // Kecepatan tempo riang (sekitar 200 BPM per not)
+            if(!bgmInterval) bgmInterval = setInterval(playBGMNote, 300); 
             btn.innerHTML = '🎵 Musik: ON';
             btn.classList.replace('bg-gray-700', 'bg-green-500');
         } else {
@@ -275,29 +282,20 @@
         }
     }
 
-    // Fungsi Jingle SFX
     function playJingle(type) {
         if(!audioCtx || !isMusicOn) return;
         let notes = [], times = [];
-        
-        if (type === 'start') {
-            notes = [440, 554, 659, 880]; times = [0, 0.1, 0.2, 0.35];
-        } else if (type === 'victory') {
-            notes = [523.25, 659.25, 783.99, 1046.50, 1046.50]; times = [0, 0.1, 0.2, 0.3, 0.5];
-        } else if (type === 'happy') {
-            notes = [880, 1108]; times = [0, 0.1];
-        }
+        if (type === 'start') { notes = [440, 554, 659, 880]; times = [0, 0.1, 0.2, 0.35]; } 
+        else if (type === 'victory') { notes = [523.25, 659.25, 783.99, 1046.50, 1046.50]; times = [0, 0.1, 0.2, 0.3, 0.5]; } 
+        else if (type === 'happy') { notes = [880, 1108]; times = [0, 0.1]; }
 
         notes.forEach((freq, i) => {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = (type === 'victory') ? 'square' : 'triangle';
-            osc.frequency.value = freq;
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = (type === 'victory') ? 'square' : 'triangle'; osc.frequency.value = freq;
             osc.connect(gain); gain.connect(audioCtx.destination);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime + times[i]);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime + times[i]);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + times[i] + 0.15);
-            osc.start(audioCtx.currentTime + times[i]);
-            osc.stop(audioCtx.currentTime + times[i] + 0.15);
+            osc.start(audioCtx.currentTime + times[i]); osc.stop(audioCtx.currentTime + times[i] + 0.15);
         });
     }
 
@@ -305,20 +303,19 @@
         if(!audioCtx || !isMusicOn) return;
         if(['start', 'victory', 'happy'].includes(type)) { playJingle(type); return; }
 
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
+        const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
         osc.connect(gainNode); gainNode.connect(audioCtx.destination);
 
         if(type === 'pop') {
             osc.type = 'sine'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.08);
-            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
             osc.start(); osc.stop(audioCtx.currentTime + 0.08);
         } else if (type === 'wrong') {
             osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
             osc.frequency.setValueAtTime(120, audioCtx.currentTime + 0.1);
-            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
             gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
             osc.start(); osc.stop(audioCtx.currentTime + 0.3);
         }
@@ -326,17 +323,13 @@
 
     function showSubtitle(type) {
         if(activeMode !== 'RUNGU') return;
-        const layer = document.getElementById('subtitle-layer');
-        const el = document.createElement('div');
-        el.className = 'bg-black/80 text-yellow-300 px-6 py-2 rounded-full font-black text-sm sm:text-xl mb-2 border-2 border-yellow-500 subtitle-anim absolute';
+        const layer = document.getElementById('subtitle-layer'); const el = document.createElement('div');
+        el.className = 'bg-black/80 text-yellow-300 px-4 py-1.5 rounded-full font-black text-[10px] sm:text-xs mb-1 border border-yellow-500 subtitle-anim absolute';
         let txt = '';
-        if(type==='pop') txt = '[Klik Tombol]';
-        else if(type==='start') txt = '[Suara Game Mulai 🎵]';
-        else if(type==='happy' || type==='sparkle') txt = '[Ting! (Jawaban Benar) 🌟]';
-        else if(type==='wrong') txt = '[Tettt! (Salah/Nabrak) 💥]';
-        else if(type==='victory') txt = '[Tepuk Tangan & Fanfare! 🎉]';
-        el.innerText = txt; layer.appendChild(el);
-        setTimeout(() => el.remove(), 2500);
+        if(type==='pop') txt = '[Klik Tombol]'; else if(type==='start') txt = '[Suara Game Mulai 🎵]';
+        else if(type==='happy' || type==='sparkle') txt = '[Ting! (Benar) 🌟]'; else if(type==='wrong') txt = '[Tettt! (Salah/Nabrak) 💥]';
+        else if(type==='victory') txt = '[Tepuk Tangan! 🎉]';
+        el.innerText = txt; layer.appendChild(el); setTimeout(() => el.remove(), 2500);
     }
     
     function playSound(type) { showSubtitle(type); playSoundEffect(type); }
@@ -346,52 +339,41 @@
     let activeMode = 'UMUM'; let activeGameLoop = null; let transCard = null; let currentGameDetails = null;
 
     const FLASHCARDS = [
-      { t: 'Zebra Cross', i: '🦓', d: 'Tempat menyeberang jalan.', f: 'Pejalan kaki adalah raja di garis ini.', q: 'Hak utama di Zebra Cross milik?', opts: ['Pejalan Kaki', 'Mobil', 'Motor', 'Pesepeda'], a: 0 },
-      { t: 'Lampu Merah', i: '🚦', d: 'Tanda berhenti.', f: 'Menerobos sangat fatal.', q: 'Akibat menerobos lampu merah?', opts: ['Kecelakaan fatal', 'Ditilang', 'Cepat', 'Boros'], a: 0 },
-      { t: 'Rambu Stop', i: '🛑', d: 'Wajib berhenti sejenak.', f: 'Pastikan aman sebelum maju.', q: 'Arti rambu segi delapan merah?', opts: ['Stop / Berhenti', 'Maju', 'Hati-hati', 'Parkir'], a: 0 },
-      { t: 'Rambu Parkir (P)', i: '🅿️', d: 'Area boleh parkir.', f: 'Parkir sembarangan buat macet.', q: 'Huruf P biru artinya?', opts: ['Boleh Parkir', 'Dilarang Parkir', 'Pom Bensin', 'Polisi'], a: 0 },
-      { t: 'Rambu Dilarang Parkir (P Coret)', i: '🚳', d: 'Dilarang parkir di area ini.', f: 'Bisa diderek jika melanggar.', q: 'Tanda P dicoret merah artinya?', opts: ['Dilarang Parkir', 'Boleh Parkir', 'Berhenti', 'Awas'], a: 0 },
-      { t: 'Helm SNI', i: '🪖', d: 'Pelindung wajib kepala.', f: 'Kunci sampai KLIK!', q: 'Cara pakai helm yang benar?', opts: ['Dikunci sampai bunyi Klik', 'Dibiarkan longgar', 'Tanpa kaca', 'Diikat tali rafia'], a: 0 },
-      { t: 'Sabuk Pengaman', i: '🎗️', d: 'Pengaman dalam mobil.', f: 'Mencegah tubuh terlempar.', q: 'Fungsi utama sabuk pengaman?', opts: ['Menahan tubuh terlempar', 'Hiasan', 'Mencegah kantuk', 'Penghangat'], a: 0 },
-      { t: 'Ramp Disabilitas', i: '♿', d: 'Akses jalan miring.', f: 'Jangan parkir di depan ramp!', q: 'Fungsi ramp (jalan miring) adalah?', opts: ['Akses kursi roda', 'Tempat parkir', 'Jalur sepeda', 'Tempat duduk'], a: 0 },
-      { t: 'Guiding Block', i: '🟨', d: 'Jalur kuning tuna netra.', f: 'Bertekstur untuk diraba tongkat.', q: 'Jalur kuning di trotoar untuk siapa?', opts: ['Tuna Netra', 'Pesepeda', 'Pedagang', 'Lari'], a: 0 },
-      { t: 'Zona Sekolah', i: '🚸', d: 'Banyak anak sekolah.', f: 'Kurangi kecepatan batas 30km/jam.', q: 'Jika melihat rambu dua anak sekolah, kita harus?', opts: ['Kurangi Kecepatan', 'Klakson keras', 'Ngebut', 'Berhenti total'], a: 0 }
+      { t: 'Zebra Cross', i: '🦓', d: 'Tempat menyeberang', f: 'Prioritas Pejalan kaki.', q: 'Hak utama di Zebra Cross milik?', opts: ['Pejalan Kaki', 'Mobil', 'Motor', 'Pesepeda'], a: 0 },
+      { t: 'Lampu Merah', i: '🚦', d: 'Tanda berhenti.', f: 'Menerobos sangat fatal.', q: 'Akibat menerobos lampu merah?', opts: ['Kecelakaan', 'Ditilang', 'Cepat', 'Aman'], a: 0 },
+      { t: 'Rambu Stop', i: '🛑', d: 'Wajib berhenti.', f: 'Pastikan aman maju.', q: 'Arti rambu segi delapan merah?', opts: ['Stop', 'Maju', 'Hati-hati', 'Parkir'], a: 0 },
+      { t: 'Rambu Parkir (P)', i: '🅿️', d: 'Area parkir.', f: 'Parkir rapi cegah macet.', q: 'Huruf P biru artinya?', opts: ['Boleh Parkir', 'Dilarang Parkir', 'Pom Bensin', 'Polisi'], a: 0 },
+      { t: 'Dilarang Parkir', i: '🚳', d: 'Dilarang parkir.', f: 'Bisa diderek.', q: 'Tanda P dicoret merah artinya?', opts: ['Dilarang Parkir', 'Boleh Parkir', 'Berhenti', 'Awas'], a: 0 },
+      { t: 'Helm SNI', i: '🪖', d: 'Pelindung wajib.', f: 'Kunci sampai KLIK!', q: 'Cara pakai helm yang benar?', opts: ['Sampai bunyi Klik', 'Dibiarkan longgar', 'Tanpa kaca', 'Diikat rafia'], a: 0 },
+      { t: 'Sabuk Pengaman', i: '🎗️', d: 'Pengaman mobil.', f: 'Mencegah terlempar.', q: 'Fungsi utama sabuk pengaman?', opts: ['Tahan tubuh', 'Hiasan', 'Cegah kantuk', 'Penghangat'], a: 0 },
+      { t: 'Ramp Disabilitas', i: '♿', d: 'Jalan miring.', f: 'Jangan parkir di ramp!', q: 'Fungsi ramp (jalan miring)?', opts: ['Akses kursi roda', 'Tempat parkir', 'Jalur sepeda', 'Tempat duduk'], a: 0 },
+      { t: 'Guiding Block', i: '🟨', d: 'Jalur kuning.', f: 'Diraba tongkat.', q: 'Jalur kuning di trotoar untuk?', opts: ['Tuna Netra', 'Pesepeda', 'Pedagang', 'Lari'], a: 0 },
+      { t: 'Zona Sekolah', i: '🚸', d: 'Area sekolah.', f: 'Batas 30km/jam.', q: 'Saat melihat rambu zona sekolah?', opts: ['Kurangi Kecepatan', 'Klakson', 'Ngebut', 'Berhenti'], a: 0 }
     ];
     const FULL_LIBRARY = [];
     for(let i=0; i<1000; i++) { const base = FLASHCARDS[i % 10]; FULL_LIBRARY.push({ ...base, t: `${base.t} #${i+1}`}); }
 
-    // UMUM & TUNARUNGU (Puzzle Empati DIHAPUS dari daftar ini)
     const ALL_GAMES = [
-      { id: 'g1', title: 'Tebak Rambu', desc: 'Ingat dan tebak rambu yang benar.' },
-      { id: 'g2', title: 'Puzzle Keselamatan', desc: 'Cocokkan alat keselamatan.' },
-      { id: 'g3', title: 'Helm Hunter', desc: 'Tangkap helm, hindari batu!' },
-      { id: 'g4', title: 'Simulasi Menyeberang', desc: 'Lewati jalan tanpa tertabrak.' },
-      { id: 'g5', title: 'Balap Vs Bot', desc: 'Jawab soal lalin untuk ngebut.' },
-      { id: 'g6', title: 'Parkir Otomatis', desc: 'Hentikan mobil di area hijau.' },
-      { id: 'g7', title: 'Labirin Jalanan', desc: 'Cari Kunci dan jawab soal kuis.' },
-      { id: 'd1', title: 'Labirin Aksesibel', desc: 'Bantu kursi roda mencari jalan.' }, 
-      { id: 'd3', title: 'Kota Ramah Disabilitas', desc: 'Perbaiki fasilitas umum kota.' }, 
-      { id: 'd2', title: 'Solusi Lalu Lintas', desc: 'Susun kata jadi kalimat aksi!' }
+      { id: 'g1', title: 'Tebak Rambu', desc: 'Tebak rambu yang benar.' },
+      { id: 'g2', title: 'Puzzle Aman', desc: 'Cocokkan alat.' },
+      { id: 'g3', title: 'Helm Hunter', desc: 'Tangkap helm!' },
+      { id: 'g4', title: 'Menyeberang', desc: 'Hindari mobil.' },
+      { id: 'g5', title: 'Balap Vs Bot', desc: 'Jawab soal.' },
+      { id: 'g6', title: 'Parkir', desc: 'Berhenti di hijau.' },
+      { id: 'g7', title: 'Labirin Jalan', desc: 'Cari Kunci.' },
+      { id: 'd1', title: 'Labirin Daksa', desc: 'Bantu kursi roda.' }, 
+      { id: 'd3', title: 'Kota Ramah', desc: 'Perbaiki fasilitas.' }, 
+      { id: 'd2', title: 'Solusi Lalin', desc: 'Susun kata aksi!' }
     ];
-    
-    // TUNA DAKSA (Mempunyai Puzzle Empati eksklusif)
     const DAKSA_GAMES = [
-      { id: 'd1', title: 'Labirin Aksesibel', desc: 'Pandu kursi roda mencari kunci.' },
-      { id: 'd2', title: 'Solusi Lalu Lintas', desc: 'Susun kata jadi kalimat aksi!' },
-      { id: 'd3', title: 'Kota Ramah Disabilitas', desc: 'Perbaiki fasilitas umum.' },
-      { id: 'd4', title: 'Survival Jalan Raya', desc: 'Menghindar rintangan di jalan.' },
-      { id: 'd5', title: 'Puzzle Empati', desc: 'Susun puzzle gambar disabilitas & jawab kuis.' }
+      { id: 'd1', title: 'Labirin Daksa', desc: 'Pandu kursi roda.' },
+      { id: 'd2', title: 'Solusi Lalin', desc: 'Susun kata aksi!' },
+      { id: 'd3', title: 'Kota Ramah', desc: 'Perbaiki fasilitas.' },
+      { id: 'd4', title: 'Survival Jalan', desc: 'Menghindar.' },
+      { id: 'd5', title: 'Puzzle Empati', desc: 'Susun puzzle.' }
     ];
-    
-    const SHOP_ITEMS = [
-      { id: 's1', name: 'Topi Keren', icon: '🧢', price: 100 }, { id: 's2', name: 'Kacamata', icon: '🕶️', price: 200 },
-      { id: 's3', name: 'Mahkota', icon: '👑', price: 500 }, { id: 's4', name: 'Sayap', icon: '🦋', price: 1000 }
-    ];
-    const BADGES = [
-      { id: 'b1', name: 'Pejalan Kaki Baru', lvl: 1, icon: '🚶' }, { id: 'b2', name: 'Pelajar Taat', lvl: 10, icon: '🎒' },
-      { id: 'b3', name: 'Pahlawan Rambu', lvl: 20, icon: '🦸‍♂️' }, { id: 'b4', name: 'Raja Jalanan', lvl: 30, icon: '🏎️' },
-      { id: 'b5', name: 'Sultan Koin', lvl: 50, icon: '🤑' }, { id: 'b6', name: 'Master Empati', lvl: 100, icon: '🌟' }
-    ];
+    const SHOP_ITEMS = [ { id: 's1', name: 'Topi', icon: '🧢', price: 100 }, { id: 's2', name: 'Kacamata', icon: '🕶️', price: 200 }, { id: 's3', name: 'Mahkota', icon: '👑', price: 500 }, { id: 's4', name: 'Sayap', icon: '🦋', price: 1000 } ];
+    const BADGES = [ { id: 'b1', name: 'Pejalan', lvl: 1, icon: '🚶' }, { id: 'b2', name: 'Pelajar', lvl: 10, icon: '🎒' }, { id: 'b3', name: 'Pahlawan', lvl: 20, icon: '🦸‍♂️' }, { id: 'b4', name: 'Raja Jalan', lvl: 30, icon: '🏎️' }, { id: 'b5', name: 'Sultan', lvl: 50, icon: '🤑' }, { id: 'b6', name: 'Empati', lvl: 100, icon: '🌟' } ];
 
     function saveState() { localStorage.setItem('tlz_save', JSON.stringify(state)); }
     function loadState() { const s = localStorage.getItem('tlz_save'); if(s) state = JSON.parse(s); if(state.streak === undefined) state.streak = 0; }
@@ -405,50 +387,35 @@
     }
 
     function updateHUD() {
-       document.getElementById('hud-level').innerText = state.level;
-       document.getElementById('hud-coins').innerText = state.coins;
-       document.getElementById('hud-streak').innerText = state.streak;
-       document.getElementById('hud-xp-bar').style.width = `${(state.xp / (state.level * 100)) * 100}%`;
+       document.getElementById('hud-level').innerText = state.level; document.getElementById('hud-coins').innerText = state.coins;
+       document.getElementById('hud-streak').innerText = state.streak; document.getElementById('hud-xp-bar').style.width = `${(state.xp / (state.level * 100)) * 100}%`;
        document.getElementById('hud-mode').innerText = activeMode;
-       
        if(state.equippedHat) document.getElementById('pet-accessory').innerText = state.equippedHat;
 
-       const btnDaily = document.getElementById('btn-daily-action');
-       const lockText = document.getElementById('daily-lock-status');
-       const btnGames = document.getElementById('menu-games');
+       const btnDaily = document.getElementById('btn-daily-action'); const lockText = document.getElementById('daily-lock-status'); const btnGames = document.getElementById('menu-games');
 
        if (state.dailyCompletedDate === new Date().toDateString()) {
-          lockText.innerText = "✅ Misi Selesai! Game Terbuka."; lockText.className = "text-green-400 font-bold mb-2 text-xs sm:text-sm";
-          btnDaily.innerText = "Latihan Lagi"; btnDaily.className = "w-full py-3 sm:py-4 bg-gray-600 rounded-2xl font-black text-white text-sm sm:text-xl active:scale-95 transition-transform";
-          btnGames.classList.remove('opacity-50', 'grayscale', 'border-gray-800'); btnGames.classList.add('border-white/20', 'hover:border-white');
+          lockText.innerText = "✅ Misi Selesai!"; lockText.className = "text-green-400 font-bold mb-2 text-[10px]";
+          btnDaily.innerText = "Latihan Lagi"; btnDaily.className = "w-full py-2.5 bg-gray-600 rounded-xl font-black text-white text-sm active:scale-95 transition-transform";
+          btnGames.classList.remove('opacity-50', 'grayscale', 'border-gray-800'); btnGames.classList.add('border-white/20');
        } else {
-          lockText.innerText = "🔒 Game Terkunci! Selesaikan Misi."; lockText.className = "text-red-400 font-bold mb-2 text-xs sm:text-sm animate-pulse";
-          btnDaily.innerText = "MISI HARIAN"; btnDaily.className = "w-full py-3 sm:py-4 bg-green-500 rounded-2xl font-black text-white text-sm sm:text-xl border-2 border-green-300 active:scale-95 transition-transform shadow-lg";
-          btnGames.classList.add('opacity-50', 'grayscale', 'border-gray-800'); btnGames.classList.remove('border-white/20', 'hover:border-white');
+          lockText.innerText = "🔒 Selesaikan Misi!"; lockText.className = "text-red-400 font-bold mb-2 text-[10px] animate-pulse";
+          btnDaily.innerText = "MISI HARIAN"; btnDaily.className = "w-full py-2.5 bg-green-500 rounded-xl font-black text-white text-sm border border-green-300 active:scale-95 transition-transform shadow";
+          btnGames.classList.add('opacity-50', 'grayscale', 'border-gray-800'); btnGames.classList.remove('border-white/20');
        }
     }
 
-    // --- NAVIGATION ---
     function nav(screenId) {
        playSound('pop'); if (activeGameLoop) clearInterval(activeGameLoop);
        ['splash', 'mode', 'dashboard', 'daily', 'games', 'player', 'library', 'shop', 'badges'].forEach(s => {
           const el = document.getElementById(`screen-${s}`); if (el) el.classList.add('hidden');
        });
        document.getElementById(`screen-${screenId.toLowerCase()}`).classList.remove('hidden');
-       
-       if (screenId === 'DASHBOARD') updateHUD();
-       if (screenId === 'DAILY') initDaily();
-       if (screenId === 'GAMES') renderGamesHub();
-       if (screenId === 'LIBRARY') renderLibrary();
-       if (screenId === 'SHOP') renderShop();
-       if (screenId === 'BADGES') renderBadges();
+       if (screenId === 'DASHBOARD') updateHUD(); if (screenId === 'DAILY') initDaily();
+       if (screenId === 'GAMES') renderGamesHub(); if (screenId === 'LIBRARY') renderLibrary();
+       if (screenId === 'SHOP') renderShop(); if (screenId === 'BADGES') renderBadges();
     }
-    function startGame() { 
-        // Otomatis nyalakan musik (jika browser mengizinkan setelah interaksi)
-        if (!isMusicOn) toggleMusic(); 
-        playSound('start'); 
-        nav('MODE'); 
-    }
+    function startGame() { if (!isMusicOn) toggleMusic(); playSound('start'); nav('MODE'); }
     function selectMode(m) { activeMode = m; nav('DASHBOARD'); }
     function hidePetBubble() { document.getElementById('pet-bubble').classList.add('hidden'); playSound('pop');}
     function goToGames() { if (state.dailyCompletedDate !== new Date().toDateString()) { playSound('wrong'); return; } nav('GAMES'); }
@@ -457,8 +424,7 @@
     let dQuizIdx = 0, dScore = 0, dQuestions = [];
     function initDaily() {
        dQuizIdx = 0; dScore = 0; dQuestions = get5Questions();
-       document.getElementById('daily-quiz-box').classList.remove('hidden'); document.getElementById('daily-result-box').classList.add('hidden');
-       loadDailyQ();
+       document.getElementById('daily-quiz-box').classList.remove('hidden'); document.getElementById('daily-result-box').classList.add('hidden'); loadDailyQ();
     }
     function loadDailyQ() {
        const q = dQuestions[dQuizIdx];
@@ -466,7 +432,8 @@
        document.getElementById('daily-quiz-question').innerText = q.q;
        const optsContainer = document.getElementById('daily-quiz-options'); optsContainer.innerHTML = '';
        q.opts.forEach((opt, idx) => {
-          optsContainer.innerHTML += `<button onclick="submitDaily(${idx})" class="w-full text-left p-3 sm:p-4 bg-gray-800 hover:bg-cyan-600 rounded-xl font-bold text-sm sm:text-lg border-2 border-gray-600 flex items-center active:scale-95 transition-transform"><span class="bg-black/50 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full mr-3 sm:mr-4 shrink-0 text-cyan-300 font-black">${String.fromCharCode(65+idx)}</span> <span class="whitespace-normal leading-tight">${opt}</span></button>`;
+          // Tombol dibikin pas, tidak terlalu besar agar 4 opsi muat di layar hp
+          optsContainer.innerHTML += `<button onclick="submitDaily(${idx})" class="w-full text-left px-3 py-2 bg-gray-800 hover:bg-cyan-600 rounded-xl font-bold text-xs border border-gray-600 flex items-center active:scale-95 transition-transform flex-1"><span class="bg-black/50 w-6 h-6 flex items-center justify-center rounded-full mr-2 shrink-0 text-cyan-300 font-black">${String.fromCharCode(65+idx)}</span> <span class="whitespace-normal leading-tight">${opt}</span></button>`;
        });
     }
     function submitDaily(idx) {
@@ -474,22 +441,15 @@
        dQuizIdx++; if (dQuizIdx < 5) loadDailyQ(); else showDailyRes();
     }
     function showDailyRes() {
-       document.getElementById('daily-quiz-box').classList.add('hidden');
-       const resBox = document.getElementById('daily-result-box'); resBox.classList.remove('hidden');
+       document.getElementById('daily-quiz-box').classList.add('hidden'); document.getElementById('daily-result-box').classList.remove('hidden');
        document.getElementById('daily-result-score').innerText = `Skor: ${dScore} / 5`;
        if (dScore >= 4) {
-          document.getElementById('daily-result-status').innerText = "LULUS! 🎉";
-          document.getElementById('daily-result-status').className = "text-4xl sm:text-5xl font-black mb-4 text-green-400";
-          document.getElementById('btn-daily-retry').classList.add('hidden');
-          playSound('victory');
-          if (state.dailyCompletedDate !== new Date().toDateString()) {
-             state.dailyCompletedDate = new Date().toDateString(); state.streak += 1; addReward(200, 100);
-          }
+          document.getElementById('daily-result-status').innerText = "LULUS! 🎉"; document.getElementById('daily-result-status').className = "text-3xl font-black mb-2 text-green-400";
+          document.getElementById('btn-daily-retry').classList.add('hidden'); playSound('victory');
+          if (state.dailyCompletedDate !== new Date().toDateString()) { state.dailyCompletedDate = new Date().toDateString(); state.streak += 1; addReward(200, 100); }
        } else {
-          document.getElementById('daily-result-status').innerText = "GAGAL 💔";
-          document.getElementById('daily-result-status').className = "text-4xl sm:text-5xl font-black mb-4 text-red-500";
-          document.getElementById('btn-daily-retry').classList.remove('hidden');
-          playSound('wrong');
+          document.getElementById('daily-result-status').innerText = "GAGAL 💔"; document.getElementById('daily-result-status').className = "text-3xl font-black mb-2 text-red-500";
+          document.getElementById('btn-daily-retry').classList.remove('hidden'); playSound('wrong');
        }
     }
     function retryDaily() { initDaily(); }
@@ -497,10 +457,10 @@
     // --- SECONDARY SCREENS ---
     function renderLibrary() {
         let unlockedAmt = 10 + Math.floor(state.level / 10) * 5; unlockedAmt = Math.min(unlockedAmt, FULL_LIBRARY.length);
-        document.getElementById('lib-status').innerText = `Terbuka: ${unlockedAmt} / 1000 (Tingkatkan levelmu!)`;
+        document.getElementById('lib-status').innerText = `Terbuka: ${unlockedAmt} / 1000`;
         const list = document.getElementById('library-list'); list.innerHTML = '';
         FULL_LIBRARY.slice(0, unlockedAmt).forEach(c => {
-            list.innerHTML += `<div class="bg-gray-800 p-4 rounded-2xl mb-4 border border-gray-700 flex items-center gap-4"><div class="text-4xl sm:text-5xl">${c.i}</div><div><h4 class="font-black text-lg sm:text-xl text-orange-400">${c.t}</h4><p class="text-xs sm:text-sm text-white font-bold">${c.d}</p><p class="text-[10px] sm:text-xs text-gray-400 mt-1 italic">${c.f}</p></div></div>`;
+            list.innerHTML += `<div class="bg-gray-800 p-3 rounded-2xl border border-gray-700 flex items-center gap-3"><div class="text-3xl">${c.i}</div><div><h4 class="font-black text-sm text-orange-400">${c.t}</h4><p class="text-[10px] text-white font-bold leading-tight">${c.d}</p><p class="text-[9px] text-gray-400 mt-0.5 italic">${c.f}</p></div></div>`;
         });
     }
     function renderShop() {
@@ -508,28 +468,21 @@
         const grid = document.getElementById('shop-items-grid'); grid.innerHTML = '';
         SHOP_ITEMS.forEach(item => {
             let isOwned = state.costumes.includes(item.id);
-            grid.innerHTML += `<div class="bg-gray-800 p-4 sm:p-6 rounded-3xl border-2 border-gray-600 flex flex-col items-center">
-                <div class="text-4xl sm:text-6xl mb-2 sm:mb-4">${item.icon}</div>
-                <h3 class="font-bold text-sm sm:text-lg mb-2">${item.name}</h3>
-                ${isOwned ? `<button onclick="equip('${item.icon}')" class="w-full py-2 bg-green-500 rounded-xl font-bold active:scale-95 text-xs sm:text-base">Pakai</button>` 
-                          : `<button onclick="buyItem('${item.id}', ${item.price})" class="w-full py-2 bg-blue-500 rounded-xl font-bold active:scale-95 shadow text-xs sm:text-base">🪙 ${item.price}</button>`}
-            </div>`;
+            grid.innerHTML += `<div class="bg-gray-800 p-3 rounded-2xl border border-gray-600 flex flex-col items-center justify-center">
+                <div class="text-4xl mb-1">${item.icon}</div><h3 class="font-bold text-[10px] mb-2">${item.name}</h3>
+                ${isOwned ? `<button onclick="equip('${item.icon}')" class="w-full py-1.5 bg-green-500 rounded-lg font-bold active:scale-95 text-[10px]">Pakai</button>` : `<button onclick="buyItem('${item.id}', ${item.price})" class="w-full py-1.5 bg-blue-500 rounded-lg font-bold active:scale-95 text-[10px]">🪙 ${item.price}</button>`}</div>`;
         });
     }
-    function buyItem(id, price) {
-        if(state.coins >= price) { state.coins -= price; state.costumes.push(id); playSound('happy'); saveState(); renderShop(); } 
-        else { playSound('wrong'); }
-    }
+    function buyItem(id, price) { if(state.coins >= price) { state.coins -= price; state.costumes.push(id); playSound('happy'); saveState(); renderShop(); } else { playSound('wrong'); } }
     function equip(icon) { state.equippedHat = icon; playSound('pop'); saveState(); nav('DASHBOARD'); }
 
     function renderBadges() {
-        document.getElementById('badges-lvl-info').innerText = `Level Kamu Saat Ini: ${state.level}`;
+        document.getElementById('badges-lvl-info').innerText = `Level Kamu: ${state.level}`;
         const grid = document.getElementById('badges-grid'); grid.innerHTML = '';
         BADGES.forEach(b => {
             let unlocked = state.level >= b.lvl;
-            grid.innerHTML += `<div class="bg-gray-800 p-4 sm:p-6 rounded-3xl border-2 ${unlocked ? 'border-yellow-400 shadow-lg shadow-yellow-500/20' : 'border-gray-600 opacity-50 grayscale'} flex flex-col items-center">
-                <div class="text-4xl sm:text-6xl mb-2 sm:mb-4">${b.icon}</div><h3 class="font-bold text-sm sm:text-lg text-center">${b.name}</h3><p class="text-xs sm:text-sm text-gray-400">Level ${b.lvl}</p>
-            </div>`;
+            grid.innerHTML += `<div class="bg-gray-800 p-3 rounded-2xl border ${unlocked ? 'border-yellow-400' : 'border-gray-600 opacity-50 grayscale'} flex flex-col items-center justify-center">
+                <div class="text-3xl mb-1">${b.icon}</div><h3 class="font-bold text-[10px] text-center leading-tight">${b.name}</h3><p class="text-[9px] text-gray-400">Lv ${b.lvl}</p></div>`;
         });
     }
 
@@ -539,9 +492,9 @@
        const list = activeMode === 'DAKSA' ? DAKSA_GAMES : ALL_GAMES;
        list.forEach(g => {
           let gLvl = state.gameLevels[g.id] || 1;
-          grid.innerHTML += `<div onclick="playGame('${g.id}')" class="bg-gray-800 p-4 sm:p-6 rounded-3xl border-2 border-gray-600 hover:border-cyan-400 cursor-pointer text-left shadow-lg active:scale-95 transition-transform">
-             <h3 class="text-lg sm:text-2xl font-black text-white mb-1 sm:mb-2">${g.title}</h3><p class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 h-10">${g.desc}</p>
-             <div class="bg-black/50 rounded-full px-3 py-1 sm:px-4 sm:py-2 text-center text-yellow-400 font-bold text-xs sm:text-base">Level ${gLvl} / 100</div></div>`;
+          grid.innerHTML += `<div onclick="playGame('${g.id}')" class="bg-gray-800 p-4 rounded-2xl border border-gray-600 cursor-pointer text-left shadow active:scale-95 transition-transform flex items-center justify-between gap-2">
+             <div><h3 class="text-sm font-black text-white mb-0.5">${g.title}</h3><p class="text-[10px] text-gray-400">${g.desc}</p></div>
+             <div class="bg-black/50 rounded-full px-2 py-1 text-yellow-400 font-bold text-[9px] whitespace-nowrap">Lv ${gLvl} / 100</div></div>`;
        });
     }
 
@@ -554,448 +507,114 @@
     }
 
     function initSpecificGame(id) {
-       const rawLevel = state.gameLevels[id] || 1;
-       const diffLevel = Math.min(5, rawLevel); // Difficulty maks level 5
+       const diffLevel = Math.min(5, state.gameLevels[id] || 1); 
        const container = document.getElementById('game-play-area'); container.innerHTML = '';
 
-       // ================== G1: TEBAK RAMBU ==================
        if (id === 'g1') {
-          const lvlData = [
-             { i: '🅿️', name: 'Rambu Parkir', q: 'Apa arti rambu ini?', opts: ['Boleh Parkir', 'Dilarang Parkir', 'Berhenti'], a: 0 },
-             { i: '🚳', name: 'Dilarang Masuk Sepeda', q: 'Bolehkah pesepeda masuk ke area ini?', opts: ['TIDAK BOLEH', 'Boleh Saja', 'Hanya pagi'], a: 0 },
-             { i: '🛑', name: 'Rambu Stop', q: 'Apa tindakan wajib saat melihat ini?', opts: ['Berhenti sejenak & cek', 'Klakson', 'Ngebut'], a: 0 },
-             { i: '🚸', name: 'Zona Sekolah', q: 'Berapa batas kecepatan ideal?', opts: ['Maks 30 km/jam', 'Min 60 km/jam', 'Bebas'], a: 0 },
-             { i: '🟨', name: 'Guiding Block', q: 'Garis bertekstur ini khusus untuk?', opts: ['Tuna Netra', 'Hiasan kota', 'Jalur Lari'], a: 0 }
-          ];
-          const data = lvlData[diffLevel - 1];
-          container.innerHTML = `<div class="text-center text-white w-full"><h3 class="text-2xl sm:text-3xl font-black mb-2 text-yellow-400 animate-pulse">FASE MENGINGAT</h3><div class="text-[6rem] sm:text-[8rem] mb-2 sm:mb-4">${data.i}</div><h2 class="text-2xl sm:text-4xl font-black text-cyan-300">${data.name}</h2></div>`;
-          setTimeout(() => {
-              container.innerHTML = `<div class="text-center w-full max-w-lg mx-auto"><div class="text-[5rem] sm:text-[6rem] mb-4 sm:mb-6">${data.i}</div><h3 class="text-lg sm:text-2xl font-black mb-4 sm:mb-6 text-white">${data.q}</h3>
-                 <div class="flex flex-col gap-3 sm:gap-4">${data.opts.map((opt, i) => `<button onclick="submitG1(${i === data.a})" class="p-3 sm:p-4 bg-gray-800 hover:bg-cyan-600 border-2 border-gray-600 rounded-2xl font-bold text-sm sm:text-xl w-full text-left active:scale-95 transition-transform shadow">${opt}</button>`).join('')}</div></div>`;
-          }, 3000);
-          window.submitG1 = (isCorrect) => { if(isCorrect) { playSound('happy'); completeGame(true); } else { playSound('wrong'); completeGame(false); } }
+          const data = [{ i: '🅿️', name: 'Parkir', q: 'Arti rambu ini?', opts: ['Boleh Parkir', 'Dilarang Parkir', 'Berhenti'], a: 0 }, { i: '🚳', name: 'Dilarang Sepeda', q: 'Pesepeda masuk?', opts: ['TIDAK', 'Boleh Saja', 'Pagi hari'], a: 0 }, { i: '🛑', name: 'Stop', q: 'Saat melihat ini?', opts: ['Berhenti & cek', 'Klakson', 'Ngebut'], a: 0 }, { i: '🚸', name: 'Zona Sekolah', q: 'Batas kecepatan?', opts: ['Maks 30 km/jam', 'Min 60 km/jam', 'Bebas'], a: 0 }, { i: '🟨', name: 'Guiding Block', q: 'Khusus untuk?', opts: ['Tuna Netra', 'Hiasan', 'Lari'], a: 0 }][diffLevel - 1];
+          container.innerHTML = `<div class="text-center w-full"><h3 class="text-lg font-black mb-1 text-yellow-400">MENGINGAT</h3><div class="text-[5rem] mb-1">${data.i}</div><h2 class="text-xl font-black text-cyan-300">${data.name}</h2></div>`;
+          setTimeout(() => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full"><div class="text-[4rem] mb-2 shrink-0">${data.i}</div><h3 class="text-sm font-black mb-4 shrink-0">${data.q}</h3><div class="flex flex-col gap-2 flex-1 justify-center">${data.opts.map((opt, i) => `<button onclick="submitG1(${i === data.a})" class="p-3 bg-gray-800 border border-gray-600 rounded-xl font-bold text-xs w-full text-left active:scale-95 shadow flex-1">${opt}</button>`).join('')}</div></div>`; }, 2500);
+          window.submitG1 = (isC) => { if(isC) { playSound('happy'); completeGame(true); } else { playSound('wrong'); completeGame(false); } }
        }
-       
-       // ================== G2: PUZZLE KESELAMATAN ==================
        else if (id === 'g2') {
-           const pairs = [ { id:1, q: 'Kepala', a: '🪖 Helm' }, { id:2, q: 'Badan di Mobil', a: '🎗️ Sabuk' }, { id:3, q: 'Berhenti', a: '🛑 Rambu Stop' }, { id:4, q: 'Tuna Netra', a: '🦯 Tongkat' } ];
-           let qMix = [...pairs].slice(0, diffLevel === 1 ? 2 : 4).sort(()=>Math.random()-0.5);
-           let aMix = [...qMix].sort(()=>Math.random()-0.5);
-           let selQ = null, matches = 0;
-
-           const renderG2 = () => {
-              container.innerHTML = `<div class="text-center w-full max-h-[80vh] overflow-y-auto"><h3 class="text-xl sm:text-3xl font-black mb-4 sm:mb-6 text-yellow-400">Cocokkan Pasangannya!</h3>
-                 <div class="flex justify-between max-w-lg mx-auto gap-2 sm:gap-4">
-                    <div class="flex-1 flex flex-col gap-2 sm:gap-3">${qMix.map((p,i) => `<button onclick="selG2Q(${i})" class="p-3 sm:p-4 rounded-xl border-4 ${selQ===i?'border-yellow-400 bg-gray-700':'border-gray-600 bg-gray-800'} font-bold active:scale-95 transition-transform ${p.done?'opacity-0 pointer-events-none':''} shadow text-xs sm:text-base">${p.q}</button>`).join('')}</div>
-                    <div class="flex-1 flex flex-col gap-2 sm:gap-3">${aMix.map((p,i) => `<button onclick="selG2A(${i})" class="p-3 sm:p-4 rounded-xl border-4 border-cyan-700 bg-cyan-900 font-bold active:scale-95 transition-transform ${p.done?'opacity-0 pointer-events-none':''} shadow text-xs sm:text-base">${p.a}</button>`).join('')}</div>
-                 </div></div>`;
-           };
-           window.selG2Q = (i) => { selQ = i; playSound('pop'); renderG2(); }
-           window.selG2A = (i) => {
-              if (selQ === null) { playSound('wrong'); return; }
-              if (qMix[selQ].id === aMix[i].id) { playSound('happy'); qMix[selQ].done = true; aMix[i].done = true; selQ=null; matches++; if(matches===qMix.length) setTimeout(()=>completeGame(true), 500); } 
-              else { playSound('wrong'); selQ=null; setTimeout(()=>completeGame(false), 500); }
-              renderG2();
-           }
-           renderG2();
+           const pairs = [ { id:1, q: 'Kepala', a: '🪖 Helm' }, { id:2, q: 'Badan', a: '🎗️ Sabuk' }, { id:3, q: 'Berhenti', a: '🛑 Stop' }, { id:4, q: 'Netra', a: '🦯 Tongkat' } ];
+           let qM = [...pairs].slice(0, diffLevel === 1 ? 2 : 4).sort(()=>Math.random()-0.5); let aM = [...qM].sort(()=>Math.random()-0.5); let sQ = null, mtc = 0;
+           const ren = () => { container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-center"><h3 class="text-sm font-black mb-4 text-yellow-400 shrink-0">Cocokkan Pasangan!</h3><div class="flex justify-between gap-2 flex-1"><div class="flex-1 flex flex-col gap-2">${qM.map((p,i) => `<button onclick="sGQ(${i})" class="flex-1 rounded-xl border-2 ${sQ===i?'border-yellow-400 bg-gray-700':'border-gray-600 bg-gray-800'} font-bold text-xs active:scale-95 ${p.done?'opacity-0 pointer-events-none':''}">${p.q}</button>`).join('')}</div><div class="flex-1 flex flex-col gap-2">${aM.map((p,i) => `<button onclick="sGA(${i})" class="flex-1 rounded-xl border-2 border-cyan-700 bg-cyan-900 font-bold text-xs active:scale-95 ${p.done?'opacity-0 pointer-events-none':''}">${p.a}</button>`).join('')}</div></div></div>`; };
+           window.sGQ = (i) => { sQ = i; playSound('pop'); ren(); }; window.sGA = (i) => { if (sQ === null) { playSound('wrong'); return; } if (qM[sQ].id === aM[i].id) { playSound('happy'); qM[sQ].done=true; aM[i].done=true; sQ=null; mtc++; if(mtc===qM.length) setTimeout(()=>completeGame(true), 500); } else { playSound('wrong'); sQ=null; setTimeout(()=>completeGame(false), 500); } ren(); }; ren();
        }
-
-       // ================== G3: HELM HUNTER ==================
        else if (id === 'g3') {
-           let px = 1, objY = 0, objX = 1, objType = 'helm', score = 0;
-           let target = 4 + (diffLevel - 1) * 2; 
-           let speed = Math.max(50, 150 - (diffLevel * 20)); 
-
-           const renderHH = () => {
-              container.innerHTML = `<div class="text-center w-full max-w-md mx-auto"><div class="flex justify-between text-yellow-400 font-black mb-3 sm:mb-4 text-lg sm:text-2xl bg-black/50 px-3 sm:px-4 py-1 sm:py-2 rounded-full border border-yellow-500"><span>Tangkap Helm!</span><span>${score}/${target}</span></div>
-                 <div class="relative w-full h-[40vh] sm:h-72 bg-gray-800 border-4 border-gray-600 overflow-hidden flex rounded-3xl shadow-inner">
-                    <div class="flex-1 border-r-2 border-dashed border-gray-700"></div><div class="flex-1 border-r-2 border-dashed border-gray-700"></div><div class="flex-1"></div>
-                    <div class="absolute text-4xl sm:text-5xl transition-all" style="left: ${(objX*33.3)+10}%; top: ${objY*10}%">${objType === 'helm' ? '🪖' : '🪨'}</div>
-                    <div class="absolute text-[4rem] sm:text-[5rem] transition-all bottom-2" style="left: ${(px*33.3)+6}%">👦</div>
-                 </div>
-                 <div class="flex gap-3 sm:gap-4 mt-4 sm:mt-6"><button onclick="moveHH(-1)" class="flex-1 py-4 sm:py-8 bg-cyan-600 rounded-2xl sm:rounded-3xl text-3xl sm:text-5xl shadow-lg border-b-4 sm:border-b-8 border-cyan-800 active:translate-y-1 sm:active:translate-y-2 active:border-b-0 transition-all">◀️</button><button onclick="moveHH(1)" class="flex-1 py-4 sm:py-8 bg-cyan-600 rounded-2xl sm:rounded-3xl text-3xl sm:text-5xl shadow-lg border-b-4 sm:border-b-8 border-cyan-800 active:translate-y-1 sm:active:translate-y-2 active:border-b-0 transition-all">▶️</button></div></div>`;
-           };
-           window.moveHH = (d) => { px = Math.max(0, Math.min(2, px+d)); renderHH(); }
-
-           activeGameLoop = setInterval(() => {
-              objY++;
-              if (objY > 9) {
-                 if (objX === px) {
-                    if (objType === 'helm') { score++; playSound('happy'); if(score>=target) { clearInterval(activeGameLoop); setTimeout(()=>completeGame(true), 200); return; } } 
-                    else { clearInterval(activeGameLoop); playSound('wrong'); completeGame(false); return; }
-                 }
-                 objY = 0; objX = Math.floor(Math.random()*3); objType = Math.random() > 0.6 ? 'batu' : 'helm';
-              }
-              renderHH();
-           }, speed);
-           renderHH();
+           let px = 1, oY = 0, oX = 1, oT = 'helm', sc = 0, tgt = 4 + (diffLevel - 1) * 2;
+           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full"><div class="flex justify-between text-yellow-400 font-black mb-2 text-xs bg-black/50 px-3 py-1 rounded-full shrink-0"><span>Tangkap!</span><span>${sc}/${tgt}</span></div><div class="relative w-full flex-1 min-h-0 bg-gray-800 border-2 border-gray-600 overflow-hidden flex rounded-2xl shadow-inner"><div class="flex-1 border-r border-dashed border-gray-700"></div><div class="flex-1 border-r border-dashed border-gray-700"></div><div class="flex-1"></div><div class="absolute text-4xl transition-all" style="left: ${(oX*33.3)+12}%; top: ${oY*10}%">${oT === 'helm' ? '🪖' : '🪨'}</div><div class="absolute text-5xl transition-all bottom-1" style="left: ${(px*33.3)+8}%">👦</div></div><div class="flex gap-2 mt-3 shrink-0"><button onclick="mHH(-1)" class="flex-1 py-4 bg-cyan-600 rounded-xl text-2xl shadow border-b-4 border-cyan-800 active:translate-y-1 active:border-b-0">◀️</button><button onclick="mHH(1)" class="flex-1 py-4 bg-cyan-600 rounded-xl text-2xl shadow border-b-4 border-cyan-800 active:translate-y-1 active:border-b-0">▶️</button></div></div>`; };
+           window.mHH = (d) => { px = Math.max(0, Math.min(2, px+d)); ren(); }
+           activeGameLoop = setInterval(() => { oY++; if (oY > 9) { if (oX === px) { if (oT === 'helm') { sc++; playSound('happy'); if(sc>=tgt) { clearInterval(activeGameLoop); setTimeout(()=>completeGame(true), 200); return; } } else { clearInterval(activeGameLoop); playSound('wrong'); completeGame(false); return; } } oY = 0; oX = Math.floor(Math.random()*3); oT = Math.random() > 0.6 ? 'batu' : 'helm'; } ren(); }, Math.max(60, 150 - (diffLevel * 15))); ren();
        }
-
-       // ================== G4: SIMULASI MENYEBERANG ==================
        else if (id === 'g4') {
-          let py = 4;
-          let cars = [ { y: 1, x: 10, s: 1 + (diffLevel*0.5) }, { y: 2, x: 80, s: -(1.5 + (diffLevel*0.5)) }, { y: 3, x: 40, s: 1 + (diffLevel*0.5) } ];
-          const renderFrog = () => {
-             container.innerHTML = `<div class="w-full text-center max-w-lg mx-auto"><h3 class="text-sm sm:text-xl font-bold text-white mb-2 sm:mb-4 bg-black/50 py-1 sm:py-2 rounded-full border border-gray-500">Maju pelan-pelan ke atas!</h3>
-                <div class="relative w-full h-[45vh] sm:h-80 bg-gray-700 border-4 border-gray-500 overflow-hidden mb-4 sm:mb-6 flex flex-col justify-between py-2 rounded-2xl shadow-inner">
-                    <div class="absolute text-4xl sm:text-5xl z-10 transition-all" style="left: 45%; top: ${py*20}%">🏃</div>
-                    ${cars.map(c => `<div class="absolute text-4xl sm:text-5xl" style="left: ${c.x}%; top: ${c.y*20}%; transform: scaleX(${c.s>0?-1:1})">🚙</div>`).join('')}
-                </div>
-                <div class="flex justify-center gap-3 sm:gap-4"><button onclick="moveFr(1)" class="px-4 sm:px-8 py-4 sm:py-6 bg-gray-600 rounded-2xl sm:rounded-3xl font-bold text-lg sm:text-2xl text-white active:scale-95 border-b-4 border-gray-800">▼ Mundur</button><button onclick="moveFr(-1)" class="flex-1 py-4 sm:py-6 bg-green-500 rounded-2xl sm:rounded-3xl font-black text-xl sm:text-3xl text-white shadow-lg border-b-4 border-green-700 active:translate-y-1 active:border-b-0 transition-all">▲ MAJU</button></div></div>`;
-          };
-          window.moveFr = (d) => { py = Math.max(0, Math.min(4, py+d)); playSound('pop'); if(py===0) { clearInterval(activeGameLoop); setTimeout(()=>completeGame(true), 200); } renderFrog(); }
-          activeGameLoop = setInterval(() => {
-             cars.forEach(c => { c.x += c.s; if(c.x > 110) c.x = -10; else if(c.x < -10) c.x = 110; });
-             if (cars.some(c => c.y === py && Math.abs(c.x - 45) < 10)) { clearInterval(activeGameLoop); playSound('wrong'); setTimeout(()=>completeGame(false), 200); }
-             renderFrog();
-          }, 50);
+          let py = 4, crs = [ { y: 1, x: 10, s: 1+(diffLevel*0.5) }, { y: 2, x: 80, s: -(1.5+(diffLevel*0.5)) }, { y: 3, x: 40, s: 1+(diffLevel*0.5) } ];
+          const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full"><h3 class="text-xs font-bold text-white mb-2 shrink-0">Maju pelan!</h3><div class="relative w-full flex-1 min-h-0 bg-gray-700 border-2 border-gray-500 overflow-hidden mb-3 flex flex-col justify-between py-1 rounded-xl shadow-inner"><div class="absolute text-3xl z-10 transition-all" style="left: 45%; top: ${py*20}%">🏃</div>${crs.map(c => `<div class="absolute text-3xl" style="left: ${c.x}%; top: ${c.y*20}%; transform: scaleX(${c.s>0?-1:1})">🚙</div>`).join('')}</div><div class="flex gap-2 shrink-0"><button onclick="mFr(1)" class="px-3 py-3 bg-gray-600 rounded-xl font-bold text-xs text-white active:scale-95 flex-1">▼ Mundur</button><button onclick="mFr(-1)" class="flex-[2] py-3 bg-green-500 rounded-xl font-black text-sm text-white shadow active:scale-95">▲ MAJU</button></div></div>`; };
+          window.mFr = (d) => { py = Math.max(0, Math.min(4, py+d)); playSound('pop'); if(py===0) { clearInterval(activeGameLoop); setTimeout(()=>completeGame(true), 200); } ren(); }
+          activeGameLoop = setInterval(() => { crs.forEach(c => { c.x += c.s; if(c.x > 110) c.x = -10; else if(c.x < -10) c.x = 110; }); if (crs.some(c => c.y === py && Math.abs(c.x - 45) < 12)) { clearInterval(activeGameLoop); playSound('wrong'); setTimeout(()=>completeGame(false), 200); } ren(); }, 50);
        }
-
-       // ================== G5: BALAP VS BOT ==================
        else if (id === 'g5') {
-          let pProg = 10, bProg = 10, pool = get5Questions(), qI = 0;
-          const renderRace = () => {
-             container.innerHTML = `<div class="w-full text-center max-w-xl mx-auto"><div class="relative w-full h-[25vh] sm:h-40 bg-gray-800 rounded-2xl border-4 border-gray-600 p-2 sm:p-4 mb-4 sm:mb-8 flex flex-col justify-around shadow-inner">
-                <div class="w-full bg-red-900/50 rounded-full h-8 sm:h-10 relative border border-red-900"><div class="absolute bg-gradient-to-r from-red-700 to-red-500 h-full rounded-full transition-all" style="width:${bProg}%"></div><span class="absolute text-3xl sm:text-4xl -mt-1" style="left:${bProg-5}%">🚙</span></div>
-                <div class="w-full bg-cyan-900/50 rounded-full h-8 sm:h-10 relative border border-cyan-900"><div class="absolute bg-gradient-to-r from-cyan-700 to-cyan-500 h-full rounded-full transition-all" style="width:${pProg}%"></div><span class="absolute text-3xl sm:text-4xl -mt-1" style="left:${pProg-5}%">🏎️</span></div></div>
-                <h3 class="text-sm sm:text-2xl font-black mb-3 sm:mb-6 text-yellow-300 bg-black/50 p-2 sm:p-4 rounded-xl sm:rounded-2xl border border-yellow-500/30">${pool[qI].q}</h3>
-                <div class="grid grid-cols-1 gap-2 sm:gap-3">${pool[qI].opts.map((opt, i) => `<button onclick="ansRace(${i===pool[qI].a})" class="p-3 sm:p-5 bg-gray-800 hover:bg-cyan-700 rounded-xl sm:rounded-2xl text-left font-bold text-xs sm:text-xl border-2 border-gray-600 active:scale-95 transition-transform shadow">${opt}</button>`).join('')}</div></div>`;
-          };
-          window.ansRace = (isCor) => {
-             if(isCor) { playSound('happy'); pProg += 30; } else { playSound('wrong'); pProg -= 10; }
-             if(pProg >= 100) { clearInterval(activeGameLoop); setTimeout(()=>completeGame(true),200); return; }
-             qI = (qI + 1) % pool.length; renderRace();
-          }
-          activeGameLoop = setInterval(() => {
-             bProg += (1 + diffLevel * 0.5); if(bProg >= 100 && pProg < 100) { clearInterval(activeGameLoop); playSound('wrong'); completeGame(false); } renderRace();
-          }, 1000);
+          let pP = 10, bP = 10, pool = get5Questions(), qI = 0;
+          const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full"><div class="relative w-full h-20 bg-gray-800 rounded-xl border-2 border-gray-600 p-2 mb-3 flex flex-col justify-around shrink-0"><div class="w-full bg-red-900/50 rounded-full h-4 relative"><div class="absolute bg-red-500 h-full rounded-full transition-all" style="width:${bP}%"></div><span class="absolute text-lg -mt-1.5" style="left:${bP-5}%">🚙</span></div><div class="w-full bg-cyan-900/50 rounded-full h-4 relative"><div class="absolute bg-cyan-500 h-full rounded-full transition-all" style="width:${pP}%"></div><span class="absolute text-lg -mt-1.5" style="left:${pP-5}%">🏎️</span></div></div><h3 class="text-xs font-black mb-3 text-yellow-300 shrink-0">${pool[qI].q}</h3><div class="flex flex-col gap-2 flex-1 justify-center">${pool[qI].opts.map((opt, i) => `<button onclick="aR(${i===pool[qI].a})" class="flex-1 p-2 bg-gray-800 rounded-xl text-left font-bold text-[10px] border border-gray-600 active:scale-95 shadow flex items-center">${opt}</button>`).join('')}</div></div>`; };
+          window.aR = (isC) => { if(isC) { playSound('happy'); pP += 30; } else { playSound('wrong'); pP -= 10; } if(pP >= 100) { clearInterval(activeGameLoop); setTimeout(()=>completeGame(true),200); return; } qI = (qI + 1) % pool.length; ren(); }
+          activeGameLoop = setInterval(() => { bP += (1 + diffLevel * 0.5); if(bP >= 100 && pP < 100) { clearInterval(activeGameLoop); playSound('wrong'); completeGame(false); } ren(); }, 1000);
        }
-
-       // ================== G6: PARKIR OTOMATIS ==================
        else if (id === 'g6') {
-           let cx = 0, dir = 1;
-           const targetArea = { start: 40, end: 60 - (diffLevel * 5) }; 
-           const renderG6 = () => {
-               container.innerHTML = `<div class="text-center w-full max-w-lg mx-auto"><h3 class="text-xl sm:text-3xl font-black mb-6 sm:mb-8 text-white">Berhentikan di Area Hijau!</h3>
-                  <div class="relative w-full h-24 sm:h-32 bg-gray-800 rounded-full border-4 border-gray-600 mb-8 sm:mb-12 overflow-hidden shadow-inner">
-                     <div class="absolute h-full bg-green-500 opacity-60" style="left: ${targetArea.start}%; width: ${targetArea.end - targetArea.start}%"></div>
-                     <div class="absolute text-5xl sm:text-6xl mt-2 transition-transform" style="left: ${cx}%">🚙</div>
-                  </div>
-                  <button onclick="stopG6()" class="w-full max-w-xs py-6 sm:py-8 bg-red-600 rounded-full text-white font-black text-3xl sm:text-4xl shadow-[0_10px_0_rgb(153,27,27)] active:translate-y-2 active:shadow-[0_0px_0_rgb(153,27,27)] transition-all border-4 border-red-800">STOP!</button>
-               </div>`;
-           };
-           window.stopG6 = () => {
-               clearInterval(activeGameLoop);
-               if (cx >= targetArea.start && cx <= targetArea.end) { playSound('victory'); setTimeout(()=>completeGame(true), 500); } 
-               else { playSound('wrong'); setTimeout(()=>completeGame(false), 500); }
-           };
-           activeGameLoop = setInterval(() => {
-               cx += dir * (3 + diffLevel); if(cx > 90 || cx < 0) dir *= -1; renderG6();
-           }, 30);
+           let cx = 0, d = 1, tA = { s: 40, e: 60 - (diffLevel * 5) }; 
+           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col items-center justify-center h-full"><h3 class="text-sm font-black mb-6 text-white">Stop di Area Hijau!</h3><div class="relative w-full max-w-[80%] h-16 bg-gray-800 rounded-full border-2 border-gray-600 mb-8 overflow-hidden"><div class="absolute h-full bg-green-500 opacity-60" style="left: ${tA.s}%; width: ${tA.e - tA.s}%"></div><div class="absolute text-4xl mt-1 transition-transform" style="left: ${cx}%">🚙</div></div><button onclick="st()" class="w-48 py-4 bg-red-600 rounded-full text-white font-black text-xl shadow-[0_6px_0_rgb(153,27,27)] active:translate-y-1 active:shadow-none transition-all">STOP!</button></div>`; };
+           window.st = () => { clearInterval(activeGameLoop); if (cx >= tA.s && cx <= tA.e) { playSound('victory'); setTimeout(()=>completeGame(true), 500); } else { playSound('wrong'); setTimeout(()=>completeGame(false), 500); } };
+           activeGameLoop = setInterval(() => { cx += d * (3 + diffLevel); if(cx > 90 || cx < 0) d *= -1; ren(); }, 30);
        }
-
-       // ================== G7 & D1: LABIRIN ==================
        else if (id === 'g7' || id === 'd1') {
-           const isDaksa = (id === 'd1');
-           let p = {x:0, y:3}; let canMove = true;
-           let questions = get5Questions(); let qIdx = 0;
-           const obs = [[{x:1, y:1}, {x:2, y:2}], [{x:0, y:1}, {x:1, y:1}], [{x:1, y:0}, {x:1, y:2}], [{x:0, y:2}, {x:2, y:1}], [{x:1, y:1}, {x:2, y:1}]][diffLevel-1];
-           let keyCount = Math.min(3, diffLevel);
-           let keys = [];
-           while(keys.length < keyCount) {
-               let kx = Math.floor(Math.random()*4), ky = Math.floor(Math.random()*4);
-               if ((kx!==0 || ky!==3) && !obs.some(o=>o.x===kx && o.y===ky) && !keys.some(k=>k.x===kx && k.y===ky)) keys.push({x:kx, y:ky});
-           }
-           
-           const renderMaze = () => {
-              if (!canMove) {
-                  let q = questions[qIdx];
-                  container.innerHTML = `<div class="text-center w-full max-w-lg mx-auto"><h2 class="text-[4rem] sm:text-[5rem] mb-2 animate-bounce">🔑</h2><h3 class="text-lg sm:text-2xl font-bold text-white mb-4 sm:mb-6">Kunci Diambil! Jawab Kuis:</h3>
-                     <p class="text-sm sm:text-2xl font-black mb-4 sm:mb-8 text-yellow-400 bg-black/50 p-2 sm:p-4 rounded-2xl">${q.q}</p><div class="flex flex-col gap-2 sm:gap-4 max-h-[40vh] overflow-y-auto">${q.opts.map((opt, i) => `<button onclick="mazeAns(${i===q.a})" class="p-3 sm:p-4 bg-gray-800 rounded-xl sm:rounded-2xl border-2 border-gray-600 font-bold text-xs sm:text-lg text-left active:scale-95 transition-transform">${opt}</button>`).join('')}</div></div>`;
-                  return;
-              }
-              let cells = '';
-              for(let i=0; i<16; i++) {
-                 const x = i%4, y = Math.floor(i/4); let cont = '';
-                 if (x===p.x && y===p.y) cont = isDaksa ? '♿' : '👦';
-                 else if (keys.some(k=>k.x===x && k.y===y)) cont = '🔑';
-                 else if (obs.some(o=>o.x===x && o.y===y)) cont = isDaksa ? '🪜' : '🕳️';
-                 cells += `<div class="bg-gray-800 rounded-lg sm:rounded-xl flex items-center justify-center text-3xl sm:text-5xl shadow-inner border border-gray-700">${cont}</div>`;
-              }
-              container.innerHTML = `<div class="text-center w-full max-w-md mx-auto"><h3 class="text-white font-bold mb-2 sm:mb-4 bg-black/50 inline-block px-4 py-1 sm:px-6 sm:py-2 rounded-full border border-gray-500 text-sm sm:text-base">Sisa Kunci: <span class="text-yellow-400 text-lg sm:text-xl">${keys.length}</span></h3>
-                 <div class="w-[40vh] sm:w-[50vh] max-w-full aspect-square mx-auto bg-gray-700 grid grid-cols-4 grid-rows-4 gap-1 sm:gap-2 p-2 sm:p-3 rounded-2xl sm:rounded-3xl mb-4 sm:mb-6 shadow-xl border-4 border-gray-600">${cells}</div>
-                 <div class="grid grid-cols-3 gap-2 sm:gap-3 max-w-[200px] sm:max-w-[300px] mx-auto"><div></div><button onclick="mvM(0,-1)" class="p-4 sm:p-6 bg-cyan-600 rounded-2xl sm:rounded-3xl text-xl sm:text-3xl font-black text-white shadow-lg active:scale-90 transition-transform">▲</button><div></div><button onclick="mvM(-1,0)" class="p-4 sm:p-6 bg-cyan-600 rounded-2xl sm:rounded-3xl text-xl sm:text-3xl font-black text-white shadow-lg active:scale-90 transition-transform">◀</button><button onclick="mvM(0,1)" class="p-4 sm:p-6 bg-cyan-600 rounded-2xl sm:rounded-3xl text-xl sm:text-3xl font-black text-white shadow-lg active:scale-90 transition-transform">▼</button><button onclick="mvM(1,0)" class="p-4 sm:p-6 bg-cyan-600 rounded-2xl sm:rounded-3xl text-xl sm:text-3xl font-black text-white shadow-lg active:scale-90 transition-transform">▶</button></div></div>`;
+           let p = {x:0,y:3}, cm = true, qs = get5Questions(), qI = 0, ob = [[{x:1,y:1},{x:2,y:2}],[{x:0,y:1},{x:1,y:1}],[{x:1,y:0},{x:1,y:2}],[{x:0,y:2},{x:2,y:1}],[{x:1,y:1},{x:2,y:1}]][diffLevel-1], kc = Math.min(3, diffLevel), ks = [];
+           while(ks.length<kc) { let kx=Math.floor(Math.random()*4), ky=Math.floor(Math.random()*4); if((kx!==0||ky!==3)&&!ob.some(o=>o.x===kx&&o.y===ky)&&!ks.some(k=>k.x===kx&&k.y===ky)) ks.push({x:kx,y:ky}); }
+           const ren = () => {
+              if(!cm) { let q=qs[qI]; container.innerHTML=`<div class="text-center w-full flex flex-col h-full justify-center"><h2 class="text-5xl mb-2 animate-bounce">🔑</h2><h3 class="text-xs font-bold mb-3">${q.q}</h3><div class="flex flex-col gap-2 flex-1">${q.opts.map((o,i)=>`<button onclick="mA(${i===q.a})" class="flex-1 p-2 bg-gray-800 rounded-xl border border-gray-600 text-xs active:scale-95 text-left">${o}</button>`).join('')}</div></div>`; return; }
+              let c=''; for(let i=0;i<16;i++){ let x=i%4,y=Math.floor(i/4),ct=''; if(x===p.x&&y===p.y) ct=id==='d1'?'♿':'👦'; else if(ks.some(k=>k.x===x&&k.y===y)) ct='🔑'; else if(ob.some(o=>o.x===x&&o.y===y)) ct=id==='d1'?'🪜':'🕳️'; c+=`<div class="bg-gray-800 rounded-lg flex items-center justify-center text-3xl shadow-inner border border-gray-700">${ct}</div>`; }
+              container.innerHTML = `<div class="text-center w-full flex flex-col items-center h-full"><div class="text-xs font-bold mb-2 shrink-0">Kunci: <span class="text-yellow-400">${ks.length}</span></div><div class="w-[80%] max-w-[250px] aspect-square bg-gray-700 grid grid-cols-4 grid-rows-4 gap-1 p-2 rounded-2xl mb-4 shrink-0">${c}</div><div class="grid grid-cols-3 gap-2 w-48 shrink-0"><div></div><button onclick="mM(0,-1)" class="py-3 bg-cyan-600 rounded-xl text-xl font-black text-white active:scale-90">▲</button><div></div><button onclick="mM(-1,0)" class="py-3 bg-cyan-600 rounded-xl text-xl font-black text-white active:scale-90">◀</button><button onclick="mM(0,1)" class="py-3 bg-cyan-600 rounded-xl text-xl font-black text-white active:scale-90">▼</button><button onclick="mM(1,0)" class="py-3 bg-cyan-600 rounded-xl text-xl font-black text-white active:scale-90">▶</button></div></div>`;
            };
-           window.mvM = (dx,dy) => {
-              if(!canMove) return;
-              const nx = p.x+dx, ny = p.y+dy;
-              if (nx<0 || nx>3 || ny<0 || ny>3) return;
-              if (obs.some(o=>o.x===nx && o.y===ny)) { playSound('wrong'); completeGame(false); return; }
-              playSound('pop'); p = {x:nx, y:ny};
-              
-              let kIdx = keys.findIndex(k => k.x===nx && k.y===ny);
-              if (kIdx !== -1) { playSound('happy'); canMove = false; keys.splice(kIdx, 1); }
-              renderMaze();
-           };
-           window.mazeAns = (isCor) => {
-              if(isCor) { 
-                 playSound('happy'); canMove = true; qIdx++; 
-                 if(keys.length === 0) setTimeout(()=>completeGame(true), 500); else renderMaze();
-              } else { playSound('wrong'); completeGame(false); }
-           };
-           renderMaze();
+           window.mM = (dx,dy) => { if(!cm) return; let nx=p.x+dx,ny=p.y+dy; if(nx<0||nx>3||ny<0||ny>3) return; if(ob.some(o=>o.x===nx&&o.y===ny)){playSound('wrong');completeGame(false);return;} playSound('pop'); p={x:nx,y:ny}; let ki=ks.findIndex(k=>k.x===nx&&k.y===ny); if(ki!==-1){playSound('happy');cm=false;ks.splice(ki,1);} ren(); };
+           window.mA = (iC) => { if(iC){playSound('happy');cm=true;qI++; if(ks.length===0)setTimeout(()=>completeGame(true),500);else ren();}else{playSound('wrong');completeGame(false);} }; ren();
        }
-
-       // ================== D3 / G9: KOTA RAMAH DISABILITAS ==================
        else if (id === 'd3' || id === 'g9') {
-           const allSlots = [ { id: 'ramp', name: 'Tangga Tinggi', b: '🪜', f: '♿' }, { id: 'zebra', name: 'Jalan Raya', b: '🛣️', f: '🦓' }, { id: 'guiding', name: 'Trotoar Buta', b: '🚶', f: '🟨' }, { id: 'parkir', name: 'Parkir Ngawur', b: '🚗', f: '🅿️' } ];
-           let slotCount = Math.min(4, diffLevel + 1); 
-           let activeSlots = allSlots.slice(0, slotCount).map(s => ({...s, done: false}));
-           let selTool = null;
-
-           const renderCity = () => {
-              container.innerHTML = `<div class="text-center w-full max-w-2xl mx-auto"><h3 class="text-xl sm:text-2xl font-black text-yellow-300 mb-4 sm:mb-6">Perbaiki Fasilitas Kota!</h3>
-                 <p class="mb-3 sm:mb-4 text-xs sm:text-sm text-gray-300">Pilih alat perbaikan, lalu klik area yang rusak.</p>
-                 <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
-                    ${activeSlots.map(s => `<button onclick="selCTool('${s.id}')" class="px-4 py-2 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl border-2 sm:border-4 font-bold text-sm sm:text-lg active:scale-95 transition-transform ${selTool===s.id ? 'bg-cyan-500 border-white text-white shadow-[0_0_20px_rgba(34,211,238,0.8)]' : 'bg-gray-800 border-gray-600 text-gray-300 shadow'}">${s.f} <span class="hidden sm:inline">${s.name}</span></button>`).join('')}
-                 </div>
-                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                    ${activeSlots.map((s, idx) => `<div onclick="applyCTool(${idx})" class="p-3 sm:p-6 rounded-2xl sm:rounded-3xl border-4 cursor-pointer flex flex-col items-center justify-center h-24 sm:h-48 active:scale-95 transition-transform ${s.done ? 'bg-green-900 border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.5)]' : 'bg-red-900 border-red-500 animate-pulse'}">
-                          <div class="text-4xl sm:text-[4rem] mb-1 sm:mb-2">${s.done ? s.f : s.b}</div><span class="text-xs sm:text-lg font-black text-white px-2 py-1 rounded-full ${s.done ? 'bg-green-600' : 'bg-red-600'}">${s.done ? 'Aman' : 'Rusak'}</span></div>`).join('')}
-                 </div></div>`;
-           };
-           window.selCTool = (id) => { selTool = id; playSound('pop'); renderCity(); }
-           window.applyCTool = (idx) => {
-              if(!selTool || activeSlots[idx].done) return;
-              if (activeSlots[idx].id === selTool) {
-                 playSound('happy'); activeSlots[idx].done = true; selTool = null;
-                 if(activeSlots.every(s => s.done)) setTimeout(()=>completeGame(true), 500); else renderCity();
-              } else { playSound('wrong'); completeGame(false); }
-           }
-           renderCity();
+           const aS = [ { id: 'ramp', b: '🪜', f: '♿' }, { id: 'zebra', b: '🛣️', f: '🦓' }, { id: 'guiding', b: '🚶', f: '🟨' }, { id: 'parkir', b: '🚗', f: '🅿️' } ], act = aS.slice(0, Math.min(4, diffLevel+1)).map(s=>({...s, d:false})); let sT = null;
+           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full"><h3 class="text-sm font-black text-yellow-300 mb-2 shrink-0">Perbaiki Kota!</h3><div class="flex justify-center gap-2 mb-4 shrink-0">${act.map(s=>`<button onclick="sCT('${s.id}')" class="px-3 py-2 rounded-xl border-2 text-sm active:scale-95 ${sT===s.id?'bg-cyan-500 border-white':'bg-gray-800 border-gray-600'}">${s.f}</button>`).join('')}</div><div class="grid grid-cols-2 gap-2 flex-1 content-center">${act.map((s,i)=>`<div onclick="aCT(${i})" class="rounded-2xl border-2 flex flex-col items-center justify-center py-4 active:scale-95 ${s.d?'bg-green-900 border-green-500':'bg-red-900 border-red-500'}"><div class="text-4xl mb-1">${s.d?s.f:s.b}</div></div>`).join('')}</div></div>`; };
+           window.sCT = (i) => { sT = i; playSound('pop'); ren(); }; window.aCT = (i) => { if(!sT||act[i].d)return; if(act[i].id===sT){playSound('happy');act[i].d=true;sT=null;if(act.every(s=>s.d))setTimeout(()=>completeGame(true),500);else ren();}else{playSound('wrong');completeGame(false);} }; ren();
        }
-
-       // ================== D2 / G10: SOLUSI LALU LINTAS ==================
        else if (id === 'd2' || id === 'g10') {
-           let isDaksaMode = (activeMode === 'DAKSA');
-           let cases = isDaksaMode ? [
-             { s: "Ada pengguna kursi roda.", w: ["Beri", "jalan", "untuk", "kursi", "roda"] },
-             { s: "Melihat rambu disabilitas.", w: ["Jangan", "parkir", "di", "jalur", "ramp"] },
-             { s: "Teman tuna netra kebingungan.", w: ["Bantu", "arahkan", "ke", "guiding", "block"] },
-             { s: "Ada tongkat putih di zebra cross.", w: ["Berhenti", "dan", "utamakan", "tuna", "netra"] },
-             { s: "Fasilitas umum rusak.", w: ["Laporkan", "ramp", "yang", "terhalang", "motor"] }
-           ] : [
-             { s: "Lampu menyala merah.", w: ["Wajib", "berhenti", "di", "belakang", "garis"] },
-             { s: "Naik sepeda motor.", w: ["Pakai", "helm", "sampai", "bunyi", "klik"] },
-             { s: "Ada ambulans lewat.", w: ["Segera", "minggir", "dan", "beri", "jalan"] },
-             { s: "Melihat tanda zebra cross.", w: ["Kurangi", "kecepatan", "utamakan", "pejalan", "kaki"] },
-             { s: "Lampu kuning menyala.", w: ["Hati-hati", "dan", "bersiap", "untuk", "berhenti"] }
-           ];
-
-           const data = cases[diffLevel - 1]; 
-           const shuffled = [...data.w].sort(()=>0.5-Math.random()); let ans = [];
-
-           const renderSen = () => {
-              container.innerHTML = `<div class="text-center w-full max-w-2xl mx-auto"><h3 class="text-lg sm:text-2xl font-black text-yellow-400 mb-2 bg-black/60 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-yellow-500/50">Kasus: "${data.s}"</h3>
-                 <p class="text-white mb-4 sm:mb-6 mt-2 sm:mt-4 text-sm sm:text-lg">Susun kata di bawah menjadi solusi yang tepat!</p>
-                 <div class="bg-gray-800 border-2 sm:border-4 border-gray-600 min-h-[80px] sm:min-h-[100px] p-4 sm:p-6 rounded-2xl sm:rounded-3xl mb-6 sm:mb-8 flex flex-wrap justify-center gap-2 sm:gap-3 shadow-inner">
-                    ${ans.map((w,i) => `<span onclick="remW(${i})" class="bg-cyan-600 px-4 py-2 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl font-bold text-sm sm:text-xl text-white cursor-pointer active:scale-90 transition-transform shadow-md">${w}</span>`).join('')}
-                    ${ans.length === 0 ? '<span class="text-gray-500 italic mt-1 sm:mt-2 text-xs sm:text-base">Ketuk kata di bawah...</span>' : ''}
-                 </div>
-                 <div class="flex flex-wrap justify-center gap-2 sm:gap-3">
-                    ${shuffled.map(w => `<button onclick="pickW('${w}')" ${ans.includes(w) ? 'disabled' : ''} class="px-4 py-2 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-xl border-2 sm:border-4 active:scale-95 transition-transform ${ans.includes(w) ? 'bg-gray-700 border-gray-700 text-gray-500 opacity-50' : 'bg-gray-800 border-gray-400 text-white shadow'}">${w}</button>`).join('')}
-                 </div></div>`;
-           };
-           window.pickW = (w) => {
-              playSound('pop'); ans.push(w);
-              if(ans.length === data.w.length) {
-                 if(ans.join(' ') === data.w.join(' ')) { playSound('happy'); setTimeout(()=>completeGame(true), 800); }
-                 else { playSound('wrong'); setTimeout(()=>completeGame(false), 800); }
-              } else { renderSen(); }
-           }
-           window.remW = (idx) => { playSound('pop'); ans.splice(idx, 1); renderSen(); }
-           renderSen();
+           let cs = activeMode==='DAKSA' ? [{ s: "Ada kursi roda.", w: ["Beri", "jalan", "kursi", "roda"] }, { s: "Rambu disabilitas.", w: ["Jangan", "parkir", "di", "ramp"] }, { s: "Tuna netra.", w: ["Arahkan", "ke", "guiding", "block"] }, { s: "Tongkat putih.", w: ["Berhenti", "utamakan", "tuna", "netra"] }, { s: "Fasilitas rusak.", w: ["Laporkan", "ramp", "terhalang", "motor"] }] : [{ s: "Lampu merah.", w: ["Wajib", "berhenti", "belakang", "garis"] }, { s: "Naik motor.", w: ["Pakai", "helm", "sampai", "klik"] }, { s: "Ambulans lewat.", w: ["Minggir", "dan", "beri", "jalan"] }, { s: "Zebra cross.", w: ["Kurangi", "kecepatan", "utamakan", "pejalan"] }, { s: "Lampu kuning.", w: ["Hati-hati", "bersiap", "untuk", "berhenti"] }];
+           const dt = cs[diffLevel-1], sh = [...dt.w].sort(()=>0.5-Math.random()); let an = [];
+           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full justify-center"><h3 class="text-xs font-black text-yellow-400 mb-2 shrink-0 bg-black/60 p-2 rounded-lg">"${dt.s}"</h3><div class="bg-gray-800 border-2 border-gray-600 flex-1 min-h-[80px] p-3 rounded-2xl mb-4 flex flex-wrap content-start justify-center gap-2">${an.map((w,i)=>`<span onclick="rW(${i})" class="bg-cyan-600 px-3 py-1.5 rounded-lg font-bold text-xs text-white active:scale-90">${w}</span>`).join('')}</div><div class="flex flex-wrap justify-center gap-2 shrink-0">${sh.map(w=>`<button onclick="pW('${w}')" ${an.includes(w)?'disabled':''} class="px-3 py-2 rounded-xl font-bold text-xs border-2 active:scale-95 ${an.includes(w)?'bg-gray-700 opacity-50':'bg-gray-800 text-white'}">${w}</button>`).join('')}</div></div>`; };
+           window.pW = (w) => { playSound('pop'); an.push(w); if(an.length===dt.w.length){if(an.join('')===dt.w.join('')){playSound('happy');setTimeout(()=>completeGame(true),500);}else{playSound('wrong');setTimeout(()=>completeGame(false),500);}}else ren(); }; window.rW = (i) => { playSound('pop'); an.splice(i,1); ren(); }; ren();
        }
-
-       // ================== D4: SURVIVAL JALAN RAYA (Karakter Kursi Roda Hindari Rintangan) ==================
        else if (id === 'd4') {
-           let px = 1; // Posisi: 0 (kiri), 1 (tengah), 2 (kanan)
-           let obstacles = [];
-           // Level 1: 10s, 2: 15s, 3: 20s, 4: 25s, 5: 30s
-           let timeLeft = 10 + (diffLevel - 1) * 5; 
-           let isPlaying = true;
-           let tickCount = 0;
-
-           const renderSurv = () => {
-              container.innerHTML = `
-              <div class="text-center w-full max-w-md mx-auto">
-                 <div class="flex justify-between text-yellow-400 font-black mb-2 bg-black/50 px-4 py-2 rounded-full border border-yellow-500 text-sm sm:text-xl">
-                    <span>Hindari Rintangan!</span>
-                    <span class="${timeLeft <= 3 ? 'text-red-500 animate-ping' : ''}">⏳ ${timeLeft}s</span>
-                 </div>
-                 <div class="relative w-full h-[45vh] sm:h-72 bg-gray-700 border-4 border-gray-500 overflow-hidden flex rounded-3xl shadow-inner mb-4">
-                    <div class="flex-1 border-r-2 border-dashed border-gray-400"></div>
-                    <div class="flex-1 border-r-2 border-dashed border-gray-400"></div>
-                    <div class="flex-1"></div>
-                    ${obstacles.map(o => `<div class="absolute text-4xl sm:text-5xl transition-none" style="left: ${(o.x*33.3)+10}%; top: ${o.y}%">${o.type}</div>`).join('')}
-                    <div class="absolute text-[4rem] sm:text-[5rem] transition-all bottom-2 z-10" style="left: ${(px*33.3)+6}%">♿</div>
-                 </div>
-                 <div class="flex gap-4">
-                    <button onclick="moveSurv(-1)" class="flex-1 py-4 sm:py-6 bg-cyan-600 rounded-2xl sm:rounded-3xl text-3xl sm:text-4xl shadow-lg border-b-4 sm:border-b-8 border-cyan-800 active:translate-y-1 sm:active:translate-y-2 active:border-b-0 transition-all">◀️</button>
-                    <button onclick="moveSurv(1)" class="flex-1 py-4 sm:py-6 bg-cyan-600 rounded-2xl sm:rounded-3xl text-3xl sm:text-4xl shadow-lg border-b-4 sm:border-b-8 border-cyan-800 active:translate-y-1 sm:active:translate-y-2 active:border-b-0 transition-all">▶️</button>
-                 </div>
-              </div>`;
-           };
-
-           window.moveSurv = (d) => {
-              if(!isPlaying) return;
-              px = Math.max(0, Math.min(2, px+d));
-              playSound('pop');
-              renderSurv();
-           };
-
-           // 1 tick = 50ms (20 ticks = 1 detik)
-           activeGameLoop = setInterval(() => {
-              if(!isPlaying) return;
-              tickCount++;
-              
-              // Spawn obstacle (Makin tinggi level, makin sering spawn)
-              let spawnRate = Math.max(5, 12 - diffLevel); 
-              if(tickCount % spawnRate === 0) {
-                  obstacles.push({x: Math.floor(Math.random()*3), y: -20, type: Math.random() > 0.5 ? '🕳️' : '🚧'});
-              }
-
-              // Pindahkan obstacle ke bawah
-              obstacles.forEach(o => o.y += 3 + (diffLevel * 0.5));
-              
-              // Check collision (Hitbox menabrak dari y=65 hingga y=90)
-              if(obstacles.some(o => o.x === px && o.y > 65 && o.y < 90)) {
-                  isPlaying = false;
-                  clearInterval(activeGameLoop);
-                  playSound('wrong');
-                  setTimeout(() => completeGame(false), 500);
-                  return;
-              }
-
-              // Hapus obstacle yang lewat
-              obstacles = obstacles.filter(o => o.y < 120);
-
-              // Update timer
-              if(tickCount % 20 === 0) {
-                  timeLeft--;
-                  if(timeLeft <= 0) {
-                      isPlaying = false;
-                      clearInterval(activeGameLoop);
-                      playSound('victory');
-                      setTimeout(() => completeGame(true), 500);
-                      return;
-                  }
-              }
-              renderSurv();
-           }, 50);
-
-           renderSurv();
+           let px = 1, obs = [], tL = 10+(diffLevel-1)*5, iP = true, tk = 0;
+           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full"><div class="flex justify-between text-yellow-400 font-black mb-2 text-xs bg-black/50 px-3 py-1 rounded-full shrink-0"><span>Hindari!</span><span class="${tL<=3?'text-red-500 animate-ping':''}">⏳ ${tL}s</span></div><div class="relative w-full flex-1 min-h-0 bg-gray-700 border-2 border-gray-500 overflow-hidden flex rounded-2xl mb-3"><div class="flex-1 border-r border-dashed border-gray-400"></div><div class="flex-1 border-r border-dashed border-gray-400"></div><div class="flex-1"></div>${obs.map(o=>`<div class="absolute text-4xl" style="left: ${(o.x*33.3)+10}%; top: ${o.y}%">${o.t}</div>`).join('')}<div class="absolute text-[3rem] bottom-1 z-10 transition-all" style="left: ${(px*33.3)+8}%">♿</div></div><div class="flex gap-2 shrink-0"><button onclick="mS(-1)" class="flex-1 py-4 bg-cyan-600 rounded-xl text-3xl shadow active:scale-95">◀️</button><button onclick="mS(1)" class="flex-1 py-4 bg-cyan-600 rounded-xl text-3xl shadow active:scale-95">▶️</button></div></div>`; };
+           window.mS = (d) => { if(!iP)return; px = Math.max(0, Math.min(2, px+d)); playSound('pop'); ren(); };
+           activeGameLoop = setInterval(() => { if(!iP)return; tk++; if(tk%Math.max(4, 10-diffLevel)===0) obs.push({x:Math.floor(Math.random()*3), y:-20, t:Math.random()>0.5?'🕳️':'🚧'}); obs.forEach(o=>o.y+=4+(diffLevel*0.5)); if(obs.some(o=>o.x===px&&o.y>65&&o.y<90)){iP=false;clearInterval(activeGameLoop);playSound('wrong');setTimeout(()=>completeGame(false),500);return;} obs=obs.filter(o=>o.y<120); if(tk%20===0){tL--;if(tL<=0){iP=false;clearInterval(activeGameLoop);playSound('victory');setTimeout(()=>completeGame(true),500);return;}} ren(); }, 50); ren();
        }
-
-       // ================== D5: PUZZLE EMPATI (KHUSUS TUNA DAKSA) ==================
        else if (id === 'd5') {
-           const puzzles = [ 
-               { t: ['♿', '🚗', '🚫', '🅿️'], empQ: 'Mengapa kita DILARANG memarkir mobil di area logo kursi roda?', opts: ['Karena itu area akses penyandang disabilitas', 'Agar mobil kita tidak kepanasan', 'Boleh saja asal tidak lama'], ans: 0 }, 
-               { t: ['🚸', '🏫', '🛑', '👦'], empQ: 'Kenapa kita harus mengurangi kecepatan di zona anak sekolah?', opts: ['Agar menghemat bensin', 'Karena banyak anak mungkin menyeberang', 'Agar bisa melihat-lihat sekolah'], ans: 1 }, 
-               { t: ['🟨', '🦯', '🚶', '🛑'], empQ: 'Apa fungsi utama Guiding Block (Garis Kuning) di trotoar?', opts: ['Hiasan jalan yang indah', 'Panduan arah bagi penyandang Tuna Netra', 'Jalur khusus sepeda'], ans: 1 }, 
-               { t: ['🦓', '🚶', '🛑', '🚗'], empQ: 'Siapa yang memiliki "Hak Utama" ketika berada di Zebra Cross?', opts: ['Mobil yang melaju', 'Sepeda motor', 'Pejalan Kaki yang menyeberang'], ans: 2 }, 
-               { t: ['🪖', '🏍️', '✅', '👦'], empQ: 'Mengapa kita harus mengklik tali helm hingga bunyi "KLIK"?', opts: ['Agar helm tidak mudah terlepas saat terjatuh', 'Supaya terlihat keren', 'Agar tidak ditilang'], ans: 0 } 
-           ];
-           const pzData = puzzles[diffLevel - 1]; let grid = [...pzData.t].sort(()=>0.5-Math.random()); let sel = null;
-
-           const renderPz = () => {
-              // Jika puzzle sudah tersusun benar, tampilkan kuis empati
-              if (grid.join('') === pzData.t.join('')) { 
-                  playSound('happy');
-                  container.innerHTML = `
-                    <div class="text-center w-full max-w-2xl mx-auto max-h-[80vh] overflow-y-auto">
-                        <h3 class="text-2xl sm:text-4xl font-black text-yellow-400 mb-4 sm:mb-6 animate-pulse">PUZZLE SELESAI! 🎉</h3>
-                        <p class="text-sm sm:text-xl font-bold mb-4 sm:mb-8 bg-black/60 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 border-yellow-500/50">${pzData.empQ}</p>
-                        <div class="flex flex-col gap-3 sm:gap-4">
-                            ${pzData.opts.map((opt, i) => `<button onclick="submitEmp(${i===pzData.ans})" class="p-3 sm:p-5 bg-gray-800 border-2 border-cyan-500 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-lg text-left active:scale-95 transition-transform hover:bg-cyan-900">${opt}</button>`).join('')}
-                        </div>
-                    </div>
-                  `;
-                  return; 
-              }
-              
-              // Tampilan Game Puzzle
-              container.innerHTML = `<div class="text-center w-full relative max-w-[280px] sm:max-w-md mx-auto">
-                 <div class="absolute -top-10 sm:-top-12 -right-4 sm:right-0 bg-gray-900 border-2 sm:border-4 border-yellow-400 p-2 sm:p-3 rounded-xl sm:rounded-2xl scale-75 shadow-xl z-50"><p class="text-[10px] sm:text-xs text-yellow-400 font-black mb-1 sm:mb-2 uppercase tracking-widest">Target Gambar</p><div class="grid grid-cols-2 gap-1 sm:gap-2 bg-blue-950 p-1 sm:p-2 rounded-lg sm:rounded-xl">${pzData.t.map(i => `<div class="w-6 h-6 sm:w-10 sm:h-10 text-xl sm:text-3xl flex justify-center items-center bg-black/30 rounded">${i}</div>`).join('')}</div></div>
-                 <h3 class="text-xl sm:text-3xl font-black text-cyan-300 mb-1 sm:mb-2 mt-4">Susun Puzzle!</h3><p class="text-xs sm:text-lg text-gray-300 mb-4 sm:mb-8 bg-black/40 inline-block px-3 py-1 sm:px-4 sm:py-2 rounded-full">Ketuk 2 kotak untuk menukar.</p>
-                 <div class="grid grid-cols-2 gap-2 sm:gap-3 bg-blue-900 p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] border-4 sm:border-8 border-blue-600 max-w-[200px] sm:max-w-[300px] mx-auto z-10 relative shadow-2xl">
-                    ${grid.map((icon, i) => `<div onclick="clickPz(${i})" class="w-full aspect-square text-5xl sm:text-[4rem] flex justify-center items-center bg-gray-800 rounded-xl sm:rounded-2xl border-2 sm:border-4 cursor-pointer select-none active:scale-90 transition-transform ${sel===i ? 'border-yellow-400 scale-105 z-20 shadow-[0_0_20px_rgba(250,204,21,0.8)]' : 'border-gray-600'}">${icon}</div>`).join('')}
-                 </div></div>`;
-           };
-           window.clickPz = (i) => {
-              if (sel === null) { sel = i; playSound('pop'); } else {
-                 playSound('sparkle'); const temp = grid[sel]; grid[sel] = grid[i]; grid[i] = temp; sel = null;
-              } renderPz();
-           }
-           window.submitEmp = (isCor) => {
-              if(isCor) { playSound('victory'); completeGame(true); } else { playSound('wrong'); completeGame(false); }
-           }
-           renderPz();
+           const pz = [ { t: ['♿','🚗','🚫','🅿️'], eQ: 'Kenapa DILARANG parkir di logo ini?', op: ['Area akses disabilitas', 'Biar mobil teduh', 'Boleh asal sebentar'], a: 0 }, { t: ['🚸','🏫','🛑','👦'], eQ: 'Kenapa pelan di zona sekolah?', op: ['Hemat bensin', 'Anak menyeberang', 'Lihat sekolah'], a: 1 }, { t: ['🟨','🦯','🚶','🛑'], eQ: 'Fungsi Guiding Block?', op: ['Hiasan jalan', 'Panduan Tuna Netra', 'Jalur sepeda'], a: 1 }, { t: ['🦓','🚶','🛑','🚗'], eQ: 'Hak Utama di Zebra Cross?', op: ['Mobil', 'Motor', 'Pejalan Kaki'], a: 2 }, { t: ['🪖','🏍️','✅','👦'], eQ: 'Kenapa helm harus bunyi KLIK?', op: ['Agar tidak lepas', 'Biar keren', 'Tidak ditilang'], a: 0 } ];
+           const d = pz[diffLevel-1]; let gr = [...d.t].sort(()=>0.5-Math.random()), sl = null;
+           const ren = () => { if(gr.join('')===d.t.join('')){playSound('happy');container.innerHTML=`<div class="text-center w-full flex flex-col h-full justify-center"><h3 class="text-sm font-bold mb-4 bg-black/60 p-3 rounded-xl border border-yellow-500">${d.eQ}</h3><div class="flex flex-col gap-2 flex-1">${d.op.map((o,i)=>`<button onclick="sE(${i===d.a})" class="flex-1 p-3 bg-gray-800 border border-cyan-500 rounded-xl font-bold text-xs active:scale-95 flex items-center justify-center text-center">${o}</button>`).join('')}</div></div>`; return; }
+              container.innerHTML = `<div class="text-center w-full flex flex-col items-center h-full justify-center"><div class="absolute -top-3 right-0 bg-gray-900 border-2 border-yellow-400 p-1.5 rounded-xl scale-75 shadow-xl z-50"><p class="text-[8px] text-yellow-400 font-black mb-1">Target</p><div class="grid grid-cols-2 gap-1 bg-blue-950 p-1 rounded">${d.t.map(i=>`<div class="w-5 h-5 text-sm flex justify-center items-center">${i}</div>`).join('')}</div></div><h3 class="text-lg font-black text-cyan-300 mb-1">Susun Puzzle!</h3><p class="text-[10px] text-gray-300 mb-4 bg-black/40 px-2 py-1 rounded-full">Ketuk 2 kotak tukar.</p><div class="grid grid-cols-2 gap-2 bg-blue-900 p-3 rounded-2xl border-4 border-blue-600 w-[180px] aspect-square mx-auto z-10 shadow">${gr.map((ic,i)=>`<div onclick="cP(${i})" class="w-full h-full text-4xl flex justify-center items-center bg-gray-800 rounded-xl border-2 active:scale-90 transition-transform ${sl===i?'border-yellow-400 scale-105':'border-gray-600'}">${ic}</div>`).join('')}</div></div>`; };
+           window.cP = (i) => { if(sl===null){sl=i;playSound('pop');}else{playSound('sparkle');let tp=gr[sl];gr[sl]=gr[i];gr[i]=tp;sl=null;} ren(); }; window.sE = (iC) => { if(iC){playSound('victory');completeGame(true);}else{playSound('wrong');completeGame(false);} }; ren();
        }
     }
 
     // --- GAME COMPLETION & MILESTONES ---
     function completeGame(win) {
        if (win) {
-          const gId = currentGameDetails.id;
-          let gLevel = state.gameLevels[gId] || 1;
-          
+          const gId = currentGameDetails.id; let gLevel = state.gameLevels[gId] || 1;
           if (gLevel % 3 === 0 && gId !== 'd1') {
              transCard = get5Questions()[0]; 
-             document.getElementById('game-play-area').classList.add('hidden');
-             const ffArea = document.getElementById('game-funfact-area'); ffArea.classList.remove('hidden');
-             
-             document.getElementById('game-ff-title').innerText = "Waktunya Belajar Lalin!";
-             document.getElementById('game-ff-text').innerText = transCard.q;
-             document.getElementById('game-ff-icon').innerText = '🧠';
-             playSound('happy');
-          } else {
-             state.gameLevels[gId] = Math.min(100, gLevel + 1);
-             addReward(60, 30); showWinScreen();
-          }
-       } else {
-          showLostScreen();
-       }
+             document.getElementById('game-play-area').classList.add('hidden'); document.getElementById('game-funfact-area').classList.remove('hidden');
+             document.getElementById('game-ff-text').innerText = transCard.q; playSound('happy');
+          } else { state.gameLevels[gId] = Math.min(100, gLevel + 1); addReward(60, 30); showWinScreen(); }
+       } else { showLostScreen(); }
     }
 
     function showBonusQuiz() {
-       playSound('pop');
-       document.getElementById('game-funfact-area').classList.add('hidden'); document.getElementById('game-bonus-quiz-area').classList.remove('hidden');
-       document.getElementById('game-bq-question').innerText = transCard.q;
-       const opts = document.getElementById('game-bq-options'); opts.innerHTML = '';
-       transCard.opts.forEach((opt, i) => { opts.innerHTML += `<button onclick="submitBQ(${i})" class="p-3 sm:p-5 bg-gray-800 rounded-xl sm:rounded-2xl font-bold border-2 border-gray-600 text-left w-full text-white active:scale-95 transition-transform text-sm sm:text-base">${opt}</button>`; });
+       playSound('pop'); document.getElementById('game-funfact-area').classList.add('hidden'); document.getElementById('game-bonus-quiz-area').classList.remove('hidden');
+       document.getElementById('game-bq-question').innerText = transCard.q; const opts = document.getElementById('game-bq-options'); opts.innerHTML = '';
+       transCard.opts.forEach((opt, i) => { opts.innerHTML += `<button onclick="submitBQ(${i})" class="flex-1 p-3 bg-gray-800 rounded-xl font-bold border border-gray-600 active:scale-95 text-xs">${opt}</button>`; });
     }
 
     function submitBQ(idx) {
-       if (idx === transCard.a) {
-          playSound('victory');
-          const gId = currentGameDetails.id; let gLevel = state.gameLevels[gId] || 1;
-          state.gameLevels[gId] = Math.min(100, gLevel + 1);
-          addReward(150, 70); showWinScreen();
-       } else { playSound('wrong'); completeGame(false); }
+       if (idx === transCard.a) { playSound('victory'); const gId = currentGameDetails.id; let gLevel = state.gameLevels[gId] || 1; state.gameLevels[gId] = Math.min(100, gLevel + 1); addReward(150, 70); showWinScreen(); } 
+       else { playSound('wrong'); completeGame(false); }
     }
 
     function showWinScreen() {
        document.getElementById('game-play-area').classList.add('hidden'); document.getElementById('game-bonus-quiz-area').classList.add('hidden'); document.getElementById('game-win-area').classList.remove('hidden');
-       document.getElementById('game-win-rewards').innerHTML = `+Koin & XP! Level Naik.`;
-       document.getElementById('btn-next-lvl').onclick = () => playGame(currentGameDetails.id);
-       playSound('victory');
+       document.getElementById('game-win-rewards').innerHTML = `+Koin & XP! Level Naik.`; document.getElementById('btn-next-lvl').onclick = () => playGame(currentGameDetails.id); playSound('victory');
     }
     function showLostScreen() {
        document.getElementById('game-play-area').classList.add('hidden'); document.getElementById('game-bonus-quiz-area').classList.add('hidden'); document.getElementById('game-lost-area').classList.remove('hidden');
-       document.getElementById('btn-replay').onclick = () => playGame(currentGameDetails.id);
-       playSound('wrong');
+       document.getElementById('btn-replay').onclick = () => playGame(currentGameDetails.id); playSound('wrong');
     }
   </script>
 </body>
 </html>
+<!-- redeploy -->
