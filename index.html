@@ -7,33 +7,70 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Nunito', sans-serif; overflow: hidden; touch-action: manipulation; }
+    body { 
+        font-family: 'Nunito', sans-serif; 
+        overflow: hidden; 
+        touch-action: manipulation;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        background-color: #030712; 
+        margin: 0; 
+        height: 100vh;
+        width: 100vw;
+    }
     
+    #main-game-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background-color: #111827;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* BINGKAI HP OTOMATIS SAAT MODE POTRET DI LAPTOP / LAYAR BESAR */
+    @media (min-width: 768px) {
+        body.is-portrait #main-game-container {
+            height: 94vh;
+            max-height: 880px;
+            width: auto;
+            aspect-ratio: 9 / 19.5; /* Rasio Smartphone Asli */
+            border: 12px solid #1f2937;
+            border-radius: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 3px #374151;
+            margin: auto;
+        }
+    }
+
     #orientation-warning { display: none; }
     @media screen and (orientation: landscape) and (max-height: 600px) {
         body:not(.is-landscape) #orientation-warning { display: flex !important; animation: warnFadeOut 5s forwards; }
     }
     @keyframes warnFadeOut { 0%, 80% { opacity: 1; pointer-events: auto; visibility: visible; } 100% { opacity: 0; pointer-events: none; visibility: hidden; } }
 
-    #main-ui-wrapper { max-width: 85rem !important; }
-    .dashboard-layout { display: flex; flex-direction: column; gap: 1rem; width: w-full; height: 100%; }
+    .dashboard-layout { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; height: 100%; min-height: 0; }
     
     @media (min-width: 768px) {
-        .dashboard-layout { flex-direction: row; }
-        .dashboard-left { flex: 1; height: 100%; }
-        .dashboard-right { flex: 1.2; height: 100%; display: flex; flex-direction: column; }
+        body:not(.is-portrait) .dashboard-layout { flex-direction: row; gap: 0.75rem; }
+        body:not(.is-portrait) .dashboard-left { flex: 1; height: 100%; }
+        body:not(.is-portrait) .dashboard-right { flex: 1.2; height: 100%; display: flex; flex-direction: column; }
     }
     
-    .dpad-btn { width: 4rem; height: 4rem; display: flex; align-items: center; justify-content: center; background-color: #0891b2; border-radius: 1rem; font-size: 1.5rem; font-weight: 900; color: white; border: 2px solid #22d3ee; box-shadow: 0 4px 0 #0891b2; transition: all 0.1s; cursor: pointer; }
+    .dashboard-left, .dashboard-right { min-height: 0; }
+
+    .dpad-btn { width: 3.8rem; height: 3.8rem; display: flex; align-items: center; justify-content: center; background-color: #0891b2; border-radius: 1rem; font-size: 1.5rem; font-weight: 900; color: white; border: 2px solid #22d3ee; box-shadow: 0 4px 0 #0891b2; transition: all 0.1s; cursor: pointer; }
     .dpad-btn:active { transform: translateY(4px); box-shadow: none; }
 
     @keyframes driveRight { from { transform: translateX(-20vw); } to { transform: translateX(120vw); } }
     @keyframes driveLeft { from { transform: translateX(120vw); } to { transform: translateX(-20vw); } }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     .animate-float { animation: float 3s ease-in-out infinite; }
     
     @keyframes sparkleRotate { 0% { transform: rotate(0deg) scale(0.8); opacity: 0.5; } 50% { transform: rotate(180deg) scale(1.2); opacity: 1; } 100% { transform: rotate(360deg) scale(0.8); opacity: 0.5; } }
-    .sparkle { position: absolute; font-size: 2.5rem; animation: sparkleRotate 2s linear infinite; pointer-events: none; z-index: 20; }
+    .sparkle { position: absolute; font-size: 2rem; animation: sparkleRotate 2s linear infinite; pointer-events: none; z-index: 20; }
 
     @keyframes streakExplode { 0% { transform: translate(-50%, -50%) scale(0.1); color: #9ca3af; opacity: 1; } 60% { transform: translate(-50%, -50%) scale(4); color: #ef4444; text-shadow: 0 0 50px red; opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.5); color: #ef4444; opacity: 0; } }
     #streak-overlay { top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
@@ -43,260 +80,269 @@
     .subtitle-anim { animation: fadeSubtitle 2.5s ease-out forwards; }
     
     .h-dvh { height: 100dvh; }
-    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar { width: 5px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
     
     /* ZEBRA CROSS BACKGROUND */
     .bg-zebra { background-color: #374151; background-image: repeating-linear-gradient(0deg, transparent, transparent 40px, #ffffff 40px, #ffffff 80px); }
+
+    /* SIMULASI JALAN D3 */
+    @keyframes scrollSimRoad { 0% { background-position: 0 0; } 100% { background-position: 0 200px; } }
+    .bg-sim-road { background-color: #374151; background-image: repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(255,255,255,0.2) 50px, rgba(255,255,255,0.2) 100px); background-size: 100% 200px; animation: scrollSimRoad 1s linear infinite; }
+    .crash-shake { animation: crashShake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes crashShake { 10%, 90% { transform: translate3d(-3px, 0, 0); } 20%, 80% { transform: translate3d(5px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-8px, 0, 0); } 40%, 60% { transform: translate3d(8px, 0, 0); } }
   </style>
 </head>
-<body class="bg-gray-900 text-white select-none relative h-dvh w-full overflow-hidden">
+<body class="text-white select-none relative h-dvh w-full overflow-hidden default-portrait is-portrait">
 
   <div id="orientation-warning" class="fixed inset-0 z-[100] bg-blue-600 flex-col items-center justify-center text-center p-6">
-      <div class="text-[6rem] mb-4 animate-pulse">📱</div>
-      <h1 class="text-3xl font-black text-white mb-2">Mohon Berdirikan HP Kamu!</h1>
-      <p class="text-lg text-blue-100 font-bold">Atau pilih mode Lanskap di layar utama agar tampilan membesar!</p>
+      <div class="text-[5rem] mb-4 animate-pulse">📱</div>
+      <h1 class="text-2xl font-black text-white mb-2">Mohon Berdirikan HP Kamu!</h1>
+      <p class="text-base text-blue-100 font-bold">Atau pilih mode Lanskap di layar utama agar tampilan membesar!</p>
   </div>
 
-  <div id="main-game-container" class="h-full w-full relative">
+  <div id="main-game-container">
     
-    <div id="streak-overlay" class="fixed z-[150] font-black text-6xl hidden absolute w-full text-center">🔥 +1</div>
+    <div id="streak-overlay" class="absolute z-[150] font-black text-5xl hidden w-full text-center">🔥 +1</div>
 
-    <button id="btn-music-toggle" onclick="toggleMusic()" class="fixed top-3 right-4 z-[90] bg-gray-800 text-white px-4 py-2 rounded-full font-black shadow-lg border-2 border-gray-600 active:scale-95 transition-transform text-xs flex items-center gap-2">
+    <button id="btn-music-toggle" onclick="toggleMusic()" class="absolute top-3 right-3 z-[90] bg-gray-800/90 text-white px-3 py-1.5 rounded-full font-black shadow-lg border border-gray-600 active:scale-95 transition-transform text-[10px] flex items-center gap-1.5">
         🔇 Musik: OFF
     </button>
 
-    <div id="subtitle-layer" class="fixed bottom-0 left-0 right-0 z-[100] flex flex-col items-center pointer-events-none"></div>
+    <div id="subtitle-layer" class="absolute bottom-0 left-0 right-0 z-[100] flex flex-col items-center pointer-events-none"></div>
 
-    <div id="city-bg" class="fixed inset-0 z-0 overflow-hidden bg-gradient-to-b from-[#0ea5e9] to-[#1e3a8a] pointer-events-none">
-      <div class="absolute top-10 text-6xl opacity-60" style="animation: driveRight 25s linear infinite;">☁️</div>
-      <div class="absolute top-24 text-5xl opacity-40" style="animation: driveRight 35s linear infinite; animation-delay: -10s;">☁️</div>
-      <div class="absolute top-4 right-10 w-16 h-16 bg-yellow-400 rounded-full drop-shadow-[0_0_20px_rgba(250,204,21,1)]"></div>
+    <div id="city-bg" class="absolute inset-0 z-0 overflow-hidden bg-gradient-to-b from-[#0ea5e9] to-[#1e3a8a] pointer-events-none">
+      <div class="absolute top-10 text-5xl opacity-60" style="animation: driveRight 25s linear infinite;">☁️</div>
+      <div class="absolute top-20 text-4xl opacity-40" style="animation: driveRight 35s linear infinite; animation-delay: -10s;">☁️</div>
+      <div class="absolute top-4 right-10 w-12 h-16 bg-yellow-400 rounded-full drop-shadow-[0_0_20px_rgba(250,204,21,1)]"></div>
       
-      <div class="absolute bottom-20 left-0 right-0 flex items-end justify-around opacity-30">
+      <div class="absolute bottom-16 left-0 right-0 flex items-end justify-around opacity-30">
+        <div class="w-16 h-36 bg-indigo-900 rounded-t-sm"></div>
         <div class="w-24 h-48 bg-indigo-900 rounded-t-sm"></div>
-        <div class="w-32 h-64 bg-indigo-900 rounded-t-sm"></div>
-        <div class="w-20 h-40 bg-indigo-900 rounded-t-sm"></div>
-        <div class="w-28 h-56 bg-indigo-900 rounded-t-sm"></div>
+        <div class="w-16 h-32 bg-indigo-900 rounded-t-sm"></div>
+        <div class="w-20 h-44 bg-indigo-900 rounded-t-sm"></div>
       </div>
       
-      <div class="absolute bottom-0 w-full h-20 bg-[#1e293b] border-t-4 border-gray-900 shadow-[0_-10px_20px_rgba(0,0,0,0.6)]">
-        <div class="w-full h-full flex flex-col justify-center"><div class="w-full h-1 border-t-[6px] border-dashed border-yellow-500 opacity-80"></div></div>
+      <div class="absolute bottom-0 w-full h-16 bg-[#1e293b] border-t-4 border-gray-900 shadow-[0_-10px_20px_rgba(0,0,0,0.6)]">
+        <div class="w-full h-full flex flex-col justify-center"><div class="w-full h-1 border-t-[4px] border-dashed border-yellow-500 opacity-80"></div></div>
       </div>
-      <div class="absolute bottom-2 left-0 text-red-500 text-[3rem]" style="animation: driveRight 8s linear infinite;">🚗</div>
-      <div class="absolute bottom-10 right-0 text-cyan-400 text-[3rem]" style="animation: driveLeft 11s linear infinite;">🚙</div>
+      <div class="absolute bottom-1 left-0 text-red-500 text-[2.5rem]" style="animation: driveRight 8s linear infinite;">🚗</div>
+      <div class="absolute bottom-8 right-0 text-cyan-400 text-[2.5rem]" style="animation: driveLeft 11s linear infinite;">🚙</div>
     </div>
 
-    <div id="main-ui-wrapper" class="relative z-10 h-full w-full flex flex-col mx-auto transition-all duration-500 p-4 pt-14 pb-6">
+    <!-- UI Main Wrapper dengan Layout Presisi -->
+    <div id="main-ui-wrapper" class="relative z-10 h-full w-full flex flex-col mx-auto transition-all duration-300 p-3 pt-12 pb-3 overflow-hidden">
       
       <div id="screen-orientation" class="absolute inset-0 flex flex-col items-center justify-center text-center bg-[#0B1E36]/90 backdrop-blur-md p-4 z-50 rounded-xl">
-        <div class="text-[5rem] mb-4 drop-shadow-xl">📱 ↔️ 🖥️</div>
-        <h1 class="text-3xl font-black text-white mb-6 drop-shadow-md">Pilih Mode Layar</h1>
-        <div class="flex flex-col md:flex-row gap-4 w-full px-4 max-w-2xl mx-auto">
-          <button onclick="setOrientation('portrait')" class="flex-1 p-5 bg-blue-600 rounded-2xl font-black text-white shadow-lg active:scale-95 text-lg border-2 border-white/20">📱 Potret</button>
-          <button onclick="setOrientation('landscape')" class="flex-1 p-5 bg-green-600 rounded-2xl font-black text-white shadow-lg active:scale-95 text-lg border-2 border-white/20">🖥️ Lanskap</button>
+        <div class="text-[3.5rem] mb-3 drop-shadow-xl">📱 ↔️ 🖥️</div>
+        <h1 class="text-xl font-black text-white mb-6 drop-shadow-md">Pilih Mode Layar</h1>
+        <div class="flex flex-col gap-3 w-full px-4 max-w-xs mx-auto">
+          <button onclick="setOrientation('portrait')" class="w-full p-3.5 bg-blue-600 hover:bg-blue-500 rounded-2xl font-black text-white shadow-lg active:scale-95 text-sm border-2 border-white/20 uppercase tracking-widest">📱 Potret</button>
+          <button onclick="setOrientation('landscape')" class="w-full p-3.5 bg-green-600 hover:bg-green-500 rounded-2xl font-black text-white shadow-lg active:scale-95 text-sm border-2 border-white/20 uppercase tracking-widest">🖥️ Lanskap</button>
         </div>
       </div>
 
-      <div id="screen-splash" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center z-50 pointer-events-none">
-        <div class="relative z-10 p-8 md:p-12 w-full max-w-[800px] flex flex-col items-center justify-center pointer-events-auto">
-          <h1 class="text-[4.5rem] md:text-7xl font-black leading-none mb-6 text-center drop-shadow-[0_8px_8px_rgba(0,0,0,0.8)]">
+      <div id="screen-splash" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center z-50 pointer-events-none p-4">
+        <div class="relative z-10 w-full flex flex-col items-center justify-center pointer-events-auto">
+          <h1 class="text-[3.2rem] font-black leading-none mb-3 text-center drop-shadow-[0_6px_6px_rgba(0,0,0,0.8)]">
             <span class="text-[#4ade80]">TRAFFIC</span><br>
             <span class="text-[#facc15]">LITE Z</span>
           </h1>
-          <div class="border-2 border-white bg-black/50 backdrop-blur-sm px-6 py-2 rounded-full mb-10 shadow-lg">
-            <p class="text-white font-black text-sm tracking-widest uppercase drop-shadow-md">"Bermain, Belajar, Peduli"</p>
+          <div class="border-2 border-white bg-black/60 backdrop-blur-sm px-4 py-1 rounded-full mb-8 shadow-lg">
+            <p class="text-white font-black text-[9px] tracking-widest uppercase drop-shadow-md">"Bermain, Belajar, Peduli"</p>
           </div>
-          <button onclick="startGame()" class="px-10 py-5 bg-gradient-to-b from-[#38bdf8] to-[#2563eb] rounded-full font-black text-xl active:scale-95 transition-transform shadow-[0_0_30px_rgba(56,189,248,0.8)] border-4 border-white text-white uppercase tracking-widest">
+          <button onclick="startGame()" class="w-full max-w-xs py-4 bg-gradient-to-b from-[#38bdf8] to-[#2563eb] rounded-full font-black text-base active:scale-95 transition-transform shadow-[0_0_25px_rgba(56,189,248,0.8)] border-4 border-white text-white uppercase tracking-widest">
             MULAI / LANJUTKAN
           </button>
         </div>
       </div>
 
-      <div id="screen-mode" class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 bg-[#0B1E36]/95 backdrop-blur-md rounded-xl z-50">
-        <h2 class="text-3xl font-black text-yellow-300 mb-6 text-center bg-black/50 px-6 py-3 rounded-xl border border-yellow-500/50 uppercase tracking-widest">Kondisi Pemain</h2>
-        <div class="flex flex-col md:flex-row gap-4 w-full px-4 max-w-4xl mx-auto">
-          <div onclick="selectMode('UMUM')" class="flex-1 cursor-pointer p-6 rounded-[2rem] bg-blue-600 border-4 border-blue-400 active:scale-95 transition text-center shadow-lg flex flex-col items-center gap-2">
-            <div class="text-[5rem]">👦</div><h3 class="text-2xl font-black text-white uppercase tracking-widest">Umum</h3>
+      <div id="screen-mode" class="hidden absolute inset-0 flex flex-col items-center justify-center p-3 bg-[#0B1E36]/95 backdrop-blur-md rounded-xl z-50">
+        <h2 class="text-lg font-black text-yellow-300 mb-3 text-center bg-black/50 px-4 py-1.5 rounded-xl border border-yellow-500/50 uppercase tracking-widest">Kondisi Pemain</h2>
+        <div class="flex flex-col gap-2.5 w-full px-2 max-w-xs mx-auto flex-1 min-h-0 justify-center">
+          <div onclick="selectMode('UMUM')" class="flex-1 cursor-pointer p-3 rounded-2xl bg-blue-600 border-2 border-blue-400 active:scale-95 transition text-center shadow-lg flex flex-col items-center justify-center">
+            <div class="text-[2.5rem]">👦</div><h3 class="text-base font-black text-white uppercase tracking-widest">Umum</h3>
           </div>
-          <div onclick="selectMode('RUNGU')" class="flex-1 cursor-pointer p-6 rounded-[2rem] bg-purple-600 border-4 border-purple-400 active:scale-95 transition text-center shadow-lg flex flex-col items-center gap-2">
-            <div class="text-[5rem]">🧏</div><h3 class="text-2xl font-black text-white uppercase tracking-widest">Tuna Rungu</h3><p class="text-xs font-bold text-yellow-200">Subtitle Aktif</p>
+          <div onclick="selectMode('RUNGU')" class="flex-1 cursor-pointer p-3 rounded-2xl bg-purple-600 border-2 border-purple-400 active:scale-95 transition text-center shadow-lg flex flex-col items-center justify-center">
+            <div class="text-[2.5rem]">🧏</div><h3 class="text-base font-black text-white uppercase tracking-widest">Tuna Rungu</h3><p class="text-[8px] font-bold text-yellow-200">Subtitle Aktif</p>
           </div>
-          <div onclick="selectMode('DAKSA')" class="flex-1 cursor-pointer p-6 rounded-[2rem] bg-green-600 border-4 border-green-400 active:scale-95 transition text-center shadow-lg flex flex-col items-center gap-2">
-            <div class="text-[5rem]">♿</div><h3 class="text-2xl font-black text-white uppercase tracking-widest">Tuna Daksa</h3>
+          <div onclick="selectMode('DAKSA')" class="flex-1 cursor-pointer p-3 rounded-2xl bg-green-600 border-2 border-green-400 active:scale-95 transition text-center shadow-lg flex flex-col items-center justify-center">
+            <div class="text-[2.5rem]">♿</div><h3 class="text-base font-black text-white uppercase tracking-widest">Tuna Daksa</h3>
           </div>
         </div>
       </div>
 
+      <!-- DASHBOARD - Dibuat Pas Satu Layar Tanpa Scroll -->
       <div id="screen-dashboard" class="hidden flex-1 flex flex-col h-full overflow-hidden">
-        <div class="flex items-center justify-between bg-[#1e293b] p-3 rounded-3xl border-4 border-gray-700 mb-4 shrink-0 shadow-lg">
-          <div class="bg-[#facc15] px-5 py-2 rounded-full text-black font-black text-sm border-2 border-yellow-300">LVL <span id="hud-level">1</span></div>
-          <div class="text-orange-400 font-black text-lg px-4 flex items-center gap-2">🔥 <span id="hud-streak">0x</span></div>
-          <div class="text-gray-200 font-black text-lg px-4 flex items-center gap-2">🪙 <span id="hud-coins">500</span></div>
-          <button onclick="nav('MODE')" class="bg-red-500 text-white font-black text-[11px] px-5 py-2.5 rounded-full active:scale-90 border border-red-400 shadow-md uppercase tracking-wider">Ganti Mode</button>
+        <div class="flex items-center justify-between bg-[#1e293b] p-2 rounded-2xl border-2 border-gray-700 mb-2 shrink-0 shadow-lg">
+          <div class="bg-[#facc15] px-2.5 py-1 rounded-full text-black font-black text-[10px] border border-yellow-300">LVL <span id="hud-level">1</span></div>
+          <div class="text-orange-400 font-black text-xs px-1 flex items-center gap-1">🔥 <span id="hud-streak">0x</span></div>
+          <div class="text-gray-200 font-black text-xs px-1 flex items-center gap-1">🪙 <span id="hud-coins">500</span></div>
+          <button onclick="nav('MODE')" class="bg-red-500 hover:bg-red-400 text-white font-black text-[9px] px-2.5 py-1 rounded-full active:scale-90 border border-red-400 shadow-md uppercase tracking-wider">Mode</button>
         </div>
 
-        <div class="dashboard-layout">
-            <div class="dashboard-left bg-[#1e293b] p-6 rounded-[2.5rem] border-4 border-gray-700 relative flex flex-col justify-between items-center shadow-2xl overflow-hidden min-h-[350px]">
-                <div id="pet-bubble" class="hidden absolute top-6 bg-white text-black px-6 py-4 rounded-3xl rounded-bl-none font-black text-sm shadow-xl z-20 border-4 border-gray-200 max-w-[85%] text-center leading-snug">💬</div>
+        <div class="dashboard-layout flex-1 min-h-0">
+            <!-- PET KESELAMATAN (Bagian Atas HP) -->
+            <div class="dashboard-left flex-1 min-h-0 bg-[#1e293b] p-3 rounded-2xl border-2 border-gray-700 relative flex flex-col justify-between items-center shadow-xl overflow-hidden">
+                <div id="pet-bubble" class="hidden absolute top-2 bg-white text-black px-3 py-1.5 rounded-xl font-black text-[9px] shadow-xl z-20 border border-gray-300 max-w-[95%] text-center leading-tight">💬</div>
                 
-                <div onclick="tapPet()" class="text-[8.5rem] md:text-[10rem] leading-none mb-6 relative inline-block animate-float cursor-pointer z-10 mt-auto">
+                <div onclick="tapPet()" class="text-[4.5rem] leading-none mb-1 relative inline-block animate-float cursor-pointer z-10 mt-auto">
                     <span id="pet-emoji">🐣</span>
-                    <div id="pet-accessory" class="absolute -top-6 right-0 text-[4rem] drop-shadow-md"></div>
-                    <div class="sparkle text-yellow-300 top-0 -left-6">✨</div>
-                    <div class="sparkle text-yellow-100 top-1/2 -right-8" style="animation-delay: 0.5s">✨</div>
-                    <div class="sparkle text-yellow-400 bottom-2 -left-2" style="animation-delay: 1s">✨</div>
+                    <div id="pet-accessory" class="absolute -top-3 right-0 text-[2rem] drop-shadow-md"></div>
+                    <div class="sparkle text-yellow-300 top-0 -left-3">✨</div>
+                    <div class="sparkle text-yellow-100 top-1/2 -right-4" style="animation-delay: 0.5s">✨</div>
+                    <div class="sparkle text-yellow-400 bottom-1 -left-1" style="animation-delay: 1s">✨</div>
                 </div>
 
-                <div class="bg-[#ef4444] px-6 py-2 rounded-full text-white font-black text-sm mb-4 border-2 border-red-400 shadow-md">Pet Keselamatan</div>
-                <div id="daily-lock-status" class="text-[#4ade80] font-black mb-3 text-sm flex items-center gap-1"><span class="bg-[#4ade80] rounded-sm w-4 h-4 flex items-center justify-center text-black text-[10px]">✔</span> Terbuka!</div>
+                <div class="bg-[#ef4444] px-3 py-1 rounded-full text-white font-black text-[8px] mb-1 border border-red-400 shadow-md">Pet Keselamatan</div>
+                <div id="daily-lock-status" class="text-[#4ade80] font-black mb-1 text-[9px] flex items-center gap-1"><span class="bg-[#4ade80] rounded-sm w-3.5 h-3.5 flex items-center justify-center text-black text-[8px]">✔</span> Terbuka!</div>
                 
-                <button onclick="nav('DAILY')" id="btn-daily-action" class="w-full py-5 bg-[#334155] hover:bg-[#475569] rounded-2xl font-black text-white text-lg shadow-lg active:scale-95 uppercase tracking-widest transition-colors">Latihan Lagi</button>
+                <button onclick="nav('DAILY')" id="btn-daily-action" class="w-full py-2.5 bg-[#334155] hover:bg-[#475569] rounded-xl font-black text-white text-xs shadow-md active:scale-95 uppercase tracking-widest transition-colors mt-auto shrink-0">Latihan Lagi</button>
             </div>
 
-            <div class="dashboard-right gap-4">
-                <div class="grid grid-cols-2 grid-rows-2 gap-4 h-full flex-[1.5] min-h-[250px]">
-                    <div id="menu-games" onclick="goToGames()" class="cursor-pointer rounded-[2rem] bg-[#4ade80] flex flex-col justify-center items-center gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative">
-                        <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                        <div class="text-[4rem] drop-shadow-md mb-1">🎮</div><h3 class="font-black text-base text-white tracking-wide">Main Game</h3>
+            <!-- MENU UTAMA KOTAK-KOTAK (Bagian Bawah HP) -->
+            <div class="dashboard-right flex-[1.1] min-h-0 flex flex-col gap-2">
+                <div class="grid grid-cols-2 grid-rows-2 gap-2 flex-1 min-h-0">
+                    <div id="menu-games" onclick="goToGames()" class="cursor-pointer rounded-2xl bg-[#4ade80] flex flex-col justify-center items-center gap-1 active:scale-95 transition-all shadow-md overflow-hidden relative border-b-4 border-green-600">
+                        <div class="text-[2.2rem] drop-shadow-md">🎮</div><h3 class="font-black text-[10px] text-white tracking-wide uppercase">Main Game</h3>
                     </div>
-                    <div onclick="nav('PUSTAKA')" class="cursor-pointer rounded-[2rem] bg-[#f97316] flex flex-col justify-center items-center gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative">
-                        <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                        <div class="text-[4rem] drop-shadow-md mb-1">📖</div><h3 class="font-black text-base text-white tracking-wide">Pustaka</h3>
+                    <div onclick="nav('PUSTAKA')" class="cursor-pointer rounded-2xl bg-[#f97316] flex flex-col justify-center items-center gap-1 active:scale-95 transition-all shadow-md overflow-hidden relative border-b-4 border-orange-700">
+                        <div class="text-[2.2rem] drop-shadow-md">📖</div><h3 class="font-black text-[10px] text-white tracking-wide uppercase">Pustaka</h3>
                     </div>
-                    <div onclick="nav('SHOP')" class="cursor-pointer rounded-[2rem] bg-[#e81cff] flex flex-col justify-center items-center gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative">
-                        <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                        <div class="text-[4rem] drop-shadow-md mb-1">🛍️</div><h3 class="font-black text-base text-white tracking-wide">Toko Pet</h3>
+                    <div onclick="nav('SHOP')" class="cursor-pointer rounded-2xl bg-[#e81cff] flex flex-col justify-center items-center gap-1 active:scale-95 transition-all shadow-md overflow-hidden relative border-b-4 border-fuchsia-700">
+                        <div class="text-[2.2rem] drop-shadow-md">🛍️</div><h3 class="font-black text-[10px] text-white tracking-wide uppercase">Toko Pet</h3>
                     </div>
-                    <div onclick="nav('BADGES')" class="cursor-pointer rounded-[2rem] bg-[#eab308] flex flex-col justify-center items-center gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative">
-                        <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                        <div class="text-[4rem] drop-shadow-md mb-1">🏆</div><h3 class="font-black text-base text-white tracking-wide">Progres</h3>
+                    <div onclick="nav('BADGES')" class="cursor-pointer rounded-2xl bg-[#eab308] flex flex-col justify-center items-center gap-1 active:scale-95 transition-all shadow-md overflow-hidden relative border-b-4 border-yellow-700">
+                        <div class="text-[2.2rem] drop-shadow-md">🏆</div><h3 class="font-black text-[10px] text-white tracking-wide uppercase">Progres</h3>
                     </div>
                 </div>
 
-                <div onclick="nav('LEADERBOARD')" class="cursor-pointer rounded-[2rem] bg-[#3b82f6] flex flex-row justify-center items-center gap-4 active:scale-95 transition-all shadow-md h-24 shrink-0 overflow-hidden relative border-b-4 border-blue-800 hover:border-b-0 hover:translate-y-1">
-                    <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                    <div class="text-[3rem] drop-shadow-md">📈</div><h3 class="font-black text-lg text-white uppercase tracking-widest">Papan Peringkat</h3>
+                <div onclick="nav('LEADERBOARD')" class="cursor-pointer rounded-2xl bg-[#3b82f6] flex flex-row justify-center items-center gap-2 active:scale-95 transition-all shadow-md h-12 shrink-0 overflow-hidden relative border-b-4 border-blue-800">
+                    <div class="text-[1.8rem] drop-shadow-md">📈</div><h3 class="font-black text-xs text-white uppercase tracking-widest">Papan Peringkat</h3>
                 </div>
             </div>
         </div>
       </div>
 
-      <!-- KUIS HARIAN -->
-      <div id="screen-daily" class="hidden absolute inset-0 bg-black/95 flex flex-col items-center justify-center p-4 rounded-xl z-50">
-        <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 px-6 py-3 rounded-full text-white font-black text-sm active:scale-90 border-2 border-gray-500 shadow-md tracking-widest">❌ KEMBALI</button>
+      <!-- KUIS HARIAN (Khusus Jawaban Di-Scroll Jika Panjang) -->
+      <div id="screen-daily" class="hidden absolute inset-0 bg-black/95 flex flex-col items-center justify-center p-3 rounded-xl z-50">
+        <button onclick="nav('DASHBOARD')" class="absolute top-3 left-3 bg-gray-800 px-3 py-1.5 rounded-full text-white font-black text-[9px] active:scale-90 border border-gray-500 shadow-md tracking-widest z-10">❌ KEMBALI</button>
         
-        <div id="explanation-modal" class="hidden absolute inset-0 z-[60] bg-[#0f172a]/95 flex flex-col items-center justify-center p-6 backdrop-blur-md">
-            <div class="bg-gray-800 border-4 border-red-500 rounded-[2.5rem] p-8 w-full max-w-md text-center shadow-2xl">
-                <div class="text-[6rem] mb-4 animate-bounce">❌</div>
-                <h2 class="text-3xl font-black text-red-400 mb-6 uppercase tracking-wider">Jawaban Kurang Tepat!</h2>
-                <div class="bg-black/40 p-6 rounded-3xl mb-8 border border-white/10 shadow-inner">
-                    <p class="text-sm text-gray-400 mb-2 font-bold uppercase tracking-widest">Jawaban Yang Benar:</p>
-                    <p id="exp-correct-ans" class="text-2xl font-black text-green-400 mb-4 leading-snug"></p>
-                    <p id="exp-reason" class="text-base font-bold text-yellow-200 leading-relaxed"></p>
-                </div>
-                <button onclick="closeExplanation()" class="w-full py-5 bg-blue-600 hover:bg-blue-500 font-black rounded-2xl active:scale-95 text-white text-xl uppercase tracking-widest shadow-lg transition-colors">Paham, Lanjut!</button>
-            </div>
+        <div id="daily-flashcard-box" class="w-full bg-gray-800 rounded-2xl p-4 text-center border-2 border-yellow-500 flex flex-col items-center justify-center max-w-sm shadow-2xl h-full">
+           <h2 class="text-yellow-400 font-black text-[10px] mb-2 bg-black/50 px-3 py-1 rounded-full uppercase tracking-widest border border-yellow-500/30">Misi Keselamatan</h2>
+           <div id="daily-fc-icon" class="text-[4.5rem] mb-2 animate-bounce drop-shadow-xl flex-1 flex items-center justify-center"></div>
+           <h3 id="daily-fc-title" class="text-xl font-black text-white mb-1 leading-tight"></h3>
+           <p id="daily-fc-desc" class="text-xs text-gray-300 mb-4 font-bold leading-tight"></p>
+           <button onclick="startDailyQuiz()" class="w-full py-3 bg-[#22c55e] hover:bg-[#16a34a] rounded-xl font-black text-white text-sm shadow-[0_4px_0_rgb(21,128,61)] active:translate-y-1 transition-all uppercase tracking-widest shrink-0 mt-auto">Mulai Kuis!</button>
         </div>
 
-        <div id="daily-flashcard-box" class="w-full bg-gray-800 rounded-[3rem] p-8 text-center border-4 border-yellow-500 flex flex-col items-center justify-center max-w-lg shadow-2xl relative min-h-[400px]">
-           <h2 class="text-yellow-400 font-black text-sm mb-6 bg-black/50 px-6 py-2 rounded-full uppercase tracking-widest border border-yellow-500/30">Misi Keselamatan</h2>
-           <div id="daily-fc-icon" class="text-[8rem] mb-6 animate-bounce drop-shadow-xl"></div>
-           <h3 id="daily-fc-title" class="text-4xl font-black text-white mb-4 leading-tight"></h3>
-           <p id="daily-fc-desc" class="text-base text-gray-300 mb-8 font-bold leading-relaxed"></p>
-           <button onclick="startDailyQuiz()" class="w-full py-5 bg-[#22c55e] rounded-2xl font-black text-white text-2xl shadow-[0_6px_0_rgb(21,128,61)] active:translate-y-1 active:shadow-none transition-all uppercase tracking-widest">Mulai Kuis!</button>
+        <div id="daily-quiz-box" class="hidden w-full bg-gray-800 rounded-2xl p-3 border-2 border-cyan-500 flex flex-col max-w-sm shadow-2xl h-full">
+           <div class="bg-cyan-900 text-cyan-300 font-black text-[10px] py-1 px-3 rounded-full mx-auto mb-2 border border-cyan-500 tracking-widest uppercase shrink-0" id="daily-quiz-title">SOAL 1 / 5</div>
+           <h3 id="daily-quiz-question" class="text-xs font-black mb-3 text-center shrink-0 px-1 leading-tight text-white"></h3>
+           <!-- Area pilihan jawaban (BOLEH SCROLL) -->
+           <div id="daily-quiz-options" class="flex flex-col gap-2 flex-1 justify-start w-full overflow-y-auto custom-scroll pr-1 pb-1"></div>
         </div>
 
-        <div id="daily-quiz-box" class="hidden w-full bg-gray-800 rounded-[3rem] p-6 border-4 border-cyan-500 flex flex-col max-w-lg shadow-2xl min-h-[400px]">
-           <div class="bg-cyan-900 text-cyan-300 font-black text-sm py-2 px-6 rounded-full mx-auto mb-6 border border-cyan-500 tracking-widest uppercase" id="daily-quiz-title">SOAL 1 / 5</div>
-           <h3 id="daily-quiz-question" class="text-2xl font-black mb-8 text-center shrink-0 px-2 leading-relaxed text-white"></h3>
-           <div id="daily-quiz-options" class="flex flex-col gap-4 flex-1 justify-center w-full"></div>
-        </div>
-
-        <div id="daily-result-box" class="hidden w-full bg-gray-800 rounded-[3rem] p-8 text-center border-4 border-white/20 max-w-lg shadow-2xl">
-          <div id="daily-res-icon" class="text-[8rem] mb-6 animate-bounce"></div>
-          <h2 id="daily-result-status" class="text-5xl font-black mb-4 uppercase"></h2>
-          <p id="daily-result-score" class="text-2xl font-black bg-black/50 py-4 rounded-2xl mb-8 border border-white/10 text-yellow-300 tracking-widest"></p>
-          <button id="btn-daily-retry" onclick="retryDaily()" class="hidden w-full py-5 mb-4 bg-orange-500 rounded-2xl font-black text-white active:translate-y-1 shadow-[0_6px_0_rgb(194,65,12)] active:shadow-none transition-all text-xl uppercase tracking-widest">Ulangi Kuis</button>
-          <button onclick="nav('DASHBOARD')" class="w-full py-5 bg-blue-600 rounded-2xl font-black text-white active:translate-y-1 shadow-[0_6px_0_rgb(29,78,216)] active:shadow-none transition-all text-xl uppercase tracking-widest">Kembali ke Menu</button>
+        <div id="daily-result-box" class="hidden w-full bg-gray-800 rounded-2xl p-5 text-center border-2 border-white/20 max-w-sm shadow-2xl h-full flex flex-col justify-center">
+          <div id="daily-res-icon" class="text-[5rem] mb-3 animate-bounce"></div>
+          <h2 id="daily-result-status" class="text-2xl font-black mb-1 uppercase"></h2>
+          <p id="daily-result-score" class="text-base font-black bg-black/50 py-2 rounded-xl mb-4 border border-white/10 text-yellow-300 tracking-widest"></p>
+          <button id="btn-daily-retry" onclick="retryDaily()" class="hidden w-full py-3 mb-2 bg-orange-500 rounded-xl font-black text-white active:translate-y-1 shadow-[0_4px_0_rgb(194,65,12)] transition-all text-xs uppercase tracking-widest">Ulangi Kuis</button>
+          <button onclick="nav('DASHBOARD')" class="w-full py-3 bg-blue-600 rounded-xl font-black text-white active:translate-y-1 shadow-[0_4px_0_rgb(29,78,216)] transition-all text-xs uppercase tracking-widest">Kembali ke Menu</button>
         </div>
       </div>
 
-      <!-- PAPAN PERINGKAT -->
-      <div id="screen-leaderboard" class="hidden absolute inset-0 bg-gray-900 p-4 flex flex-col text-center rounded-xl z-50">
-          <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 px-6 py-3 rounded-full text-white font-black text-xs active:scale-90 border-2 border-gray-600 shadow-lg tracking-widest z-10">❌ KEMBALI</button>
-          <h1 class="text-4xl font-black text-blue-400 mb-4 mt-16 shrink-0 drop-shadow-md uppercase tracking-widest">Papan Peringkat Global</h1>
-          <p class="font-black text-white mb-8 bg-blue-900/50 inline-block mx-auto px-6 py-2.5 rounded-full border border-blue-500 text-sm shadow-inner uppercase tracking-widest">Persaingan Pahlawan Jalanan!</p>
+      <!-- MODAL PENJELASAN GLOBAL -->
+      <div id="explanation-modal" class="hidden absolute inset-0 z-[60] bg-[#0f172a]/95 flex flex-col items-center justify-center p-3 backdrop-blur-md">
+          <div id="exp-modal-box" class="bg-gray-800 border-2 border-red-500 rounded-2xl p-4 w-full max-w-xs text-center shadow-2xl">
+              <div id="exp-icon" class="text-[3rem] mb-1 animate-bounce">❌</div>
+              <h2 id="exp-title" class="text-lg font-black text-red-400 mb-2 uppercase tracking-wider">Jawaban Kurang Tepat!</h2>
+              <div class="bg-black/40 p-3 rounded-xl mb-4 border border-white/10 shadow-inner">
+                  <p id="exp-subtitle" class="text-[9px] text-gray-400 mb-1 font-bold uppercase tracking-widest">Jawaban Yang Benar:</p>
+                  <p id="exp-correct-ans" class="text-sm font-black text-green-400 mb-1 leading-tight"></p>
+                  <p id="exp-reason" class="text-[10px] font-bold text-yellow-200 leading-tight"></p>
+              </div>
+              <button onclick="closeExplanation()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 font-black rounded-xl active:scale-95 text-white text-xs uppercase tracking-widest shadow-lg transition-colors">Paham, Lanjut!</button>
+          </div>
+      </div>
+
+      <!-- PAPAN PERINGKAT - PAS SATU LAYAR -->
+      <div id="screen-leaderboard" class="hidden absolute inset-0 bg-gray-900 p-3 pt-12 pb-3 flex flex-col text-center z-50">
+          <button onclick="nav('DASHBOARD')" class="absolute top-3 left-3 bg-gray-800 px-3 py-1.5 rounded-full text-white font-black text-[9px] active:scale-90 border border-gray-600 shadow-lg tracking-widest z-10">❌ KEMBALI</button>
+          <h1 class="text-lg font-black text-blue-400 mb-1 shrink-0 uppercase tracking-widest">Papan Peringkat Global</h1>
+          <p class="font-black text-white mb-3 bg-blue-900/50 inline-block mx-auto px-3 py-1 rounded-full border border-blue-500 text-[9px] uppercase tracking-widest shrink-0">Pahlawan Jalanan!</p>
           
-          <div class="flex justify-around bg-gray-800 p-4 rounded-t-2xl font-black text-sm text-gray-400 border border-gray-700 w-full max-w-3xl mx-auto uppercase tracking-wider shadow-md">
-              <span class="w-12 text-center">No</span><span class="flex-1 text-left px-4">Akun Pemain</span><span class="w-20 text-center">Jawaban</span><span class="w-20 text-center">Level</span><span class="w-20 text-right pr-2">Streak</span>
+          <div class="flex justify-around bg-gray-800 p-2 rounded-t-xl font-black text-[9px] text-gray-400 border border-gray-700 w-full uppercase tracking-wider shrink-0">
+              <span class="w-6 text-center">No</span><span class="flex-1 text-left px-1">Akun</span><span class="w-10 text-center">Soal</span><span class="w-10 text-center">Lvl</span><span class="w-10 text-right pr-1">Api</span>
           </div>
-          <div id="lb-full-list" class="flex-1 overflow-y-auto bg-black/20 rounded-b-2xl p-2 flex flex-col gap-3 pb-6 w-full max-w-3xl mx-auto custom-scroll content-start border-x border-b border-gray-700"></div>
+          <div id="lb-full-list" class="flex-1 overflow-y-auto custom-scroll bg-black/20 rounded-b-xl p-1 flex flex-col gap-1.5 w-full border-x border-b border-gray-700"></div>
       </div>
 
-      <!-- PUSTAKA EDUKASI -->
-      <div id="screen-pustaka" class="hidden absolute inset-0 bg-gray-900 p-4 flex flex-col rounded-xl z-50">
-          <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 px-6 py-3 rounded-full text-white font-black text-xs active:scale-90 border-2 border-gray-600 shadow-lg z-10 tracking-widest">❌ KEMBALI</button>
-          <h1 class="text-3xl font-black text-orange-400 mb-2 mt-16 text-center drop-shadow-md tracking-widest uppercase">Pustaka Edukasi</h1>
-          <p class="text-center text-sm font-bold text-gray-400 mb-6 bg-black/40 inline-block mx-auto px-6 py-2 rounded-full">Kartu otomatis terbuka setiap kelipatan 10 Level!</p>
-          <div id="pustaka-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 flex-1 overflow-y-auto pb-6 pr-2 custom-scroll content-start w-full max-w-5xl mx-auto"></div>
+      <!-- PUSTAKA EDUKASI - PAS KOTAK-KOTAK 4x5 TANPA SCROLL -->
+      <div id="screen-pustaka" class="hidden absolute inset-0 bg-gray-900 p-3 pt-12 pb-3 flex flex-col z-50">
+          <button onclick="nav('DASHBOARD')" class="absolute top-3 left-3 bg-gray-800 px-3 py-1.5 rounded-full text-white font-black text-[9px] active:scale-90 border border-gray-600 shadow-lg z-10 tracking-widest">❌ KEMBALI</button>
+          <h1 class="text-lg font-black text-orange-400 mb-1 text-center drop-shadow-md tracking-widest uppercase shrink-0">Pustaka Edukasi</h1>
+          <p id="pustaka-info-text" class="text-center text-[9px] font-bold text-gray-400 mb-2 bg-black/40 inline-block mx-auto px-3 py-1 rounded-full uppercase tracking-widest shrink-0">Terbuka: 20 / 1000 Rambu</p>
+          
+          <div id="pustaka-grid" class="grid grid-cols-4 grid-rows-5 gap-1.5 flex-1 overflow-hidden w-full mx-auto content-stretch"></div>
       </div>
-      <div id="pustaka-detail-modal" class="hidden absolute inset-0 z-[60] bg-black/95 flex flex-col items-center justify-center p-6 backdrop-blur-sm">
-          <div class="bg-gray-800 border-4 border-orange-500 rounded-[2.5rem] p-8 w-full max-w-md text-center shadow-2xl relative">
-              <div id="pd-icon" class="text-[8rem] mb-6 drop-shadow-xl animate-float"></div>
-              <h2 id="pd-title" class="text-3xl font-black text-white mb-4 leading-tight uppercase"></h2>
-              <p id="pd-desc" class="text-base font-bold text-gray-300 mb-6 bg-black/40 p-4 rounded-2xl leading-relaxed"></p>
-              <p id="pd-fact" class="text-sm font-black text-orange-300 italic mb-10 border-l-4 border-orange-500 pl-4 text-left leading-relaxed"></p>
-              <button onclick="document.getElementById('pustaka-detail-modal').classList.add('hidden'); playSound('pop');" class="w-full py-4 bg-orange-600 font-black rounded-2xl active:scale-95 text-white text-xl uppercase tracking-widest shadow-lg transition-colors border-2 border-orange-400">Tutup Kartu</button>
+      
+      <div id="pustaka-detail-modal" class="hidden absolute inset-0 z-[60] bg-black/95 flex flex-col items-center justify-center p-3 backdrop-blur-sm">
+          <div class="bg-gray-800 border-2 border-orange-500 rounded-2xl p-4 w-full max-w-xs text-center shadow-2xl relative">
+              <div id="pd-icon" class="text-[4rem] mb-2 drop-shadow-xl animate-float"></div>
+              <h2 id="pd-title" class="text-base font-black text-white mb-1 leading-tight uppercase"></h2>
+              <p id="pd-desc" class="text-[10px] font-bold text-gray-300 mb-3 bg-black/40 p-2 rounded-lg leading-tight"></p>
+              <p id="pd-fact" class="text-[9px] font-black text-orange-300 italic mb-4 border-l-2 border-orange-500 pl-2 text-left leading-tight"></p>
+              <button onclick="document.getElementById('pustaka-detail-modal').classList.add('hidden'); playSound('pop');" class="w-full py-2.5 bg-orange-600 font-black rounded-xl active:scale-95 text-white text-xs uppercase tracking-widest border border-orange-400">Tutup Kartu</button>
           </div>
       </div>
 
-      <!-- GAMES HUB -->
-      <div id="screen-games" class="hidden absolute inset-0 bg-gray-900 p-4 flex flex-col rounded-xl z-40">
-        <div class="flex items-center justify-between mb-6 mt-2 shrink-0 bg-gray-800 p-3 rounded-3xl border-4 border-gray-700 shadow-md w-full max-w-5xl mx-auto">
-            <button onclick="nav('DASHBOARD')" class="bg-red-600 px-6 py-3 rounded-full text-white font-black text-xs active:scale-90 border-2 border-red-400 uppercase tracking-widest">❌ KEMBALI</button>
-            <h1 class="text-2xl font-black text-green-400 tracking-widest drop-shadow-md uppercase">Zona Minigames</h1>
-            <div class="w-24"></div> 
+      <!-- GAMES HUB - KOTAK-KOTAK PAS DI LAYAR -->
+      <div id="screen-games" class="hidden absolute inset-0 bg-gray-900 p-3 pt-12 pb-3 flex flex-col z-40">
+        <div class="flex items-center justify-between mb-2 shrink-0 bg-gray-800 p-2 rounded-xl border border-gray-700 shadow-md w-full">
+            <button onclick="nav('DASHBOARD')" class="bg-red-600 px-3 py-1 rounded-full text-white font-black text-[9px] active:scale-90 border border-red-400 uppercase tracking-widest">❌ KEMBALI</button>
+            <h1 class="text-xs font-black text-green-400 tracking-widest uppercase truncate px-1">Zona Minigames</h1>
+            <div class="w-12"></div> 
         </div>
-        <div id="games-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-y-auto pb-6 pr-2 w-full max-w-5xl mx-auto content-start custom-scroll"></div>
+        <div id="games-grid" class="grid grid-cols-1 grid-rows-5 gap-2 flex-1 overflow-hidden w-full mx-auto content-stretch"></div>
       </div>
 
       <!-- PLAYER ARENA -->
-      <div id="screen-player" class="hidden absolute inset-0 bg-gray-900 flex flex-col items-center p-4 pt-16 pb-6 rounded-xl z-50">
-        <button onclick="nav('GAMES')" class="absolute z-[60] top-4 left-4 bg-red-600 px-6 py-3 rounded-full text-white font-black text-xs border-2 border-white/50 active:scale-90 shadow-lg tracking-widest uppercase">❌ BERHENTI</button>
-        <!-- BADGE LEVEL DIGESER KE KIRI SEDIKIT (right: 5rem) DAN DIPERKECIL -->
-        <div id="player-lvl-badge" class="absolute z-[60] top-4 right-[5rem] bg-cyan-900 px-4 py-2 rounded-full text-cyan-300 font-black text-[10px] border border-cyan-500 shadow-lg tracking-widest uppercase"></div>
+      <div id="screen-player" class="hidden absolute inset-0 bg-gray-900 flex flex-col items-center p-3 pt-12 pb-3 z-50">
+        <button onclick="nav('GAMES')" class="absolute z-[60] top-3 left-3 bg-red-600 px-3 py-1 rounded-full text-white font-black text-[9px] border border-white/50 active:scale-90 shadow-lg tracking-widest uppercase">❌ BERHENTI</button>
+        <div id="player-lvl-badge" class="absolute z-[60] top-3 right-3 bg-cyan-900 px-3 py-1 rounded-full text-cyan-300 font-black text-[8px] border border-cyan-500 shadow-lg tracking-widest uppercase"></div>
 
-        <div id="game-play-area" class="w-full flex-1 flex flex-col items-center justify-center relative overflow-hidden z-40 shadow-2xl max-w-5xl mx-auto"></div>
+        <div id="game-play-area" class="w-full flex-1 min-h-0 flex flex-col items-center justify-center relative z-40 shadow-2xl max-w-sm mx-auto p-1"></div>
 
-        <div id="game-win-area" class="hidden text-center max-w-md mx-auto bg-gray-800 p-8 rounded-[2.5rem] border-4 border-green-500 z-40 w-full mt-auto shadow-2xl">
-           <h1 class="text-6xl font-black mb-6 text-green-400 animate-bounce">HEBAT! 🌟</h1>
-           <p id="game-win-rewards" class="text-yellow-400 font-black text-2xl mb-8 bg-black/50 py-4 rounded-2xl border border-yellow-500/30 leading-relaxed tracking-widest uppercase"></p>
-           <button id="btn-next-lvl" class="w-full py-5 bg-green-500 text-white font-black text-xl rounded-2xl mb-4 active:translate-y-1 shadow-[0_6px_0_rgb(21,128,61)] active:shadow-none uppercase tracking-widest">Lanjut ➔</button>
-           <button onclick="nav('GAMES')" class="w-full py-4 bg-gray-600 text-white font-black text-base rounded-2xl active:scale-95 border-2 border-gray-500 uppercase tracking-widest">Menu Games</button>
+        <div id="game-win-area" class="hidden text-center max-w-xs mx-auto bg-gray-800 p-5 rounded-2xl border-2 border-green-500 z-40 w-full mt-auto shadow-2xl shrink-0 flex flex-col justify-center">
+           <h1 class="text-3xl font-black mb-3 text-green-400 animate-bounce">HEBAT! 🌟</h1>
+           <p id="game-win-rewards" class="text-yellow-400 font-black text-sm mb-4 bg-black/50 py-2 rounded-lg border border-yellow-500/30 leading-tight uppercase"></p>
+           <button id="btn-next-lvl" class="w-full py-3 bg-green-500 text-white font-black text-xs rounded-xl mb-2 active:translate-y-1 shadow-[0_4px_0_rgb(21,128,61)] uppercase tracking-widest">Lanjut ➔</button>
+           <button onclick="nav('GAMES')" class="w-full py-2 bg-gray-600 text-white font-black text-[10px] rounded-xl active:scale-95 border border-gray-500 uppercase tracking-widest">Menu Games</button>
         </div>
         
-        <div id="game-lost-area" class="hidden text-center max-w-md mx-auto bg-gray-800 p-8 rounded-[2.5rem] border-4 border-red-500 z-40 w-full mt-auto shadow-2xl">
-           <h1 class="text-6xl font-black mb-6 text-red-500">GAGAL 💔</h1>
-           <p class="text-base text-gray-300 mb-8 font-bold bg-black/40 py-3 rounded-xl uppercase tracking-widest">Fokus dan coba lagi!</p>
-           <button id="btn-replay" class="w-full py-5 bg-orange-500 text-white font-black text-xl rounded-2xl mb-4 active:translate-y-1 shadow-[0_6px_0_rgb(194,65,12)] active:shadow-none uppercase tracking-widest">Coba Lagi ➔</button>
-           <button onclick="nav('GAMES')" class="w-full py-4 bg-gray-600 text-white font-black text-base rounded-2xl active:scale-95 border-2 border-gray-500 uppercase tracking-widest">Menu Games</button>
+        <div id="game-lost-area" class="hidden text-center max-w-xs mx-auto bg-gray-800 p-5 rounded-2xl border-2 border-red-500 z-40 w-full mt-auto shadow-2xl shrink-0 flex flex-col justify-center">
+           <h1 class="text-3xl font-black mb-3 text-red-500">GAGAL 💔</h1>
+           <p class="text-[10px] text-gray-300 mb-4 font-bold bg-black/40 py-1.5 rounded-lg uppercase tracking-widest">Fokus dan coba lagi!</p>
+           <button id="btn-replay" class="w-full py-3 bg-orange-500 text-white font-black text-xs rounded-xl mb-2 active:translate-y-1 shadow-[0_4px_0_rgb(194,65,12)] uppercase tracking-widest">Coba Lagi ➔</button>
+           <button onclick="nav('GAMES')" class="w-full py-2 bg-gray-600 text-white font-black text-[10px] rounded-xl active:scale-95 border border-gray-500 uppercase tracking-widest">Menu Games</button>
         </div>
       </div>
 
-      <!-- SHOP & BADGES -->
-      <div id="screen-shop" class="hidden absolute inset-0 bg-gray-900 p-4 flex flex-col text-center rounded-xl z-50">
-          <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 px-6 py-3 rounded-full text-white font-black text-xs active:scale-90 border-2 border-gray-600 shadow-lg tracking-widest">❌ KEMBALI</button>
-          <h1 class="text-3xl font-black text-pink-400 mb-2 mt-16 shrink-0 drop-shadow uppercase tracking-widest">Toko Perlengkapan</h1>
-          <p class="font-black text-white mb-8 bg-black/50 inline-block mx-auto px-6 py-3 rounded-full border border-gray-600 text-xl shadow-inner">Koin Kamu: <span class="text-yellow-400 ml-2" id="shop-coins-display">0</span> 🪙</p>
-          <div id="shop-items-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 flex-1 overflow-y-auto pb-6 pr-2 w-full max-w-5xl mx-auto content-start custom-scroll"></div>
+      <!-- SHOP - KOTAK PAS DAN JELAS -->
+      <div id="screen-shop" class="hidden absolute inset-0 bg-gray-900 p-3 pt-12 pb-3 flex flex-col text-center z-50">
+          <button onclick="nav('DASHBOARD')" class="absolute top-3 left-3 bg-gray-800 px-3 py-1.5 rounded-full text-white font-black text-[9px] active:scale-90 border border-gray-600 shadow-lg tracking-widest">❌ KEMBALI</button>
+          <h1 class="text-lg font-black text-pink-400 mb-1 shrink-0 uppercase tracking-widest">Toko Perlengkapan</h1>
+          <p class="font-black text-white mb-2 bg-black/50 inline-block mx-auto px-4 py-1 rounded-full border border-gray-600 text-[10px] shadow-inner shrink-0">Koin Kamu: <span class="text-yellow-400 ml-1" id="shop-coins-display">0</span> 🪙</p>
+          <div id="shop-items-grid" class="grid grid-cols-2 grid-rows-4 gap-2 flex-1 overflow-hidden w-full mx-auto content-stretch"></div>
       </div>
 
-      <div id="screen-badges" class="hidden absolute inset-0 bg-gray-900 p-4 flex flex-col text-center rounded-xl z-50">
-          <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 px-6 py-3 rounded-full text-white font-black text-xs active:scale-90 border-2 border-gray-600 shadow-lg tracking-widest">❌ KEMBALI</button>
-          <h1 class="text-3xl font-black text-yellow-400 mb-2 mt-16 shrink-0 drop-shadow uppercase tracking-widest">Progres Lencana</h1>
-          <p id="badges-lvl-info" class="text-base mb-8 font-black text-white shrink-0 bg-cyan-900/50 inline-block mx-auto px-6 py-3 rounded-full border border-cyan-500 uppercase tracking-widest">Level Kamu: 1</p>
-          <div id="badges-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 flex-1 overflow-y-auto pb-6 pr-2 w-full max-w-5xl mx-auto content-start custom-scroll"></div>
+      <!-- BADGES - KOTAK PAS DAN JELAS -->
+      <div id="screen-badges" class="hidden absolute inset-0 bg-gray-900 p-3 pt-12 pb-3 flex flex-col text-center z-50">
+          <button onclick="nav('DASHBOARD')" class="absolute top-3 left-3 bg-gray-800 px-3 py-1.5 rounded-full text-white font-black text-[9px] active:scale-90 border border-gray-600 shadow-lg tracking-widest">❌ KEMBALI</button>
+          <h1 class="text-lg font-black text-yellow-400 mb-1 shrink-0 uppercase tracking-widest">Progres Lencana</h1>
+          <p id="badges-lvl-info" class="text-[10px] mb-2 font-black text-white shrink-0 bg-cyan-900/50 inline-block mx-auto px-4 py-1 rounded-full border border-cyan-500 uppercase tracking-widest">Level Kamu: 1</p>
+          <div id="badges-grid" class="grid grid-cols-2 grid-rows-5 gap-2 flex-1 overflow-hidden w-full mx-auto content-stretch"></div>
       </div>
 
     </div>
@@ -320,8 +366,8 @@
     }
     function toggleMusic() {
         isMusicOn = !isMusicOn; const btn = document.getElementById('btn-music-toggle');
-        if (isMusicOn) { initAudio(); if(!bgmInterval) bgmInterval = setInterval(playBGMNote, 300); btn.innerHTML = '🎵 Musik: ON'; btn.classList.replace('bg-gray-800', 'bg-green-600'); } 
-        else { if(bgmInterval) { clearInterval(bgmInterval); bgmInterval = null; } btn.innerHTML = '🔇 Musik: OFF'; btn.classList.replace('bg-green-600', 'bg-gray-800'); }
+        if (isMusicOn) { initAudio(); if(!bgmInterval) bgmInterval = setInterval(playBGMNote, 300); btn.innerHTML = '🎵 Musik: ON'; btn.classList.replace('bg-gray-800/90', 'bg-green-600'); } 
+        else { if(bgmInterval) { clearInterval(bgmInterval); bgmInterval = null; } btn.innerHTML = '🔇 Musik: OFF'; btn.classList.replace('bg-green-600', 'bg-gray-800/90'); }
     }
     function playSoundEffect(type) {
         if(!audioCtx || !isMusicOn) return;
@@ -335,7 +381,7 @@
     function showSubtitle(type) {
         if(activeMode !== 'RUNGU') return;
         const layer = document.getElementById('subtitle-layer'), el = document.createElement('div');
-        el.className = 'bg-black/90 text-yellow-300 px-6 py-3 rounded-full font-black text-sm mb-4 border-2 border-yellow-500 subtitle-anim absolute shadow-lg tracking-widest uppercase';
+        el.className = 'bg-black/90 text-yellow-300 px-4 py-2 rounded-full font-black text-xs mb-3 border border-yellow-500 subtitle-anim absolute shadow-lg tracking-widest uppercase';
         el.innerText = type==='pop'?'[Tombol 🔘]':type==='start'?'[Musik Dimulai 🎵]':type==='happy'?'[Benar 🌟]':type==='wrong'?'[Kurang Tepat 💥]':'[Menang 🎉]';
         layer.appendChild(el); setTimeout(() => el.remove(), 2500);
     }
@@ -376,6 +422,20 @@
 
     const deepClone = obj => JSON.parse(JSON.stringify(obj));
 
+    function getFlashcard(idx) {
+        if (idx < FLASHCARDS.length) return FLASHCARDS[idx];
+        return {
+            t: 'Rambu Misteri ' + (idx + 1),
+            i: '❓',
+            d: 'Rambu ini masih dalam tahap penelitian.',
+            f: 'Tingkatkan terus levelmu untuk menemukan wawasan keselamatan baru!',
+            q: 'Apa fungsi dari rambu rahasia nomor ' + (idx + 1) + '?',
+            opts: ['Menambah Wawasan', 'Tidak Diketahui', 'Hiasan Jalan', 'Rambu Alien'],
+            a: 1,
+            exp: 'Rambu ini masih dalam tahap penelitian oleh otoritas lalu lintas kota.'
+        };
+    }
+
     function fisherYatesShuffle(array) {
         let currentIndex = array.length, randomIndex;
         while (currentIndex !== 0) {
@@ -387,21 +447,49 @@
     }
 
     // --- MEGA DATA SETS ---
+    const ZEBRA_ICON = `<svg viewBox="0 0 100 100" class="w-[1em] h-[1em] inline-block drop-shadow-lg align-middle"><rect width="100" height="100" rx="20" fill="#374151" stroke="#9ca3af" stroke-width="2"/><rect x="25" y="15" width="50" height="12" fill="white" rx="2"/><rect x="25" y="35" width="50" height="12" fill="white" rx="2"/><rect x="25" y="55" width="50" height="12" fill="white" rx="2"/><rect x="25" y="75" width="50" height="12" fill="white" rx="2"/></svg>`;
+    const UTURN_ICON = `<svg viewBox="0 0 100 100" class="w-[1em] h-[1em] inline-block drop-shadow-md align-middle"><circle cx="50" cy="50" r="45" fill="#2563eb" stroke="white" stroke-width="4"/><path d="M 65 80 L 65 45 A 15 15 0 0 0 35 45 L 35 55" fill="none" stroke="white" stroke-width="8" stroke-linecap="round"/><polygon points="20,55 50,55 35,75" fill="white"/></svg>`;
+    const NO_UTURN_ICON = `<svg viewBox="0 0 100 100" class="w-[1em] h-[1em] inline-block drop-shadow-md align-middle"><circle cx="50" cy="50" r="45" fill="white" stroke="#ef4444" stroke-width="10"/><path d="M 65 80 L 65 45 A 15 15 0 0 0 35 45 L 35 55" fill="none" stroke="#1f2937" stroke-width="8" stroke-linecap="round"/><polygon points="20,55 50,55 35,75" fill="#1f2937"/><line x1="20" y1="20" x2="80" y2="80" stroke="#ef4444" stroke-width="10"/></svg>`;
+    const SEATBELT_ICON = `<div class="relative inline-flex flex-col items-center justify-end w-[1em] h-[1em] bg-slate-700 rounded-xl shadow-lg border-2 border-slate-500 align-middle box-border overflow-hidden"><div class="absolute top-[8%] w-[45%] h-[20%] bg-slate-500 rounded-t-md"></div><div class="absolute bottom-[8%] w-[70%] h-[60%] bg-slate-400 rounded-t-xl rounded-b-md"></div><div class="absolute top-[8%] left-[25%] w-[12%] h-[120%] bg-gray-200 transform -rotate-[40deg] origin-top-left z-10 shadow-sm"></div><div class="absolute bottom-[25%] left-[10%] w-[80%] h-[12%] bg-gray-200 z-10 shadow-sm"></div><div class="absolute bottom-[18%] right-[5%] w-[30%] h-[25%] bg-gray-800 border-2 border-gray-300 rounded-md z-20 flex items-center justify-center"><div class="w-[40%] h-[30%] bg-red-500 rounded-sm shadow-inner"></div></div></div>`;
+    const HELMET_ICON = `<div class="relative inline-flex items-center justify-center w-[1em] h-[1em] align-middle drop-shadow-xl"><div class="absolute left-[5%] top-[10%] w-[90%] h-[80%] bg-[#1f1f1f] rounded-t-[50%] rounded-br-[40%] rounded-bl-[20%] shadow-inner overflow-hidden border-[0.02em] border-gray-600"></div><div class="absolute left-[5%] top-[25%] w-[48%] h-[40%] bg-white/10 backdrop-blur-sm rounded-tr-[40%] rounded-br-[40%] rounded-l-[15%] border-r-[0.02em] border-b-[0.02em] border-white/40"></div><div class="absolute left-[43%] top-[35%] w-[16%] h-[16%] rounded-full bg-gray-900 border-[0.02em] border-gray-600 shadow-inner"></div><div class="absolute left-[35%] top-[15%] w-[18%] h-[4%] bg-black rounded-full -rotate-6"></div><div class="absolute right-[12%] bottom-[20%] flex flex-col items-center leading-none"><div class="border-y-[0.02em] border-white text-[0.2em] font-black text-white uppercase tracking-tighter" style="padding: 0.05em 0.1em; line-height: 0.8;">SNI</div></div></div>`;
+    const NO_PARKING_ICON = `<div class="relative inline-flex items-center justify-center w-[1em] h-[1em] bg-white rounded-full border-[0.12em] border-red-600 align-middle shadow-md overflow-hidden box-border"><div class="text-[0.6em] font-black text-slate-900 leading-none">P</div><div class="absolute w-[140%] h-[0.12em] bg-red-600 -rotate-45"></div></div>`;
+    const STOP_SIGN_ICON = `<div class="relative inline-flex items-center justify-center w-[1em] h-[1em] align-middle drop-shadow-md"><div class="absolute inset-0 bg-white" style="clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%);"></div><div class="absolute inset-[0.05em] bg-red-600 flex items-center justify-center" style="clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%);"><span class="text-white font-black text-[0.28em] leading-none tracking-tighter">STOP</span></div></div>`;
+    const NO_STOPPING_ICON = `<div class="relative inline-flex items-center justify-center w-[1em] h-[1em] bg-white rounded-full border-[0.12em] border-red-600 align-middle shadow-md overflow-hidden box-border"><div class="text-[0.6em] font-black text-slate-900 leading-none">S</div><div class="absolute w-[140%] h-[0.12em] bg-red-600 -rotate-45"></div></div>`;
+
     // 1. Pustaka & Kuis Harian 
     const FLASHCARDS = [
-      { t: 'Zebra Cross', i: '🦓', d: 'Tempat menyeberang aman.', f: 'Menurut UU No. 22/2009 Psl 131, pejalan kaki berhak penuh atas fasilitas penyeberangan.', q: 'Siapa yang punya Hak Utama di Zebra Cross?', opts: ['Mobil Pribadi', 'Pejalan Kaki', 'Sepeda Motor', 'Pesepeda Ontel'], a: 1, exp: 'Pejalan kaki dilindungi hukum secara mutlak saat menyeberang di fasilitas ini.' },
+      { t: 'Zebra Cross', i: ZEBRA_ICON, d: 'Tempat menyeberang aman.', f: 'Menurut UU No. 22/2009 Psl 131, pejalan kaki berhak penuh atas fasilitas penyeberangan.', q: 'Siapa yang punya Hak Utama di Zebra Cross?', opts: ['Mobil Pribadi', 'Pejalan Kaki', 'Sepeda Motor', 'Pesepeda Ontel'], a: 1, exp: 'Pejalan kaki dilindungi hukum secara mutlak saat menyeberang di fasilitas ini.' },
       { t: 'Lampu Merah', i: '🚦', d: 'Wajib berhenti total.', f: 'Data WHO menyebut menerobos lampu merah adalah salah satu penyebab utama kecelakaan fatal di persimpangan.', q: 'Tindakan benar saat lampu APILL menyala merah?', opts: ['Ngebut Biar Cepat', 'Berhenti Total', 'Bunyikan Klakson', 'Jalan Pelan-Pelan'], a: 1, exp: 'Merah = Wajib berhenti di belakang garis stop demi keselamatan bersama.' },
-      { t: 'Rambu Stop', i: '🛑', d: 'Berhenti sejenak, cek aman.', f: 'Survei membuktikan berhenti 3 detik di rambu STOP mengurangi risiko tabrakan samping.', q: 'Apa arti rambu STOP?', opts: ['Jalan Terus Saja', 'Wajib Berhenti Sesaat', 'Boleh Parkir', 'Hati-hati Pelan'], a: 1, exp: 'Pastikan simpang aman secara visual sebelum Anda melanjutkan perjalanan.' },
-      { t: 'Dilarang Parkir', i: '🚳', d: 'Area dilarang parkir.', f: 'Parkir liar merampas 30% kapasitas jalan, memicu kemacetan parah di kota besar.', q: 'Tanda P dicoret merah artinya?', opts: ['Area Bebas Parkir', 'Dilarang Parkir', 'Pom Bensin Terdekat', 'Jalan Buntu'], a: 1, exp: 'Area ini harus steril dari kendaraan yang diparkir.' },
-      { t: 'Helm SNI', i: '🪖', d: 'Pelindung kepala motor.', f: 'WHO mencatat pemakaian helm standar menurunkan risiko kematian akibat laka lantas hingga 42%.', q: 'Cara pakai helm yang benar?', opts: ['Dibiarkan Agak Longgar', 'Diklik Sampai Kencang', 'Tanpa Kaca Pelindung', 'Diikat Pakai Tali Rafia'], a: 1, exp: 'Tali helm menahan helm agar tidak terlepas saat terjadi benturan keras.' },
-      { t: 'Sabuk Pengaman', i: '🎗️', d: 'Pelindung tubuh di mobil.', f: 'Sabuk pengaman mengurangi risiko cedera fatal penumpang depan hingga 50%.', q: 'Fungsi utama sabuk pengaman?', opts: ['Hiasan Jok Mobil', 'Menahan Tubuh Saat Tabrakan', 'Mencegah Rasa Kantuk', 'Penghangat Tubuh'], a: 1, exp: 'Sabuk menyebarkan daya kejut ke bagian tulang tubuh terkuat saat terjadi pengereman.' },
+      { t: 'Rambu Stop', i: STOP_SIGN_ICON, d: 'Berhenti sejenak, cek aman.', f: 'Survei membuktikan berhenti 3 detik di rambu STOP mengurangi risiko tabrakan samping.', q: 'Apa arti rambu STOP?', opts: ['Jalan Terus Saja', 'Wajib Berhenti Sesaat', 'Boleh Parkir', 'Hati-hati Pelan'], a: 1, exp: 'Pastikan simpang aman secara visual sebelum Anda melanjutkan perjalanan.' },
+      { t: 'Dilarang Parkir', i: NO_PARKING_ICON, d: 'Area dilarang parkir.', f: 'Parkir liar merampas 30% kapasitas jalan, memicu kemacetan parah di kota besar.', q: 'Tanda P dicoret merah artinya?', opts: ['Area Bebas Parkir', 'Dilarang Parkir', 'Pom Bensin Terdekat', 'Jalan Buntu'], a: 1, exp: 'Area ini harus steril dari kendaraan yang diparkir.' },
+      { t: 'Helm SNI', i: HELMET_ICON, d: 'Pelindung kepala motor.', f: 'WHO mencatat pemakaian helm standar menurunkan risiko kematian akibat laka lantas hingga 42%.', q: 'Cara pakai helm yang benar?', opts: ['Dibiarkan Agak Longgar', 'Diklik Sampai Kencang', 'Tanpa Kaca Pelindung', 'Diikat Pakai Tali Rafia'], a: 1, exp: 'Tali helm menahan helm agar tidak terlepas saat terjadi benturan keras.' },
+      { t: 'Sabuk Pengaman', i: SEATBELT_ICON, d: 'Pelindung tubuh di mobil.', f: 'Sabuk pengaman mengurangi risiko cedera fatal penumpang depan hingga 50%.', q: 'Fungsi utama sabuk pengaman?', opts: ['Hiasan Jok Mobil', 'Menahan Tubuh Saat Tabrakan', 'Mencegah Rasa Kantuk', 'Penghangat Tubuh'], a: 1, exp: 'Sabuk menyebarkan daya kejut ke bagian tulang tubuh terkuat saat terjadi pengereman.' },
       { t: 'Ramp Disabilitas', i: '♿', d: 'Akses landai trotoar.', f: 'Pasal 242 UU LLAJ menjamin hak aksesibilitas bagi penyandang disabilitas di jalan raya.', q: 'Siapa pengguna utama ramp di trotoar?', opts: ['Tempat Parkir Motor', 'Pengguna Kursi Roda', 'Jalur Sepeda Balap', 'Area Pedagang Kaki Lima'], a: 1, exp: 'Bidang miring diciptakan untuk mempermudah akses kursi roda.' },
       { t: 'Guiding Block', i: '🟨', d: 'Ubin penunjuk jalan.', f: 'Ubin garis lurus berarti "jalan terus", sedangkan ubin dengan tekstur bulat/titik berarti "waspada/berhenti".', q: 'Fungsi Guiding Block ubin kuning?', opts: ['Hiasan Jalan Kota', 'Panduan Tuna Netra', 'Jalur Lari Pagi', 'Batas Parkir Resmi'], a: 1, exp: 'Tekstur khusus ini dirasakan menggunakan tongkat navigasi tuna netra.' },
       { t: 'Zona Sekolah', i: '🚸', d: 'Kawasan ramai anak.', f: 'Kecepatan maksimal di zona sekolah secara internasional disarankan maksimal 30 km/jam.', q: 'Yang wajib dilakukan di zona sekolah?', opts: ['Tancap Gas Penuh', 'Pelan & Waspada', 'Klakson Sekeras Mungkin', 'Berhenti Mendadak'], a: 1, exp: 'Anak-anak sering bergerak refleks, kecepatan rendah memberi Anda waktu merem.' },
-      { t: 'Lampu Kuning', i: '🟡', d: 'Bersiap berhenti.', f: 'Menambah gas saat kuning sangat berbahaya karena lampu silang mungkin akan segera hijau.', q: 'Arti lampu kuning menyala?', opts: ['Tancap Gas Segera', 'Hati-hati & Siap Berhenti', 'Boleh Langsung Belok', 'Berhenti Mendadak Di Tengah'], a: 1, exp: 'Lampu kuning adalah sinyal transisi untuk memelankan kendaraan Anda.' }
+      { t: 'Lampu Kuning', i: '🟡', d: 'Bersiap berhenti.', f: 'Menambah gas saat kuning sangat berbahaya karena lampu silang mungkin akan segera hijau.', q: 'Arti lampu kuning menyala?', opts: ['Tancap Gas Segera', 'Hati-hati & Siap Berhenti', 'Boleh Langsung Belok', 'Berhenti Mendadak Di Tengah'], a: 1, exp: 'Lampu kuning adalah sinyal transisi untuk memelankan kendaraan Anda.' },
+      { t: 'Dilarang Masuk', i: '⛔', d: 'Dilarang masuk jalan.', f: 'Melanggar rambu dilarang masuk sangat berbahaya karena memicu tabrakan berlawanan arah.', q: 'Rambu lingkaran merah strip putih di tengah artinya?', opts: ['Dilarang Parkir', 'Batas Kecepatan', 'Dilarang Masuk (Verboden)', 'Area Putar Balik'], a: 2, exp: 'Rambu ini melarang semua kendaraan masuk ke jalan tersebut.' },
+      { t: 'Dilarang Berhenti', i: NO_STOPPING_ICON, d: 'Dilarang berhenti sesaat.', f: 'Berhenti sembarangan bisa memicu kemacetan panjang dan kecelakaan lalu lintas.', q: 'Apa arti rambu lingkaran huruf S dicoret merah?', opts: ['Dilarang Parkir', 'Dilarang Berhenti', 'Dilarang Santai', 'Dilarang Masuk'], a: 1, exp: 'S dicoret (No Stopping) artinya kendaraan tidak boleh berhenti sama sekali di area itu.' },
+      { t: 'Rambu Peringatan', i: '⚠️', d: 'Peringatan bahaya di depan.', f: 'Warna dasar kuning pada rambu selalu menandakan adanya peringatan kondisi berbahaya.', q: 'Rambu peringatan (segitiga kuning) berfungsi untuk?', opts: ['Menambah Kecepatan', 'Memperingatkan Bahaya', 'Tempat Istirahat', 'Penunjuk Arah Kota'], a: 1, exp: 'Jika melihat rambu kuning, pengemudi wajib lebih waspada dan memelankan laju.' },
+      { t: 'Jalur Sepeda', i: '🚲', d: 'Jalur khusus pesepeda.', f: 'Motor yang menyerobot masuk ke jalur sepeda dapat dikenakan sanksi tilang.', q: 'Gambar sepeda putih pada rambu biru menandakan?', opts: ['Dilarang Bersepeda', 'Jalur Khusus Sepeda', 'Parkiran Motor', 'Toko Sepeda'], a: 1, exp: 'Lajur ini didedikasikan secara eksklusif untuk keamanan para pesepeda.' },
+      { t: 'Rumah Sakit', i: '🏥', d: 'Fasilitas Rumah Sakit.', f: 'Polusi suara sangat mengganggu pasien, sehingga klakson dilarang di sekitar RS.', q: 'Tindakan benar saat melewati kawasan Rumah Sakit?', opts: ['Nyalakan Sirine', 'Jangan Bunyikan Klakson', 'Balapan Motor', 'Berteriak Keras'], a: 1, exp: 'Kawasan fasilitas kesehatan harus tenang dan bebas dari kebisingan.' },
+      { t: 'Lampu Hijau', i: '🟢', d: 'Kendaraan boleh berjalan.', f: 'Meski lampu hijau menyala, Anda tetap wajib memastikan persimpangan di depan sudah aman.', q: 'Lampu APILL menyala hijau berarti?', opts: ['Berjalan Hati-hati', 'Wajib Tancap Gas Full', 'Berhenti Mendadak', 'Boleh Lawan Arus'], a: 0, exp: 'Boleh berjalan, namun harus tetap siaga melihat situasi kendaraan dari arah lain.' },
+      { t: 'Pom Bensin', i: '⛽', d: 'Stasiun Bahan Bakar.', f: 'Bermain HP dan mesin menyala saat mengisi BBM bisa memicu uap bensin terbakar.', q: 'Apa larangan utama di area SPBU (Pom Bensin)?', opts: ['Membeli Air Minum', 'Menyalakan Api / Merokok', 'Memakai Sabuk Pengaman', 'Membuka Kaca Jendela'], a: 1, exp: 'Api atau percikan kecil dapat menyambar uap BBM yang sangat mudah meledak.' },
+      { t: 'Tempat Parkir', i: '🅿️', d: 'Area parkir resmi.', f: 'Memarkir kendaraan di tempat resmi mencegah kemacetan akibat penyempitan jalan.', q: 'Rambu kotak biru dengan huruf P putih berarti?', opts: ['Tempat Putar Balik', 'Area Parkir Resmi', 'Dilarang Parkir', 'Pom Bensin'], a: 1, exp: 'Area ini disediakan khusus dan aman untuk memarkirkan kendaraan Anda.' },
+      { t: 'Dilarang Putar Balik', i: NO_UTURN_ICON, d: 'Dilarang memutar arah kendaraan.', f: 'Memutar balik di tempat yang dilarang bisa menyebabkan tabrakan dari arah berlawanan.', q: 'Rambu panah putar balik dicoret merah berarti?', opts: ['Tempat Putar Balik', 'Dilarang Putar Balik', 'Wajib Belok Kanan', 'Dilarang Parkir'], a: 1, exp: 'Tanda ini adalah larangan mutlak melakukan putar arah (U-Turn) di area tersebut.' },
+      { t: 'Putar Balik', i: UTURN_ICON, d: 'Tempat putar balik resmi.', f: 'Selalu menoleh untuk mengecek Blind Spot sebelum Anda memutar arah setir.', q: 'Rambu panah melengkung berbalik (U-Turn) artinya?', opts: ['Jalan Buntu Ujung', 'Tempat Putar Balik', 'Dilarang Masuk', 'Jalan Tol Menikung'], a: 1, exp: 'Area ini diperbolehkan untuk memutar arah laju kendaraan Anda (U-Turn).' },
+      { t: 'Belok Kiri', i: '⬅️', d: 'Wajib belok kiri.', f: 'Kendaraan harus mengikuti arah panah ke kiri untuk menghindari tabrakan arus lalu lintas.', q: 'Rambu lingkaran biru panah kiri artinya?', opts: ['Dilarang Kiri', 'Wajib Belok Kiri', 'Boleh Kanan', 'Jalan Buntu'], a: 1, exp: 'Wajib mengikuti perintah belok kiri.' },
+      { t: 'Belok Kanan', i: '➡️', d: 'Wajib belok kanan.', f: 'Jika ada rambu ini, kamu tidak boleh melaju lurus atau ke kiri.', q: 'Rambu lingkaran biru panah kanan artinya?', opts: ['Belok Kiri', 'Wajib Belok Kanan', 'Dilarang Kanan', 'Parkir Motor'], a: 1, exp: 'Perintah mutlak untuk belok kanan.' },
+      { t: 'Jalur Pedestrian', i: '🚶‍♂️', d: 'Khusus pejalan kaki.', f: 'Kendaraan bermotor dilarang keras melintas di area dengan rambu ini.', q: 'Rambu biru bergambar orang berjalan berarti?', opts: ['Tempat Olahraga', 'Khusus Pejalan Kaki', 'Tempat Menyeberang', 'Dilarang Berjalan'], a: 1, exp: 'Area ini didedikasikan 100% khusus untuk pejalan kaki.' },
+      { t: 'Batas Maks 40', i: '4️⃣0️⃣', d: 'Batas kecepatan 40km.', f: 'Mengemudi lebih dari 40 km/jam di zona ini berpotensi menyebabkan kecelakaan fatal.', q: 'Lingkaran merah dengan angka 40 artinya?', opts: ['Kecepatan Minimal 40', 'Kecepatan Maksimal 40', 'Jalan 40 km', 'Jarak 40 meter'], a: 1, exp: 'Batas kecepatan maksimal untuk mencegah kecelakaan di area padat.' },
+      { t: 'Lampu Strobo', i: '🚨', d: 'Khusus Polisi/Aparat.', f: 'Strobo biru hanya boleh digunakan oleh kepolisian, dilarang untuk warga sipil.', q: 'Siapa yang boleh memakai strobo warna biru?', opts: ['Semua Kendaraan', 'Polisi Lalu Lintas', 'Truk Barang', 'Mobil Pribadi'], a: 1, exp: 'Diatur oleh Undang-Undang khusus untuk aparat penegak hukum.' },
+      { t: 'Polisi Tidur', i: '〰️', d: 'Pelambat kecepatan.', f: 'Tingginya dibatasi maksimal 12 cm agar tidak merusak kolong kendaraan atau memicu bahaya.', q: 'Fungsi utama polisi tidur (speed bump) adalah?', opts: ['Tempat Parkir', 'Memaksa Pelambatan', 'Batas Kota', 'Hiasan Jalan'], a: 1, exp: 'Memaksa pengemudi menurunkan kecepatan demi keamanan bersama.' },
+      { t: 'Jalan Buntu', i: '🚧', d: 'Tidak ada jalan keluar.', f: 'Rambu ini sering dipasang di gang perumahan untuk menghindari kendaraan terjebak.', q: 'Tanda palang atau huruf T merah artinya?', opts: ['Jalan Tol', 'Jalan Buntu', 'Arah Bandara', 'SPBU'], a: 1, exp: 'Jalan ini buntu dan kendaraan tidak bisa tembus ke jalan lain.' },
+      { t: 'Turunan Tajam', i: '📉', d: 'Hati-hati rem blong.', f: 'Gunakan gigi rendah (engine brake) saat melewati turunan tajam, bukan sekadar rem.', q: 'Gambar mobil menurun curam (segitiga kuning) artinya?', opts: ['Jalan Licin', 'Turunan Tajam', 'Tanjakan Tajam', 'Jalan Bergelombang'], a: 1, exp: 'Gunakan gigi rendah agar rem kendaraan tidak terlalu panas (blong).' },
+      { t: 'Tanjakan Terjal', i: '📈', d: 'Kurangi gigi kendaraan.', f: 'Pengemudi harus siap menambah tenaga dan tenang agar mobil tidak mundur.', q: 'Gambar mobil menanjak tajam (segitiga kuning) artinya?', opts: ['Turunan', 'Tanjakan Terjal', 'Tempat Parkir', 'Zebra Cross'], a: 1, exp: 'Peringatan untuk bersiap menghadapi jalanan menanjak yang berat.' },
+      { t: 'Jalan Licin', i: '💦', d: 'Awas tergelincir.', f: 'Sangat berbahaya saat gerimis pertama turun karena debu dan aspal menjadi lapisan licin.', q: 'Gambar mobil dengan jejak meliuk (S) artinya?', opts: ['Tempat Balap', 'Jalan Sangat Licin', 'Banyak Belokan', 'Jalan Rusak'], a: 1, exp: 'Peringatan menurunkan laju karena aspal sangat licin.' }
     ];
 
-    // 2. Data 60 Soal Bot (Generate dinamis untuk variasi, diringkas jadi string base)
     const BOT_QUESTIONS_BASE = [
         ["Rambu larangan biasanya berbentuk?", "Lingkaran Merah", "Segitiga Biru", "Kotak Kuning", "Ketupat Hijau"],
         ["Rambu peringatan biasanya berwarna?", "Kuning & Hitam", "Merah & Putih", "Biru & Putih", "Hijau & Putih"],
@@ -412,180 +500,130 @@
         ["Fungsi utama kaca spion pada motor adalah?", "Melihat Belakang", "Cermin Wajah", "Aksesoris", "Penangkal Angin"],
         ["Waktu menyalakan lampu utama motor yang benar adalah?", "Siang & Malam", "Malam Saja", "Saat Hujan", "Saat Touring"],
         ["Usia minimal membuat SIM C (Motor) adalah?", "17 Tahun", "15 Tahun", "20 Tahun", "21 Tahun"],
-        ["Batas kecepatan maksimal di jalan tol antar kota biasanya?", "100 km/jam", "60 km/jam", "150 km/jam", "80 km/jam"],
-        ["Kendaraan yang mendapat prioritas utama dengan sirine?", "Ambulans/Pemadam", "Mobil Pejabat", "Konvoi Motor", "Bus Umum"],
-        ["Jika ada kecelakaan di depan, yang harus dihindari?", "Menonton di Tengah Jalan", "Membantu Korban", "Minggir Teratur", "Lapor Polisi"],
-        ["Surat yang membuktikan kendaraan itu resmi bayar pajak?", "STNK", "BPKB", "KTP", "SIM"],
-        ["Bunyi peluit polisi 'Prit.. Prit.. Prit..' (Pendek Cepat) berarti?", "Jalan Dipercepat", "Berhenti", "Minggir", "Hati-hati"],
-        ["Bunyi peluit polisi 'Priiiiittt..' (Panjang 1x) berarti?", "Berhenti Total", "Jalan Terus", "Maju", "Menepi"],
-        ["Helm standar di Indonesia harus memiliki logo?", "SNI", "DOT", "SNELL", "ISO"],
-        ["Menelpon saat berkendara bisa menyebabkan?", "Kehilangan Fokus", "Bensin Irit", "Lebih Keren", "Cepat Sampai"],
-        ["Saat turun hujan, jalanan aspal akan menjadi?", "Lebih Licin", "Lebih Kasar", "Lebih Lengket", "Tidak Berubah"],
-        ["Gunakan lampu sein minimal pada jarak... sebelum belok?", "30 Meter", "1 Meter", "100 Meter", "5 Meter"],
-        ["Rambu dengan gambar kasur/tempat tidur artinya?", "Penginapan/Hotel", "Rumah Sakit", "Halte Bus", "Panti Pijat"],
-        ["Rambu bergambar sendok & garpu menyilang artinya?", "Rumah Makan", "Pabrik Sendok", "Dilarang Makan", "Area Piknik"],
-        ["Warna dasar rambu petunjuk jalan tol adalah?", "Hijau/Biru", "Merah", "Kuning", "Hitam"],
-        ["Menyalip kendaraan lain paling aman dari sisi?", "Kanan", "Kiri", "Bahu Jalan", "Trotoar"],
-        ["Menyalakan lampu hazard (kedip ganda) saat hujan lurus adalah?", "Salah & Membahayakan", "Sangat Benar", "Dianjurkan Polisi", "Bikin Terang"],
-        ["Fungsi utama lampu hazard adalah untuk?", "Keadaan Darurat/Mogok", "Konvoi Rombongan", "Cuaca Buruk", "Balapan"],
-        ["Blind spot pada truk besar sangat berbahaya karena?", "Sopir Tidak Bisa Melihat Kita", "Truk Berjalan Cepat", "Suara Truk Bising", "Truk Sulit Berhenti"],
-        ["Jalur penyelamat di turunan tajam (batu kerikil tebal) berfungsi untuk?", "Kendaraan Blong Rem", "Tempat Istirahat", "Parkir Darurat", "Jalur Truk Biasa"],
-        ["Saat palang pintu kereta mulai turun, kamu harus?", "Berhenti Sebelum Palang", "Tancap Gas Cepat", "Menerobos Celahnya", "Klakson Keretanya"],
-        ["Batas kandungan alkohol bagi pengemudi di Indonesia?", "0% (Nol Mutlak)", "5%", "10%", "Tergantung Umur"],
-        ["SIM A dikhususkan untuk mengemudikan kendaraan?", "Mobil Penumpang", "Sepeda Motor", "Truk Gandeng", "Bus Antar Kota"]
-        // (Sistem akan menggandakan dan mengacak array ini agar selalu terasa baru)
+        ["Batas kecepatan maksimal di jalan tol antar kota biasanya?", "100 km/jam", "60 km/jam", "150 km/jam", "80 km/jam"]
     ];
 
-    // 3. Susun Kata (20 Case Skenario - Diacak setiap main)
     const SUSUN_UMUM = [
         { c: "Skenario: Kamu bersiap mengendarai motor untuk ke sekolah.", w: ["Pakai","helm","sampai","bunyi","klik"] }, 
         { c: "Skenario: Lampu APILL di persimpangan depan menyala merah terang.", w: ["Berhenti","di","belakang","garis","stop"] }, 
         { c: "Skenario: Ada nenek-nenek berdiri di pinggir Zebra Cross.", w: ["Utamakan","selalu","hak","pejalan","kaki"] }, 
         { c: "Skenario: HP kamu berbunyi saat sedang naik motor di jalan raya.", w: ["Jangan","main","hp","saat","berkendara"] }, 
-        { c: "Skenario: Kamu melihat rambu bergambar anak lari (Zona Sekolah).", w: ["Kurangi","laju","dekat","zona","sekolah"] },
-        { c: "Skenario: Baru saja duduk di kursi sopir atau penumpang mobil.", w: ["Pasang","sabuk","pengaman","dalam","mobil"] }, 
-        { c: "Skenario: Kamu ingin menyeberang jalanan yang lumayan ramai.", w: ["Tengok","kanan","kiri","sebelum","menyeberang"] }, 
-        { c: "Skenario: Lampu hijau baru saja berubah menjadi kuning.", w: ["Lampu","kuning","wajib","kurangi","kecepatan"] }, 
-        { c: "Skenario: Kamu ingin makan tapi ada rambu 'P' dicoret.", w: ["Patuhi","rambu","dilarang","parkir","liar"] }, 
-        { c: "Skenario: Kamu berjalan kaki di jalan yang tidak ada trotoarnya.", w: ["Jalan","kaki","di","sebelah","kiri"] },
-        { c: "Skenario: Ada razia/pemeriksaan polisi di depan.", w: ["Selalu","bawa","SIM","dan","STNK"] }, 
-        { c: "Skenario: Jalan sebelah kiri macet, jalur kanan kosong tapi berlawanan arah.", w: ["Sangat","bahaya","melawan","arus","jalan"] }, 
-        { c: "Skenario: Terdengar suara sirine nyaring dari belakangmu.", w: ["Beri","jalan","untuk","mobil","ambulans"] }, 
-        { c: "Skenario: Gerimis mulai turun membasahi aspal.", w: ["Jangan","ngebut","saat","turun","hujan"] }, 
-        { c: "Skenario: Kamu harus bersepeda di malam hari yang gelap.", w: ["Pakai","jaket","terang","saat","malam"] },
-        { c: "Skenario: Ada tanda putar balik namun dicoret silang merah.", w: ["Perhatikan","rambu","larangan","putar","balik"] }, 
-        { c: "Skenario: Mobil di depan melaju kencang, apa yang harus kamu atur?", w: ["Jaga","jarak","aman","antar","kendaraan"] }, 
-        { c: "Skenario: Kamu mau masuk ke pertigaan sebelah kiri.", w: ["Nyalakan","sein","sebelum","anda","belok"] }, 
-        { c: "Skenario: Teng tong teng tong! Palang kereta mulai turun.", w: ["Jangan","terobos","palang","pintu","kereta"] }, 
-        { c: "Skenario: Pagi hari sebelum memanaskan mesin kendaraan.", w: ["Periksa","rem","motor","sebelum","pergi"] }
+        { c: "Skenario: Kamu melihat rambu bergambar anak lari (Zona Sekolah).", w: ["Kurangi","laju","dekat","zona","sekolah"] }
     ];
     
     const SUSUN_DAKSA = [
         { c: "Kasus: Sebuah motor parkir menutupi jalan miring di trotoar.", w: ["Jangan","pernah","halangi","akses","ramp"] }, 
         { c: "Kasus: Ada pedagang jualan di atas ubin kuning garis-garis.", w: ["Guiding","block","harus","selalu","bebas"] }, 
-        { c: "Kasus: Area parkir dengan logo kursi roda sering diserobot orang biasa.", w: ["Dilarang","parkir","di","area","difabel"] }, 
-        { c: "Kasus: Pemakai kruk sedang menyeberang dengan pelan.", w: ["Beri","waktu","ekstra","untuk","menyeberang"] }, 
-        { c: "Kasus: Trotoar direbut oleh pengendara motor saat macet.", w: ["Trotoar","adalah","hak","pejalan","kaki"] },
-        { c: "Kasus: Seorang tunanetra tampak bingung di persimpangan.", w: ["Bantu","tunanetra","jika","terlihat","ragu"] }, 
-        { c: "Kasus: Ada antrian naik bus, difabel butuh waktu lebih.", w: ["Hormati","pengguna","fasilitas","kursi","roda"] }, 
-        { c: "Kasus: Membangun jembatan penyeberangan baru di kota.", w: ["Fasilitas","umum","harus","sangat","aksesibel"] }, 
-        { c: "Kasus: Mobil pribadi ikut masuk ke antrian lift khusus difabel.", w: ["Jangan","serobot","jalur","khusus","difabel"] }, 
-        { c: "Kasus: Keselamatan bukan cuma buat yang fisiknya sempurna.", w: ["Utamakan","keselamatan","bersama","di","jalan"] },
-        { c: "Kasus: Pemotor memakai bidang miring trotoar untuk naik ke atas.", w: ["Ramp","landai","bukan","untuk","motor"] }, 
-        { c: "Kasus: Pintu lift terbuka, ada pengguna kursi roda menunggu.", w: ["Beri","prioritas","difabel","di","lift"] }, 
-        { c: "Kasus: Meninggalkan sampah di atas ubin kuning taktil trotoar.", w: ["Jaga","guiding","block","tetap","bersih"] }, 
-        { c: "Kasus: Anak muda asyik nongkrong/duduk di bidang miring ramp.", w: ["Jangan","duduk","nongkrong","di","ramp"] }, 
-        { c: "Kasus: Mendesain tempat parkir untuk pusat perbelanjaan.", w: ["Sediakan","parkir","luas","khusus","difabel"] },
-        { c: "Kasus: Trotoar berlubang sangat berbahaya bagi kursi roda.", w: ["Trotoar","rata","sangat","membantu","mereka"] }, 
-        { c: "Kasus: Mau menyeberang tapi kendaraan melaju kencang terus.", w: ["Tombol","pelican","crossing","sangat","penting"] }, 
-        { c: "Kasus: Memastikan Bus Trans bisa digunakan semua golongan.", w: ["Akses","transportasi","aman","untuk","semua"] }, 
-        { c: "Kasus: Melihat sesama pengguna jalan kesusahan.", w: ["Saling","peduli","dan","bantu","sesama"] }, 
-        { c: "Kasus: Ingin mengerti kenapa ada parkiran yang lebih lebar.", w: ["Pahami","kebutuhan","mobilitas","teman","difabel"] }
+        { c: "Kasus: Area parkir dengan logo kursi roda sering diserobot orang biasa.", w: ["Dilarang","parkir","di","area","difabel"] }
     ];
 
-    // 4. Data Fasilitas Kota (D3 Minecraft-Lite & G9 Kota Ramah)
     const FASILITAS_KOTA = [
-        { id: 'f1', b: '🕳️', f: '♿', n: 'Ramp Kursi Roda', c: "Membuat jalan landai untuk kursi roda" }, { id: 'f2', b: '🚧', f: '🦓', n: 'Zebra Cross', c: "Area aman pejalan menyeberang" }, { id: 'f3', b: '🧱', f: '🟨', n: 'Guiding Block', c: "Penunjuk jalan ubin Tuna Netra" }, { id: 'f4', b: '🚫', f: '🅿️', n: 'Parkir Difabel', c: "Area parkir ekstra lebar khusus" }, { id: 'f5', b: '⚫', f: '🚦', n: 'Lampu Lalu Lintas', c: "Pengatur jalan kendaraan" }, { id: 'f6', b: '❓', f: '🛑', n: 'Rambu Stop', c: "Tanda wajib berhenti sejenak" }, { id: 'f7', b: '🔇', f: '🔊', n: 'Pelican Suara', c: "Tombol seberang bersuara" }, { id: 'f8', b: '🗑️', f: '🚌', n: 'Halte Aksesibel', c: "Halte rata dengan lantai bus" }, { id: 'f9', b: '🪜', f: '🛗', n: 'Lift Penyeberangan', c: "Pengganti tangga JPO yang curam" }, { id: 'f10', b: '🪨', f: '🛣️', n: 'Trotoar Rata', c: "Trotoar mulus tanpa lubang" }
+        { id: 'f1', b: '🕳️', f: '♿', n: 'Ramp Kursi Roda', c: "Membuat jalan landai untuk kursi roda" }, 
+        { id: 'f2', b: '🚧', f: ZEBRA_ICON, n: 'Zebra Cross', c: "Area aman pejalan menyeberang" }, 
+        { id: 'f3', b: '🧱', f: '🟨', n: 'Guiding Block', c: "Penunjuk jalan ubin Tuna Netra" }, 
+        { id: 'f4', b: '🚫', f: '🅿️', n: 'Parkir Difabel', c: "Area parkir ekstra lebar khusus" }
     ];
 
-    // 5. Soal Labirin/Empati/Akses (Akan di generate jadi 20)
     const MAZE_UMUM_QS = [
         { q: "Mendengar sirine ambulans dari belakang?", o: ["Minggir dan beri jalan", "Tancap gas balapan"], exp: "Ambulans bawa nyawa, beri jalan!" },
-        { q: "Lampu kuning menyala?", o: ["Kurangi kecepatan", "Gas pol mumpung belum merah"], exp: "Kuning tanda siap berhenti." },
-        { q: "Ada zebra cross di depan?", o: ["Waspada pejalan kaki", "Biasa saja"], exp: "Hak utama ada pada pejalan kaki." },
-        { q: "Hujan turun deras?", o: ["Jalan pelan, hindari rem mendadak", "Nyalakan lampu hazard sambil jalan"], exp: "Aspal licin, rem mendadak bisa selip." },
-        { q: "Lewat zona sekolah?", o: ["Kecepatan maksimal 30km/jam", "Bunyikan klakson agar anak minggir"], exp: "Anak-anak rawan lari tiba-tiba." }
+        { q: "Lampu kuning menyala?", o: ["Kurangi kecepatan", "Gas pol mumpung belum merah"], exp: "Kuning tanda siap berhenti." }
     ];
     const MAZE_EMPATI_QS = [
-        { q: "Melihat Tuna Netra mau menyeberang?", o: ["Tuntun jika ia meminta bantuan", "Klakson agar ia cepat"], exp: "Bantu dengan ramah jika diperlukan." },
-        { q: "Ada motor parkir di atas ubin kuning?", o: ["Itu salah, rampas hak Tuna Netra", "Biarin, lagi sepi"], exp: "Ubin kuning adalah 'mata' bagi mereka." },
-        { q: "Mobil sehat parkir di logo kursi roda?", o: ["Egois, itu hak disabilitas", "Wajar, parkiran lain penuh"], exp: "Parkir itu dirancang lebar untuk manuver kursi roda." },
-        { q: "Orang dengan kruk berjalan pelan di zebra cross?", o: ["Sabarlah menunggu", "Klakson biar cepat"], exp: "Beri mereka waktu tambahan yang mereka butuhkan." },
-        { q: "Ramp (jalan landai) tertutup PKL?", o: ["Halangi akses kursi roda", "Tidak masalah"], exp: "Ramp adalah satu-satunya akses naik turun mereka." }
+        { q: "Melihat Tuna Netra mau menyeberang?", o: ["Tuntun jika ia meminta bantuan", "Klakson agar ia cepat"], exp: "Bantu dengan ramah jika diperlukan." }
     ];
     const MAZE_DAKSA_QS = [
-        { q: "Fasilitas penyeberangan paling aman untuk kursi roda?", o: ["Pelican Crossing dengan Ramp", "Jembatan Penyeberangan Tangga"], exp: "Pelican lebih rata dan aman tanpa anak tangga." },
-        { q: "Saat naik angkutan umum?", o: ["Gunakan bus lantai rendah (low deck)", "Naik angkot biasa dengan diangkat"], exp: "Bus low deck/trans dirancang mandiri untuk difabel." },
-        { q: "Menghadapi trotoar rusak?", o: ["Cari rute memutar yang aspalnya rata", "Paksakan lewat"], exp: "Memaksa kursi roda di jalan rusak rawan terguling." },
-        { q: "Jika pelican crossing mati?", o: ["Minta bantuan penyeberang lain", "Langsung terobos"], exp: "Keselamatan nomor satu, jangan ragu minta tolong." },
-        { q: "Parkir kendaraan modifikasi (Roda 3)?", o: ["Di slot parkir lebar berlambang disabilitas", "Di trotoar"], exp: "Gunakan slot resmi yang telah disesuaikan negara." }
+        { q: "Fasilitas penyeberangan paling aman untuk kursi roda?", o: ["Pelican Crossing dengan Ramp", "Jembatan Penyeberangan Tangga"], exp: "Pelican lebih rata dan aman tanpa anak tangga." }
     ];
 
     const ALL_GAMES = [ 
         { id: 'g1', title: 'Tebak Rambu', icon: '🚦', desc: 'Ingat bentuk rambu lalu lintas.' }, 
         { id: 'g2', title: 'Puzzle Aman', icon: '🧩', desc: 'Cocokkan pasangan alat keselamatan.' }, 
-        { id: 'g3', title: 'Helm Hunter', icon: '🪖', desc: 'Tangkap helm yang jatuh!' }, 
-        { id: 'g4', title: 'Menyeberang', icon: '🚶', desc: 'Maju pelan lewati Zebra Cross.' }, 
-        { id: 'g5', title: 'Balap Vs Bot', icon: '🏎️', desc: 'Jawab cepat kalahkan AI bot.' }, 
-        { id: 'g6', title: 'Parkir Tepat', icon: '🛑', desc: 'Berhenti pas di area hijau.' }, 
-        { id: 'g11', title: 'Labirin Jalan', icon: '🏃', desc: 'Ambil kunci & jawab soal umum.' }, 
-        { id: 'g7', title: 'Empati Difabel', icon: '🦽', desc: 'Labirin tes empati di jalan.' }, 
-        { id: 'g10', title: 'Susun Kata', icon: '📝', desc: 'Pecahkan skenario lalin umum.' }, 
-        { id: 'g9', title: 'Kota Ramah', icon: '🏙️', desc: 'Perbaiki fasilitas jalan kota.' } 
+        { id: 'g3', title: 'Helm Hunter', icon: HELMET_ICON, desc: 'Tangkap helm yang jatuh!' }, 
+        { id: 'g4', title: 'Menyeberang', icon: ZEBRA_ICON, desc: 'Maju pelan lewati Zebra Cross.' }, 
+        { id: 'g5', title: 'Balap Vs Bot', icon: '🏎️', desc: 'Jawab cepat kalahkan AI bot.' }
     ];
     const DAKSA_GAMES = [ 
+        { id: 'g1', title: 'Tebak Rambu', icon: '🚦', desc: 'Ingat bentuk rambu lalu lintas.' },
         { id: 'd1', title: 'Labirin Akses', icon: '♿', desc: 'Rute aman untuk kursi roda.' }, 
         { id: 'd2', title: 'Solusi Difabel', icon: '📝', desc: 'Susun kata solusi kasus akses.' }, 
-        { id: 'd3', title: 'Bangun Akses', icon: '🧱', desc: 'Simulasi pasang blok jalan.' }, 
-        { id: 'd4', title: 'Survival Jalan', icon: '⏳', desc: 'Bertahan dari rintangan lubang.' }, 
-        { id: 'd5', title: 'Puzzle Empati', icon: '🧩', desc: 'Pahami fungsi fasilitas khusus.' } 
+        { id: 'd3', title: 'Survive Kota', icon: '🏙️', desc: 'Simulasi jalan Tuna Daksa.' }, 
+        { id: 'd4', title: 'Survival Jalan', icon: '⏳', desc: 'Bertahan dari rintangan lubang.' }
     ];
     
-    // Toko Alat Khusus Keselamatan Lalu Lintas
-    const SHOP_ITEMS = [ 
-        { id: 's1', name: 'Helm SNI Terang', icon: '🪖', price: 100 }, { id: 's2', name: 'Rompi Reflektor', icon: '🦺', price: 200 }, 
-        { id: 's3', name: 'Kacamata Jalan', icon: '🕶️', price: 400 }, { id: 's4', name: 'Sepatu Safety', icon: '🥾', price: 600 },
-        { id: 's5', name: 'Sarung Tangan', icon: '🧤', price: 800 }, { id: 's6', name: 'Pelindung Lutut', icon: '🦿', price: 1000 },
-        { id: 's7', name: 'Lampu Sepeda', icon: '🔦', price: 1200 }, { id: 's8', name: 'Klakson Bel', icon: '🔔', price: 1500 }
-    ];
-    
-    const BADGES = [ 
-        { id: 'b1', name: 'Pejalan Aman', lvl: 1, icon: '🚶' }, { id: 'b2', name: 'Taat Rambu', lvl: 5, icon: '🛑' }, 
-        { id: 'b3', name: 'Pengguna Taat', lvl: 10, icon: '🦓' }, { id: 'b4', name: 'Sahabat Daksa', lvl: 20, icon: '♿' }, 
-        { id: 'b5', name: 'Pelopor Selamat', lvl: 50, icon: '🦸‍♂️' }, { id: 'b6', name: 'Polisi Cilik', lvl: 100, icon: '👮‍♂️' } 
+    const SHOP_ITEMS = [
+        { id: 'hat1', name: 'Topi Polisi', icon: '👮', price: 100 },
+        { id: 'hat2', name: 'Helm SNI', icon: HELMET_ICON, price: 200 },
+        { id: 'hat3', name: 'Kacamata Hitam', icon: '🕶️', price: 300 },
+        { id: 'hat4', name: 'Topi Proyek', icon: '👷', price: 400 },
+        { id: 'hat5', name: 'Rompi Reflektor', icon: '🦺', price: 500 },
+        { id: 'hat6', name: 'Sepatu Boots', icon: '🥾', price: 600 },
+        { id: 'hat7', name: 'Rambu Stop', icon: STOP_SIGN_ICON, price: 700 },
+        { id: 'hat8', name: 'Megafon', icon: '📢', price: 800 }
     ];
 
-    // --- Core Engine: FUNGSI UNTUK MEMAKSA JAWABAN SELALU DI POSISI "B" (INDEX 1) ---
+    const BADGES = [
+        { lvl: 5, name: 'Siswa Patuh', icon: '🎒' },
+        { lvl: 10, name: 'Pejalan Kaki', icon: '🚶' },
+        { lvl: 15, name: 'Sahabat Difabel', icon: '🤝' },
+        { lvl: 25, name: 'Pelopor Lalin', icon: '🦸' },
+        { lvl: 35, name: 'Zebra Cross', icon: ZEBRA_ICON },
+        { lvl: 50, name: 'Ahli Lalin', icon: '🚦' },
+        { lvl: 60, name: 'Pengawal Helm', icon: HELMET_ICON },
+        { lvl: 75, name: 'Polisi Kehormatan', icon: '👮' },
+        { lvl: 85, name: 'Duta Akses', icon: '🏙️' },
+        { lvl: 100, name: 'Raja Keselamatan', icon: '👑' }
+    ];
+
+    const D3_SCENARIOS = [
+        "Kursi rodamu terperosok ke dalam lubang drainase tanpa penutup di tengah trotoar pejalan kaki.",
+        "Terhalang mobil parkir egois di atas ramp trotoar, kamu terpaksa turun ke jalan raya dan hampir terserempet bus.",
+        "Tongkat krukmu terpeleset parah di ubin trotoar karena menggunakan keramik licin tanpa material anti-slip."
+    ];
+
+    const G9_SCENARIOS = [
+        "Seorang pengguna kursi roda terperosok ke dalam lubang drainase tanpa penutup di tengah trotoar.",
+        "Terhalang mobil parkir egois di atas ramp trotoar, pengguna kursi roda terpaksa turun ke aspal.",
+        "Tongkat kruk seorang pejalan kaki terpeleset parah di ubin trotoar yang sangat licin."
+    ];
+
+    const D3_FIX_MAP = [
+        { id: 'f10', exp: 'Trotoar harus rata dan memiliki penutup drainase yang aman.' },
+        { id: 'f1', exp: 'Ramp Kursi Roda harus selalu bebas hambatan.' },
+        { id: 'f10', exp: 'Material trotoar yang baik wajib menggunakan bahan anti-slip.' }
+    ];
+
+    const D3_QUESTIONS = [
+        ["Berapa derajat maksimal kemiringan ideal untuk ramp kursi roda?", "Maksimal 4,7 - 6 derajat (1:12)", "Maksimal 15 derajat", "Maksimal 30 derajat", "Maksimal 45 derajat"],
+        ["Menurut prinsip aksesibilitas, lebar bersih minimal trotoar adalah?", "1,5 hingga 1,8 meter", "0,8 meter", "1,0 meter", "Tergantung kondisi aspal"]
+    ];
+
     function forceAnswerToB(correctStr, wrongArr) {
         let wrongOpts = fisherYatesShuffle([...wrongArr]);
         let newOpts = [];
-        newOpts.push(wrongOpts[0] || "Opsi A");     // Posisi A
-        newOpts.push(correctStr);                   // Posisi B (SELALU BENAR)
-        newOpts.push(wrongOpts[1] || "Opsi C");     // Posisi C
-        if(wrongArr.length > 2) newOpts.push(wrongOpts[2] || "Opsi D"); // Posisi D
+        newOpts.push(wrongOpts[0] || "Opsi A");     
+        newOpts.push(correctStr);                   
+        newOpts.push(wrongOpts[1] || "Opsi C");     
+        if(wrongArr.length > 2) newOpts.push(wrongOpts[2] || "Opsi D"); 
         return { opts: newOpts, a: 1 };
     }
 
-    // Dynamic Generator for Bot Questions
     function generateBotQuestions() {
         let qs = [];
-        // Extract from BOT_QUESTIONS_BASE
         BOT_QUESTIONS_BASE.forEach(arr => {
             let correct = arr[1], wrongs = [arr[2], arr[3], arr[4]];
             let forced = forceAnswerToB(correct, wrongs);
             qs.push({ q: arr[0], opts: forced.opts, a: forced.a, exp: "Fakta lalu lintas." });
         });
-        // Jika kurang dari 60, duplikasi & acak dari Pustaka
-        if(qs.length < 60) {
-            let xtra = fisherYatesShuffle(deepClone(FLASHCARDS));
-            xtra.forEach(f => {
-                let wrongs = f.opts.filter((_, i) => i !== f.a);
-                let forced = forceAnswerToB(f.opts[f.a], wrongs);
-                qs.push({ q: f.q, opts: forced.opts, a: forced.a, exp: f.exp });
-            });
-        }
         return fisherYatesShuffle(qs);
     }
 
-    // Dynamic Generator for Maze Questions
     function generateMazeQuestions(type, diffLvl) {
         let base = type === 'g11' ? MAZE_UMUM_QS : type === 'g7' ? MAZE_EMPATI_QS : MAZE_DAKSA_QS;
         let qs = [];
-        // Populate up to 20 unique items by duplicating and shuffling bases + injecting flashcards if needed
-        while(qs.length < 20) {
+        while(qs.length < 10) {
             fisherYatesShuffle(deepClone(base)).forEach(b => {
                 let forced = forceAnswerToB(b.o[0], [b.o[1], "Abaikan saja", "Pura-pura tidak lihat"]);
-                if(qs.length < 20) qs.push({ q: b.q, opts: forced.opts, a: forced.a, exp: b.exp });
+                if(qs.length < 10) qs.push({ q: b.q, opts: forced.opts, a: forced.a, exp: b.exp });
             });
         }
         return fisherYatesShuffle(qs);
@@ -614,6 +652,17 @@
         if(!state.gameLevels) state.gameLevels = {}; 
         if(!state.costumes) state.costumes = [];
         if(!state.userEmail) { state.userEmail = "pemain_" + Math.floor(Math.random()*9999) + "@gmail.com"; }
+        
+        let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
+        if(!state.g1Order) state.g1Order = [];
+        if(state.g1Order.length < unlockedCount) {
+            let missingIndices = [];
+            for(let i=0; i<unlockedCount; i++) {
+                if(!state.g1Order.includes(i)) missingIndices.push(i);
+            }
+            state.g1Order = state.g1Order.concat(fisherYatesShuffle(missingIndices));
+        }
+
         saveState();
         if(!petMessageInterval) petMessageInterval = setInterval(autoPetMessage, 10000);
     }
@@ -637,23 +686,29 @@
        const btnGames = document.getElementById('menu-games');
 
        if (state.dailyCompletedDate === new Date().toDateString()) {
-          lockStatus.innerHTML = `<span class="bg-[#4ade80] rounded-sm w-4 h-4 flex items-center justify-center text-black text-[10px]">✔</span> Terbuka!`;
-          lockStatus.className = "text-[#4ade80] font-black mb-3 text-sm flex items-center gap-1";
+          lockStatus.innerHTML = `<span class="bg-[#4ade80] rounded-sm w-3.5 h-3.5 flex items-center justify-center text-black text-[8px]">✔</span> Terbuka!`;
+          lockStatus.className = "text-[#4ade80] font-black mb-1 text-[9px] flex items-center gap-1";
           btnDaily.innerText = "LATIHAN LAGI"; 
-          btnDaily.className = "w-full py-5 bg-[#334155] hover:bg-[#475569] rounded-2xl font-black text-white text-lg shadow-lg active:scale-95 uppercase tracking-widest transition-colors";
+          btnDaily.className = "w-full py-2.5 bg-[#334155] hover:bg-[#475569] rounded-xl font-black text-white text-xs shadow-md active:scale-95 uppercase tracking-widest transition-colors mt-auto shrink-0";
           btnGames.classList.remove('opacity-50', 'grayscale'); 
        } else {
           lockStatus.innerHTML = `🔒 Selesaikan Misi!`;
-          lockStatus.className = "text-[#ef4444] font-black mb-3 text-sm flex items-center gap-1 animate-pulse";
-          btnDaily.innerText = "MISI HARIAN (BUKA GAME)"; 
-          btnDaily.className = "w-full py-5 bg-[#ef4444] hover:bg-[#dc2626] rounded-2xl font-black text-white text-lg shadow-lg active:scale-95 uppercase tracking-widest transition-colors";
+          lockStatus.className = "text-[#ef4444] font-black mb-1 text-[9px] flex items-center gap-1 animate-pulse";
+          btnDaily.innerText = "MISI HARIAN"; 
+          btnDaily.className = "w-full py-2.5 bg-[#ef4444] hover:bg-[#dc2626] rounded-xl font-black text-white text-xs shadow-md active:scale-95 uppercase tracking-widest transition-colors mt-auto shrink-0";
           btnGames.classList.add('opacity-50', 'grayscale'); 
        }
     }
 
     function setOrientation(mode) {
         playSound('pop');
-        if (mode === 'landscape') document.body?.classList.add('is-landscape'); else document.body?.classList.remove('is-landscape'); 
+        if (mode === 'landscape') {
+            document.body?.classList.add('is-landscape');
+            document.body?.classList.remove('is-portrait');
+        } else {
+            document.body?.classList.remove('is-landscape');
+            document.body?.classList.add('is-portrait');
+        }
         document.getElementById('screen-orientation')?.classList.add('hidden'); 
         document.getElementById('screen-splash')?.classList.remove('hidden');
     }
@@ -684,9 +739,29 @@
     }
 
     let pendingCallback = null;
-    function showExplanation(correctText, reasonText, callback) {
+    function showExplanation(correctText, reasonText, callback, isCorrect = false) {
         const modal = document.getElementById('explanation-modal');
-        document.getElementById('exp-correct-ans').innerText = correctText; document.getElementById('exp-reason').innerText = reasonText;
+        const box = document.getElementById('exp-modal-box');
+        const icon = document.getElementById('exp-icon');
+        const title = document.getElementById('exp-title');
+        const sub = document.getElementById('exp-subtitle');
+
+        if(isCorrect) {
+            box.className = "bg-gray-800 border-2 border-green-500 rounded-2xl p-4 w-full max-w-xs text-center shadow-2xl";
+            icon.innerText = "✅";
+            title.innerText = "TEPAT SEKALI!";
+            title.className = "text-lg font-black text-green-400 mb-2 uppercase tracking-wider";
+            sub.innerText = "Penjelasan:";
+        } else {
+            box.className = "bg-gray-800 border-2 border-red-500 rounded-2xl p-4 w-full max-w-xs text-center shadow-2xl";
+            icon.innerText = "❌";
+            title.innerText = "KURANG TEPAT!";
+            title.className = "text-lg font-black text-red-400 mb-2 uppercase tracking-wider";
+            sub.innerText = "Jawaban Yang Benar:";
+        }
+
+        document.getElementById('exp-correct-ans').innerText = correctText;
+        document.getElementById('exp-reason').innerText = reasonText;
         pendingCallback = callback; modal.classList.remove('hidden');
     }
     function closeExplanation() { playSound('pop'); document.getElementById('explanation-modal').classList.add('hidden'); if(pendingCallback) pendingCallback(); pendingCallback = null; }
@@ -696,7 +771,7 @@
     function initDaily() {
        dQuizIdx = 0; dScore = 0; dQuestions = getShuffledQuestions(5);
        const fc = FLASHCARDS[Math.floor(Math.random() * FLASHCARDS.length)];
-       document.getElementById('daily-fc-icon').innerText = fc.i; document.getElementById('daily-fc-title').innerText = fc.t;
+       document.getElementById('daily-fc-icon').innerHTML = fc.i; document.getElementById('daily-fc-title').innerText = fc.t;
        document.getElementById('daily-fc-desc').innerText = fc.d;
        document.getElementById('daily-flashcard-box').classList.remove('hidden'); document.getElementById('daily-quiz-box').classList.add('hidden'); document.getElementById('daily-result-box').classList.add('hidden'); 
     }
@@ -705,34 +780,31 @@
        const q = dQuestions[dQuizIdx]; document.getElementById('daily-quiz-title').innerText = `SOAL ${dQuizIdx + 1} / 5`; document.getElementById('daily-quiz-question').innerText = q.q;
        const optsContainer = document.getElementById('daily-quiz-options'); optsContainer.innerHTML = '';
        q.opts.forEach((opt, idx) => {
-          optsContainer.innerHTML += `<button onclick="submitDaily(${idx})" class="w-full text-left px-5 py-5 bg-gray-700 hover:bg-[#0891b2] rounded-2xl font-black text-base border-b-4 border-gray-600 hover:border-cyan-400 flex items-center active:translate-y-1 active:border-b-0 shadow-md transition-all uppercase"><span class="bg-black/50 w-10 h-10 flex items-center justify-center rounded-full mr-4 shrink-0 text-cyan-300 font-black">${String.fromCharCode(65+idx)}</span> <span class="leading-normal">${opt}</span></button>`;
+          optsContainer.innerHTML += `<button onclick="submitDaily(${idx})" class="w-full shrink-0 text-left p-3 bg-gray-700 hover:bg-[#0891b2] rounded-xl font-black text-xs border-b-2 border-gray-600 hover:border-cyan-400 flex items-center active:translate-y-1 shadow-md transition-all uppercase leading-tight"><span class="bg-black/50 w-6 h-6 flex items-center justify-center rounded-full mr-2 shrink-0 text-cyan-300 font-black text-[10px]">${String.fromCharCode(65+idx)}</span> <span class="flex-1">${opt}</span></button>`;
        });
     }
     function submitDaily(idx) {
        const q = dQuestions[dQuizIdx];
        if (idx === q.a) { playSound('happy'); dScore++; state.totalCorrect++; dQuizIdx++; if (dQuizIdx < 5) loadDailyQ(); else showDailyRes(); } 
-       else { playSound('wrong'); showExplanation(q.opts[q.a], q.exp, () => { dQuizIdx++; if (dQuizIdx < 5) loadDailyQ(); else showDailyRes(); }); }
+       else { playSound('wrong'); showExplanation(q.opts[q.a], q.exp, () => { dQuizIdx++; if (dQuizIdx < 5) loadDailyQ(); else showDailyRes(); }, false); }
     }
     function showDailyRes() {
        document.getElementById('daily-quiz-box').classList.add('hidden'); document.getElementById('daily-result-box').classList.remove('hidden'); document.getElementById('daily-result-score').innerText = `SKOR KAMU: ${dScore} / 5`;
        const icon = document.getElementById('daily-res-icon'); const status = document.getElementById('daily-result-status');
-       if (dScore >= 4) {
-          icon.innerText = "🎉"; status.innerText = "LULUS MISI!"; status.className = "text-5xl font-black mb-4 text-green-400 uppercase";
-          document.getElementById('btn-daily-retry').classList.add('hidden'); playSound('victory');
-          if (state.dailyCompletedDate !== new Date().toDateString()) { state.dailyCompletedDate = new Date().toDateString(); state.streak += 1; addReward(200, 100); setTimeout(showStreakAnimation, 1000); }
-       } else {
-          icon.innerText = "💔"; status.innerText = "COBA LAGI"; status.className = "text-5xl font-black mb-4 text-red-500 uppercase";
-          document.getElementById('btn-daily-retry').classList.remove('hidden'); playSound('wrong');
-       }
+       
+       icon.innerText = "🎉"; status.innerText = "MISI SELESAI!"; status.className = "text-2xl font-black mb-1 text-green-400 uppercase";
+       document.getElementById('btn-daily-retry').classList.add('hidden'); playSound('victory');
+       
+       if (state.dailyCompletedDate !== new Date().toDateString()) { state.dailyCompletedDate = new Date().toDateString(); state.streak += 1; addReward(200, 100); setTimeout(showStreakAnimation, 1000); }
     }
     function retryDaily() { initDaily(); }
 
-    // --- MENU & LAYAR ---
+    // --- RENDERING TIAP HALAMAN LAYAR ---
     function renderShop() {
         document.getElementById('shop-coins-display').innerText = state.coins; const grid = document.getElementById('shop-items-grid'); grid.innerHTML = '';
         SHOP_ITEMS.forEach(item => {
             let isOwned = state.costumes.includes(item.id);
-            grid.innerHTML += `<div class="bg-gray-800 p-6 rounded-3xl border-4 border-gray-700 flex flex-col items-center justify-center shadow-lg"><div class="text-[5rem] mb-4 drop-shadow-md">${item.icon}</div><h3 class="font-black text-sm mb-4 bg-black/40 px-4 py-2 rounded-full text-center tracking-widest uppercase">${item.name}</h3>${isOwned ? `<button onclick="equip('${item.icon}')" class="w-full py-4 bg-green-500 rounded-xl font-black active:translate-y-1 text-sm text-white border-b-4 border-green-700 shadow uppercase tracking-widest transition-all">PAKAI</button>` : `<button onclick="buyItem('${item.id}', ${item.price})" class="w-full py-4 bg-blue-500 rounded-xl font-black active:translate-y-1 text-sm text-white border-b-4 border-blue-700 shadow uppercase tracking-widest transition-all">🪙 ${item.price}</button>`}</div>`;
+            grid.innerHTML += `<div class="bg-gray-800 p-2 rounded-2xl border-2 border-gray-700 flex flex-col items-center justify-between shadow-lg h-full min-h-0"><div class="text-[2.2rem] my-auto drop-shadow-md">${item.icon}</div><h3 class="font-black text-[9px] mb-1 bg-black/40 px-1 py-0.5 rounded-full text-center tracking-widest uppercase truncate w-full">${item.name}</h3>${isOwned ? `<button onclick="equip('${item.icon}')" class="w-full py-1.5 bg-green-500 rounded-xl font-black active:translate-y-1 text-[9px] text-white border-b-2 border-green-700 shadow uppercase tracking-widest transition-all shrink-0">PAKAI</button>` : `<button onclick="buyItem('${item.id}', ${item.price})" class="w-full py-1.5 bg-blue-500 rounded-xl font-black active:translate-y-1 text-[9px] text-white border-b-2 border-blue-700 shadow uppercase tracking-widest transition-all shrink-0">🪙 ${item.price}</button>`}</div>`;
         });
     }
     function buyItem(id, price) { if(state.coins >= price) { state.coins -= price; state.costumes.push(id); playSound('happy'); saveState(); renderShop(); } else { playSound('wrong'); } }
@@ -742,7 +814,7 @@
         document.getElementById('badges-lvl-info').innerText = `Level Kamu: ${state.level}`; const grid = document.getElementById('badges-grid'); grid.innerHTML = '';
         BADGES.forEach(b => {
             let unlocked = state.level >= b.lvl;
-            grid.innerHTML += `<div class="bg-gray-800 p-6 rounded-3xl border-4 ${unlocked ? 'border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.5)]' : 'border-gray-700 opacity-50 grayscale'} flex flex-col items-center justify-center relative">${unlocked ? `<div class="absolute -top-3 -right-3 bg-green-500 text-sm px-3 py-1 rounded-full font-black text-white border-2 border-white">✅</div>` : ''}<div class="text-[5rem] mb-4 drop-shadow-lg">${b.icon}</div><h3 class="font-black text-sm text-center leading-tight bg-black/40 px-3 py-2 rounded-xl w-full uppercase tracking-widest">${b.name}</h3><p class="text-xs text-yellow-400 font-bold mt-2 tracking-widest">LV ${b.lvl}</p></div>`;
+            grid.innerHTML += `<div class="bg-gray-800 p-1.5 rounded-2xl border-2 ${unlocked ? 'border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]' : 'border-gray-700 opacity-50 grayscale'} flex flex-col items-center justify-between relative h-full min-h-0">${unlocked ? `<div class="absolute top-1 right-1 bg-green-500 text-[8px] px-1.5 rounded-full font-black text-white">✓</div>` : ''}<div class="text-[2.2rem] my-auto drop-shadow-lg">${b.icon}</div><h3 class="font-black text-[8px] text-center leading-tight bg-black/40 px-1 py-1 rounded-lg w-full uppercase tracking-tighter truncate">${b.name}</h3><p class="text-[8px] text-yellow-400 font-bold tracking-widest leading-none">LV ${b.lvl}</p></div>`;
         });
     }
 
@@ -750,30 +822,40 @@
         const list = document.getElementById('lb-full-list'); list.innerHTML = '';
         let allPlayers = [ { email: state.userEmail, lvl: state.level, correct: state.totalCorrect || 0, streak: state.streak, isMe: true } ];
         
-        allPlayers.forEach((p, idx) => {
+        allPlayers.forEach((p) => {
             let medal = '🥇'; 
-            let bgClass = 'bg-cyan-900 border-2 border-cyan-400 scale-[1.02] shadow-lg';
-            list.innerHTML += `<div class="${bgClass} p-4 rounded-2xl flex items-center justify-between text-base transition-all mb-3"><div class="w-12 font-black text-2xl text-yellow-400 text-center">${medal}</div><div class="flex-1 text-left px-4 font-black text-white truncate tracking-wider uppercase">${maskEmail(p.email)}</div><div class="w-24 text-center font-black text-blue-300">✅ ${p.correct}</div><div class="w-24 text-center font-black bg-black/50 rounded-xl py-2 text-green-400 border border-green-900">LV ${p.lvl}</div><div class="w-24 text-right font-black text-orange-400 pr-2">🔥 ${p.streak}</div></div>`;
+            let bgClass = 'bg-cyan-900/80 border border-cyan-400 shadow-md';
+            list.innerHTML += `<div class="${bgClass} p-2 rounded-xl flex items-center justify-between text-xs transition-all"><div class="w-6 font-black text-sm text-yellow-400 text-center">${medal}</div><div class="flex-1 text-left px-1 font-black text-white truncate tracking-wider uppercase text-[10px]">${maskEmail(p.email)}</div><div class="w-10 text-center font-black text-blue-300 text-[9px]">✅ ${p.correct}</div><div class="w-10 text-center font-black bg-black/50 rounded-md py-0.5 text-green-400 border border-green-900 text-[8px]">LV ${p.lvl}</div><div class="w-10 text-right font-black text-orange-400 pr-1 text-[8px]">🔥 ${p.streak}</div></div>`;
         });
         
-        list.innerHTML += `<div class="w-full text-center text-gray-500 font-bold text-sm italic mt-8 uppercase tracking-widest">Menunggu Data Pemain Server Bergabung...</div>`;
+        list.innerHTML += `<div class="w-full text-center text-gray-500 font-bold text-[9px] italic mt-2 uppercase tracking-widest">Menunggu Data...</div>`;
     }
 
     function renderPustaka() {
         const grid = document.getElementById('pustaka-grid'); grid.innerHTML = '';
-        let unlockedCount = Math.floor((state.level - 1) / 10) * 10 + 10; 
+        let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10; 
         
-        FLASHCARDS.forEach((fc, idx) => {
+        // Pustaka Dibuat Pas Grid 4x5 = 20 Kotak
+        let totalCardsToShow = 20; 
+        document.getElementById('pustaka-info-text').innerText = `Terbuka: ${Math.min(unlockedCount, 1000)} / 1000 Rambu`;
+        
+        let htmlStr = '';
+        for(let idx = 0; idx < totalCardsToShow; idx++) {
             let isUnlocked = idx < unlockedCount;
-            grid.innerHTML += `<div onclick="${isUnlocked ? `openPustakaDetail(${idx})` : `playSound('wrong')`}" class="bg-gray-800 p-6 rounded-3xl border-4 ${isUnlocked ? 'border-orange-500 cursor-pointer hover:bg-gray-700 hover:scale-[1.02]' : 'border-gray-700 opacity-50 grayscale'} flex flex-col items-center justify-center text-center shadow-lg transition-all active:scale-95 min-h-[160px] relative">
-                ${!isUnlocked ? `<div class="absolute inset-0 flex items-center justify-center z-10"><div class="text-[4rem] bg-black/60 p-4 rounded-full">🔒</div></div>` : ''}
-                <div class="text-[5rem] mb-4 drop-shadow-md">${fc.i}</div><h3 class="font-black text-xs leading-tight bg-black/40 px-3 py-2 rounded-xl w-full uppercase tracking-widest">${fc.t}</h3>
+            let fc = getFlashcard(idx);
+            let reqLevel = idx < 20 ? 1 : (Math.floor((idx - 20) / 10) + 1) * 10 + 1;
+            
+            htmlStr += `<div onclick="${isUnlocked ? `openPustakaDetail(${idx})` : `playSound('wrong')`}" class="bg-gray-800 p-1 rounded-xl border ${isUnlocked ? 'border-orange-500 cursor-pointer hover:bg-gray-700' : 'border-gray-700 opacity-50 grayscale'} flex flex-col items-center justify-center text-center shadow transition-all active:scale-95 h-full min-h-0 relative">
+                ${!isUnlocked ? `<div class="absolute inset-0 flex items-center justify-center z-10"><div class="text-sm bg-black/60 p-1 rounded-full">🔒</div></div>` : ''}
+                <div class="text-[1.8rem] mb-0.5 flex-1 flex items-center justify-center ${!isUnlocked ? 'opacity-30' : ''}">${fc.i}</div><h3 class="font-black text-[7px] leading-none bg-black/40 px-1 py-1 rounded w-full uppercase tracking-tighter truncate ${!isUnlocked ? 'opacity-30' : ''}">${isUnlocked ? fc.t : `Lv.${reqLevel}`}</h3>
             </div>`;
-        });
+        }
+        grid.innerHTML = htmlStr;
     }
+
     function openPustakaDetail(idx) {
-        playSound('pop'); const fc = FLASHCARDS[idx];
-        document.getElementById('pd-icon').innerText = fc.i; document.getElementById('pd-title').innerText = fc.t;
+        playSound('pop'); const fc = getFlashcard(idx);
+        document.getElementById('pd-icon').innerHTML = fc.i; document.getElementById('pd-title').innerText = fc.t;
         document.getElementById('pd-desc').innerText = fc.d; document.getElementById('pd-fact').innerText = "Catatan Pustaka: " + fc.f;
         document.getElementById('pustaka-detail-modal').classList.remove('hidden');
     }
@@ -782,15 +864,15 @@
        const grid = document.getElementById('games-grid'); grid.innerHTML = '';
        const list = activeMode === 'DAKSA' ? DAKSA_GAMES : ALL_GAMES;
        list.forEach(g => {
-          let gLvl = state.gameLevels[g.id] || 1; let maxLvl = 100;
-          grid.innerHTML += `<div onclick="playGame('${g.id}')" class="bg-gray-800 p-5 rounded-[2rem] border-4 border-gray-700 cursor-pointer text-left shadow-lg hover:border-cyan-500 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-4">
-              <div class="text-[4rem] bg-black/40 p-3 rounded-3xl border border-white/10 drop-shadow-md shrink-0 w-[80px] text-center">${g.icon}</div>
-              <div class="flex-1">
-                  <h3 class="text-xl font-black text-white mb-1 uppercase tracking-widest leading-tight">${g.title}</h3>
-                  <p class="text-[11px] text-gray-400 font-bold leading-relaxed tracking-wider">${g.desc}</p>
+          let gLvl = state.gameLevels[g.id] || 1; 
+          grid.innerHTML += `<div onclick="playGame('${g.id}')" class="bg-gray-800 p-2 rounded-2xl border-2 border-gray-700 cursor-pointer text-left shadow hover:border-cyan-500 active:scale-95 transition-all flex items-center gap-2 h-full min-h-0">
+              <div class="text-2xl bg-black/40 p-2 rounded-xl border border-white/10 shrink-0 w-12 text-center flex items-center justify-center h-full">${g.icon}</div>
+              <div class="flex-1 min-w-0">
+                  <h3 class="text-[10px] font-black text-white mb-0.5 uppercase tracking-wider leading-none truncate">${g.title}</h3>
+                  <p class="text-[8px] text-gray-400 font-bold leading-tight tracking-wide line-clamp-1">${g.desc}</p>
               </div>
-              <div class="bg-cyan-900 rounded-xl px-3 py-2 text-cyan-300 font-black text-[9px] whitespace-nowrap border-2 border-cyan-500 text-center shadow-inner tracking-widest shrink-0 leading-tight">
-                  LVL<br><span class="text-sm">${gLvl}/100</span>
+              <div class="bg-cyan-900 rounded-lg px-2 py-1 text-cyan-300 font-black text-[8px] whitespace-nowrap border border-cyan-500 text-center tracking-widest shrink-0 leading-none">
+                  LVL<br><span class="text-xs">${gLvl}</span>
               </div>
           </div>`;
        });
@@ -808,54 +890,62 @@
        const actualLevel = state.gameLevels[id] || 1; const diffLevel = Math.min(20, actualLevel); 
        const container = document.getElementById('game-play-area'); container.innerHTML = '';
 
-       // Game 1: Tebak Rambu
        if (id === 'g1') { 
-          const rawData = fisherYatesShuffle(deepClone(FLASHCARDS))[0]; 
+          let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
+          if(!state.g1Order) state.g1Order = [];
+          if(state.g1Order.length < unlockedCount) {
+              let missingIndices = [];
+              for(let i = 0; i < unlockedCount; i++) {
+                  if(!state.g1Order.includes(i)) missingIndices.push(i);
+              }
+              state.g1Order = state.g1Order.concat(fisherYatesShuffle(missingIndices));
+              saveState();
+          }
+
+          const fIndex = state.g1Order[(actualLevel - 1) % state.g1Order.length];
+          const rawData = deepClone(getFlashcard(fIndex));
           let wrongs = rawData.opts.filter((_, i) => i !== rawData.a);
           const data = { ...rawData, ...forceAnswerToB(rawData.opts[rawData.a], wrongs) };
 
-          container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-center"><h3 class="text-2xl font-black mb-6 text-yellow-400 bg-black/50 px-8 py-3 rounded-full inline-block mx-auto uppercase tracking-widest border border-yellow-500">INGAT RAMBU INI!</h3><div class="text-[10rem] mb-6 drop-shadow-xl animate-pulse">${data.i}</div><h2 class="text-4xl font-black text-cyan-300 border-b-4 border-cyan-500 pb-3 inline-block mx-auto uppercase tracking-widest">${data.t}</h2></div>`;
+          container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-center"><h3 class="text-xs font-black mb-3 text-yellow-400 bg-black/50 px-4 py-2 rounded-full inline-block mx-auto uppercase tracking-widest border border-yellow-500 shrink-0">INGAT RAMBU INI!</h3><div class="text-[6rem] mb-3 drop-shadow-xl animate-pulse flex-1 flex items-center justify-center">${data.i}</div><h2 class="text-xl font-black text-cyan-300 border-b-2 border-cyan-500 pb-1 inline-block mx-auto uppercase tracking-widest shrink-0">${data.t}</h2></div>`;
           setTimeout(() => { 
-              container.innerHTML = `<div class="text-center w-full flex flex-col h-full"><div class="text-[8rem] mb-8 shrink-0 drop-shadow-md">${data.i}</div><h3 class="text-2xl font-black mb-10 shrink-0 bg-black/40 p-6 rounded-2xl border border-white/20 leading-relaxed">${data.q}</h3><div class="flex flex-col gap-5 flex-1 justify-center w-full max-w-lg mx-auto">${data.opts.map((opt, i) => `<button onclick="submitG1(${i === data.a}, '${data.opts[data.a]}', '${data.exp.replace(/'/g, "\\'")}')" class="p-6 bg-gray-800 border-b-4 border-gray-600 rounded-3xl font-black text-lg w-full text-left active:translate-y-2 active:border-b-0 shadow-lg hover:bg-cyan-900 hover:border-cyan-700 transition-all uppercase leading-normal tracking-wider"><span class="bg-black/50 w-8 h-8 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> ${opt}</button>`).join('')}</div></div>`; 
+              container.innerHTML = `<div class="text-center w-full flex flex-col h-full"><div class="text-[4.5rem] mb-2 shrink-0 drop-shadow-md">${data.i}</div><h3 class="text-xs font-black mb-3 shrink-0 bg-black/40 p-3 rounded-xl border border-white/20 leading-tight">${data.q}</h3><div class="flex flex-col gap-2 flex-1 justify-start w-full overflow-y-auto custom-scroll pr-1 pb-1">${data.opts.map((opt, i) => `<button onclick="submitG1(${i === data.a}, '${data.opts[data.a]}', '${data.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 bg-gray-800 border-b-2 border-gray-600 rounded-xl font-black text-xs text-left active:translate-y-1 shadow hover:bg-cyan-900 transition-all uppercase leading-tight flex items-center"><span class="bg-black/50 w-6 h-6 shrink-0 inline-flex items-center justify-center rounded-full mr-2 text-cyan-300 text-[10px]">${String.fromCharCode(65+i)}</span> <span class="flex-1">${opt}</span></button>`).join('')}</div></div>`; 
           }, 2500);
-          window.submitG1 = (isC, correctText, expText) => { if(isC) { playSound('happy'); state.totalCorrect++; completeGame(true); } else { playSound('wrong'); showExplanation(correctText, expText, () => completeGame(false)); } }
+          window.submitG1 = (isC, correctText, expText) => { if(isC) { playSound('happy'); state.totalCorrect++; completeGame(true); } else { playSound('wrong'); showExplanation(correctText, expText, () => completeGame(false), false); } }
        }
-       // Game 2: Puzzle Aman
        else if (id === 'g2') { 
-           let pCnt = Math.min(21, diffLevel + 1); 
+           let pCnt = Math.min(FLASHCARDS.length, diffLevel + 1); 
            let source = fisherYatesShuffle(deepClone(FLASHCARDS)).slice(0, pCnt);
+           pCnt = source.length;
+           
            let qM = fisherYatesShuffle(source.map(f=>({id: f.t, text: f.t, type:'Q'}))); 
            let aM = fisherYatesShuffle(source.map(f=>({id: f.t, text: f.i, type:'A'}))); 
            let sQ = null, mtc = 0;
            
-           const ren = () => { container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-start max-w-2xl mx-auto"><h3 class="text-base font-black mb-6 text-yellow-400 shrink-0 bg-black/50 py-3 rounded-full border border-yellow-500/30 uppercase tracking-widest">Cocokkan ${pCnt} Pasangan!</h3><div class="flex justify-between gap-6 flex-1 overflow-y-auto pb-4 pr-2 custom-scroll"><div class="flex-1 flex flex-col gap-4">${qM.map((p,i) => `<button onclick="sGQ(${i})" class="flex-1 rounded-2xl border-b-4 ${sQ===i?'border-yellow-600 bg-gray-700 shadow-[0_0_20px_yellow] scale-105':'border-gray-700 bg-gray-800'} font-black text-sm uppercase tracking-wider active:translate-y-1 active:border-b-0 transition-all ${p.done?'opacity-0 pointer-events-none':''} p-4 min-h-[80px] flex items-center justify-center leading-tight hover:bg-gray-700">${p.text}</button>`).join('')}</div><div class="flex-1 flex flex-col gap-4">${aM.map((p,i) => `<button onclick="sGA(${i})" class="flex-1 rounded-2xl border-b-4 border-cyan-800 bg-cyan-900 font-black text-[3rem] active:translate-y-1 active:border-b-0 transition-all ${p.done?'opacity-0 pointer-events-none':''} p-4 min-h-[80px] shadow-md flex items-center justify-center hover:bg-cyan-800">${p.text}</button>`).join('')}</div></div></div>`; };
+           const ren = () => { container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-start max-w-xs mx-auto"><h3 class="text-xs font-black mb-2 text-yellow-400 shrink-0 bg-black/50 py-1.5 px-4 rounded-full border border-yellow-500/30 uppercase tracking-widest mx-auto">Cocokkan ${pCnt} Pasangan!</h3><div class="flex justify-between gap-2 flex-1 overflow-y-auto pb-1 pr-1 custom-scroll"><div class="flex-1 flex flex-col gap-2">${qM.map((p,i) => `<button onclick="sGQ(${i})" class="flex-1 rounded-xl border-b-2 ${sQ===i?'border-yellow-600 bg-gray-700 shadow-[0_0_10px_yellow] scale-105':'border-gray-700 bg-gray-800'} font-black text-[9px] uppercase tracking-wider active:translate-y-1 transition-all ${p.done?'opacity-0 pointer-events-none':''} p-2 min-h-[45px] flex items-center justify-center leading-tight">${p.text}</button>`).join('')}</div><div class="flex-1 flex flex-col gap-2">${aM.map((p,i) => `<button onclick="sGA(${i})" class="flex-1 rounded-xl border-b-2 border-cyan-800 bg-cyan-900 font-black text-[2rem] active:translate-y-1 transition-all ${p.done?'opacity-0 pointer-events-none':''} p-2 min-h-[45px] shadow flex items-center justify-center">${p.text}</button>`).join('')}</div></div></div>`; };
            window.sGQ = (i) => { sQ = i; playSound('pop'); ren(); }; 
            window.sGA = (i) => { if (sQ === null) { playSound('wrong'); return; } if (qM[sQ].id === aM[i].id) { playSound('happy'); qM[sQ].done=true; aM[i].done=true; sQ=null; mtc++; state.totalCorrect++; if(mtc===pCnt) setTimeout(()=>completeGame(true), 500); } else { playSound('wrong'); sQ=null; setTimeout(()=>completeGame(false), 500); } ren(); }; ren();
        }
-       // Game 3: Helm Hunter (KONTROL DI BAWAH)
        else if (id === 'g3') { 
            let px = 1, oY = 0, oX = 1, oT = 'helm', sc = 0, tgt = 5 + Math.floor(diffLevel * 1.5);
            let speed = Math.max(30, 150 - (diffLevel * 6)); 
-           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full items-center justify-center gap-6"><div class="flex flex-col flex-1 w-full max-w-lg shrink-0 h-full max-h-[500px]"><div class="flex justify-between text-yellow-400 font-black mb-6 text-base bg-black/60 px-6 py-4 rounded-full shrink-0 border border-yellow-500/30 uppercase tracking-widest"><span>Tangkap!</span><span>${sc} / ${tgt}</span></div><div class="relative w-full flex-1 min-h-[250px] bg-gray-800 border-4 border-gray-600 overflow-hidden flex rounded-[2rem] shadow-inner"><div class="flex-1 border-r-4 border-dashed border-gray-700"></div><div class="flex-1 border-r-4 border-dashed border-gray-700"></div><div class="flex-1"></div><div class="absolute text-[6rem] transition-all drop-shadow-xl z-20" style="left: ${(oX*33.3)+8}%; top: ${oY*10}%">${oT === 'helm' ? '🪖' : '🪨'}</div><div class="absolute text-[7rem] transition-all bottom-2 z-10" style="left: ${(px*33.3)+2}%">👦</div></div></div><div class="flex gap-4 w-full shrink-0 max-w-lg mt-auto"><button onclick="mHH(-1)" class="flex-1 px-8 py-8 bg-cyan-600 rounded-3xl text-[4rem] shadow-[0_8px_0_rgb(8,145,178)] active:translate-y-2 active:shadow-none transition-all">◀️</button><button onclick="mHH(1)" class="flex-1 px-8 py-8 bg-cyan-600 rounded-3xl text-[4rem] shadow-[0_8px_0_rgb(8,145,178)] active:translate-y-2 active:shadow-none transition-all">▶️</button></div></div>`; };
+           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full items-center justify-center gap-2"><div class="flex flex-col flex-1 w-full max-w-xs shrink-0 h-full"><div class="flex justify-between text-yellow-400 font-black mb-2 text-[10px] bg-black/60 px-4 py-1.5 rounded-full shrink-0 border border-yellow-500/30 uppercase tracking-widest"><span>Tangkap!</span><span>${sc} / ${tgt}</span></div><div class="relative w-full flex-1 bg-gray-800 border-2 border-gray-600 overflow-hidden flex rounded-2xl shadow-inner"><div class="flex-1 border-r border-dashed border-gray-700"></div><div class="flex-1 border-r border-dashed border-gray-700"></div><div class="flex-1"></div><div class="absolute text-[3.5rem] transition-all drop-shadow-xl z-20" style="left: ${(oX*33.3)+5}%; top: ${oY*10}%">${oT === 'helm' ? HELMET_ICON : '🪨'}</div><div class="absolute text-[4rem] transition-all bottom-1 z-10" style="left: ${(px*33.3)+2}%">👦</div></div></div><div class="flex gap-3 w-full shrink-0 max-w-xs mt-auto"><button onclick="mHH(-1)" class="flex-1 py-3 bg-cyan-600 rounded-xl text-2xl shadow active:translate-y-1">◀️</button><button onclick="mHH(1)" class="flex-1 py-3 bg-cyan-600 rounded-xl text-2xl shadow active:translate-y-1">▶️</button></div></div>`; };
            window.mHH = (d) => { px = Math.max(0, Math.min(2, px+d)); ren(); }
            activeGameLoop = setInterval(() => { oY++; if (oY > 9) { if (oX === px) { if (oT === 'helm') { sc++; playSound('happy'); state.totalCorrect++; if(sc>=tgt) { clearInterval(activeGameLoop); setTimeout(()=>completeGame(true), 200); return; } } else { clearInterval(activeGameLoop); playSound('wrong'); completeGame(false); return; } } oY = 0; oX = Math.floor(Math.random()*3); oT = Math.random() > (0.7 - (diffLevel*0.02)) ? 'batu' : 'helm'; } ren(); }, speed); ren();
        }
-       // Game 4: Menyeberang (ZEBRA CROSS BACKGROUND & KONTROL DI BAWAH)
        else if (id === 'g4') { 
           let py = 4; let cars = [];
           for(let i=1; i<=3; i++) { cars.push({y: i, x: Math.random()*100, s: (Math.random()>0.5?1:-1) * (1 + (diffLevel*0.15))}); }
-          if(diffLevel > 10) cars.push({y: 2, x: 20, s: 2 + (diffLevel*0.1)}); 
 
-          const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full items-center justify-center gap-6"><div class="flex flex-col flex-1 w-full max-w-lg shrink-0 h-full max-h-[500px]"><h3 class="text-base font-black text-white mb-6 shrink-0 bg-red-600/50 py-3 rounded-full border border-red-500 uppercase tracking-widest">Maju pelan, awas mobil!</h3><div class="relative w-full flex-1 min-h-[250px] bg-zebra border-4 border-gray-800 overflow-hidden flex flex-col justify-between py-4 rounded-[2rem] shadow-inner"><div class="absolute text-[5rem] z-20 transition-all drop-shadow-md" style="left: 38%; top: ${py*20}%">🏃</div>${cars.map(c => `<div class="absolute text-[5rem] z-10" style="left: ${c.x}%; top: ${c.y*20}%; transform: scaleX(${c.s>0?-1:1})">🚙</div>`).join('')}</div></div><div class="flex gap-4 w-full shrink-0 max-w-lg mt-auto"><button onclick="mFr(1)" class="px-6 py-8 bg-gray-600 rounded-[2rem] font-black text-xl text-white active:translate-y-2 shadow-[0_8px_0_rgb(75,85,99)] active:shadow-none flex-1 border-2 border-gray-500 uppercase tracking-widest">▼ MUNDUR</button><button onclick="mFr(-1)" class="px-6 py-8 bg-green-500 rounded-[2rem] font-black text-3xl text-white shadow-[0_10px_0_rgb(21,128,61)] active:translate-y-2 active:shadow-none border-2 border-green-400 uppercase tracking-widest">▲ MAJU</button></div></div>`; };
-          window.mFr = (d) => { py = Math.max(0, Math.min(4, py+d)); playSound('pop'); if(py===0) { clearInterval(activeGameLoop); state.totalCorrect++; setTimeout(()=>completeGame(true), 200); } ren(); }
-          activeGameLoop = setInterval(() => { cars.forEach(c => { c.x += c.s; if(c.x > 110) c.x = -20; else if(c.x < -20) c.x = 110; }); if (cars.some(c => c.y === py && Math.abs(c.x - 45) < 20)) { clearInterval(activeGameLoop); playSound('wrong'); setTimeout(()=>completeGame(false), 200); } ren(); }, 40);
+          const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full items-center justify-center gap-2"><div class="flex flex-col flex-1 w-full max-w-xs shrink-0 h-full"><h3 class="text-[10px] font-black text-white mb-2 shrink-0 bg-red-600/50 py-1 px-4 inline-block mx-auto rounded-full border border-red-500 uppercase tracking-widest">Maju pelan, awas mobil!</h3><div class="relative w-full flex-1 bg-zebra border-2 border-gray-800 overflow-hidden flex flex-col justify-between py-1 rounded-2xl shadow-inner"><div class="absolute text-[3rem] z-20 transition-all drop-shadow-md" style="left: 40%; top: ${py*20}%">🏃</div>${cars.map(c => `<div class="absolute text-[3rem] z-10" style="left: ${c.x}%; top: ${c.y*20}%; transform: scaleX(${c.s>0?-1:1})">🚙</div>`).join('')}</div></div><div class="flex gap-2 w-full shrink-0 max-w-xs mt-auto"><button onclick="mFr(1)" class="py-3 bg-gray-600 rounded-xl font-black text-xs text-white active:translate-y-1 flex-1 border border-gray-500 uppercase tracking-widest">▼ MUNDUR</button><button onclick="mFr(-1)" class="py-3 bg-green-500 rounded-xl font-black text-base text-white shadow active:translate-y-1 flex-1 border border-green-400 uppercase tracking-widest">▲ MAJU</button></div></div>`; };
+          window.mFr = (d) => { if(!activeGameLoop) return; py = Math.max(0, Math.min(4, py+d)); playSound('pop'); if(py===0) { clearInterval(activeGameLoop); activeGameLoop=null; state.totalCorrect++; setTimeout(()=>completeGame(true), 200); } ren(); }
+          activeGameLoop = setInterval(() => { if(!activeGameLoop) return; cars.forEach(c => { c.x += c.s; if(c.x > 110) c.x = -20; else if(c.x < -20) c.x = 110; }); if (cars.some(c => c.y === py && Math.abs(c.x - 45) < 20)) { clearInterval(activeGameLoop); activeGameLoop=null; playSound('wrong'); setTimeout(()=>completeGame(false), 200); } ren(); }, 40);
        }
-       // Game 5: Balap Vs Bot (60 SOAL, JAWABAN SELALU B)
        else if (id === 'g5') { 
           let pP = 10, bP = 10; 
           let pool = generateBotQuestions(); 
           let qI = 0;
-          const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full max-w-2xl mx-auto"><div class="relative w-full h-36 bg-gray-800 rounded-3xl border-4 border-gray-600 p-5 mb-8 flex flex-col justify-around shrink-0 shadow-lg"><div class="w-full bg-red-900/50 rounded-full h-8 relative"><div class="absolute bg-red-500 h-full rounded-full transition-all" style="width:${bP}%"></div><span class="absolute text-[4rem] -mt-5" style="left:${bP-5}%">🤖</span></div><div class="w-full bg-cyan-900/50 rounded-full h-8 relative"><div class="absolute bg-cyan-500 h-full rounded-full transition-all" style="width:${pP}%"></div><span class="absolute text-[4rem] -mt-5" style="left:${pP-5}%">🏎️</span></div></div><h3 class="text-xl font-black mb-8 text-white shrink-0 bg-black/50 p-5 rounded-xl border border-white/10 leading-relaxed uppercase tracking-wider">${pool[qI].q}</h3><div class="flex flex-col gap-4 flex-1 justify-center">${pool[qI].opts.map((opt, i) => `<button onclick="aR(${i===pool[qI].a}, '${pool[qI].opts[pool[qI].a]}', '${pool[qI].exp.replace(/'/g, "\\'")}')" class="flex-1 p-5 bg-gray-800 rounded-2xl text-left font-black text-base border-b-4 border-gray-600 hover:bg-cyan-900 hover:border-cyan-700 active:translate-y-1 active:border-b-0 shadow-md flex items-center transition-all leading-normal uppercase tracking-wider"><span class="bg-black/50 w-8 h-8 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> ${opt}</button>`).join('')}</div></div>`; };
+          const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full max-w-xs mx-auto"><div class="relative w-full h-20 bg-gray-800 rounded-2xl border-2 border-gray-600 p-2 mb-3 flex flex-col justify-around shrink-0 shadow"><div class="w-full bg-red-900/50 rounded-full h-5 relative"><div class="absolute bg-red-500 h-full rounded-full transition-all" style="width:${bP}%"></div><span class="absolute text-[2rem] -mt-3" style="left:${bP-5}%">🤖</span></div><div class="w-full bg-cyan-900/50 rounded-full h-5 relative"><div class="absolute bg-cyan-500 h-full rounded-full transition-all" style="width:${pP}%"></div><span class="absolute text-[2rem] -mt-3" style="left:${pP-5}%">🏎️</span></div></div><h3 class="text-xs font-black mb-3 text-white shrink-0 bg-black/50 p-3 rounded-xl border border-white/10 leading-tight uppercase tracking-wider">${pool[qI].q}</h3><div class="flex flex-col gap-2 flex-1 justify-start overflow-y-auto custom-scroll pr-1 pb-1">${pool[qI].opts.map((opt, i) => `<button onclick="aR(${i===pool[qI].a}, '${pool[qI].opts[pool[qI].a]}', '${pool[qI].exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 bg-gray-800 rounded-xl text-left font-black text-xs border-b-2 border-gray-600 hover:bg-cyan-900 active:translate-y-1 shadow flex items-center transition-all leading-tight uppercase tracking-wider"><span class="bg-black/50 w-6 h-6 shrink-0 inline-flex items-center justify-center rounded-full mr-2 text-cyan-300 text-[10px]">${String.fromCharCode(65+i)}</span> <span class="flex-1">${opt}</span></button>`).join('')}</div></div>`; };
           
           window.aR = (isC, correctText, expText) => { 
               if(isC) { 
@@ -864,25 +954,17 @@
                   qI = (qI + 1) % pool.length; ren(); 
               } else { 
                   playSound('wrong'); pP -= 10; clearInterval(activeGameLoop);
-                  showExplanation(correctText, expText, () => { activeGameLoop = setInterval(botLoop, 1000); qI = (qI + 1) % pool.length; ren(); });
+                  showExplanation(correctText, expText, () => { activeGameLoop = setInterval(botLoop, 1000); qI = (qI + 1) % pool.length; ren(); }, false);
               } 
           }
           let botLoop = () => { bP += (1 + diffLevel * 0.4); if(bP >= 100 && pP < 100) { clearInterval(activeGameLoop); playSound('wrong'); completeGame(false); } ren(); };
           activeGameLoop = setInterval(botLoop, 1000);
        }
-       // Game 6: Rem Tepat
-       else if (id === 'g6') { 
-           let cx = 0, d = 1; let width = Math.max(10, 40 - (diffLevel * 1.5)); let sX = Math.floor(Math.random() * (90 - width)); let tA = { s: sX, e: sX + width }; 
-           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col items-center justify-center h-full"><h3 class="text-3xl font-black mb-16 text-white bg-black/50 px-10 py-4 rounded-full border border-white/20 uppercase tracking-widest">Rem di Hijau!</h3><div class="relative w-full max-w-lg mx-auto h-32 bg-gray-800 rounded-full border-4 border-gray-600 mb-20 overflow-hidden shadow-inner"><div class="absolute h-full bg-green-500 opacity-80" style="left: ${tA.s}%; width: ${tA.e - tA.s}%"></div><div class="absolute text-[6rem] mt-1 transition-transform z-10" style="left: ${cx}%">🚙</div></div><button onclick="st()" class="w-80 py-10 bg-red-600 rounded-full text-white font-black text-6xl shadow-[0_12px_0_rgb(153,27,27)] active:translate-y-3 active:shadow-none transition-all uppercase tracking-widest border-4 border-red-400">STOP!</button></div>`; };
-           window.st = () => { clearInterval(activeGameLoop); if (cx >= tA.s && cx <= tA.e) { playSound('victory'); state.totalCorrect++; setTimeout(()=>completeGame(true), 500); } else { playSound('wrong'); setTimeout(()=>completeGame(false), 500); } };
-           activeGameLoop = setInterval(() => { cx += d * (2 + diffLevel*0.5); if(cx > 82 || cx < 0) d *= -1; ren(); }, 30);
-       }
-       // Labirin (G7, G11, D1) - KUNCI NAIK LEVEL, JAWABAN B, SOAL UNIK
-       else if (id === 'g7' || id === 'g11' || id === 'd1') { 
+       else if (id === 'g7' || id === 'd1') { 
            let tIcon = (id === 'g7' || id === 'd1') ? '⭐' : '🔑'; let tName = (id === 'g7' || id === 'd1') ? 'Bintang' : 'Kunci'; let pIcon = (id === 'g7' || id === 'd1') ? '♿' : '👦';
            let qs = generateMazeQuestions(id, diffLevel); let p = {x:0,y:3}, cm = true, qI = 0;
            
-           let obCount = Math.min(10, Math.floor(diffLevel * 0.5) + 2); let ob = [];
+           let obCount = Math.min(6, Math.floor(diffLevel * 0.5) + 2); let ob = [];
            while(ob.length < obCount) { let kx=Math.floor(Math.random()*4), ky=Math.floor(Math.random()*4); if((kx!==0||ky!==3) && !ob.some(o=>o.x===kx&&o.y===ky)) ob.push({x:kx,y:ky}); }
            
            let totalTarget = diffLevel; let keysCollected = 0; let activeKey = null;
@@ -895,93 +977,115 @@
            const ren = () => {
               if(!cm) { 
                   let q=qs[qI % qs.length]; 
-                  container.innerHTML=`<div class="text-center w-full flex flex-col h-full justify-center max-w-lg mx-auto"><h2 class="text-[8rem] mb-6 animate-bounce drop-shadow-lg">${tIcon}</h2><h3 class="text-xl font-black mb-10 bg-black/60 p-6 rounded-3xl text-yellow-300 border-2 border-yellow-500/50 leading-relaxed uppercase tracking-wider">${q.q}</h3><div class="flex flex-col gap-4 flex-1">${q.opts.map((o,i)=>`<button onclick="mA(${i===q.a}, '${q.opts[q.a].replace(/'/g, "\\'")}', '${q.exp.replace(/'/g, "\\'")}')" class="flex-1 p-5 bg-gray-800 rounded-2xl border-b-4 border-gray-600 hover:bg-cyan-900 active:translate-y-1 active:border-b-0 text-base font-black text-left transition-all shadow-md leading-normal uppercase tracking-wider"><span class="bg-black/50 w-8 h-8 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> ${o}</button>`).join('')}</div></div>`; return; 
+                  container.innerHTML=`<div class="text-center w-full flex flex-col h-full justify-center max-w-xs mx-auto"><h2 class="text-[4rem] mb-3 animate-bounce drop-shadow-lg shrink-0">${tIcon}</h2><h3 class="text-xs font-black mb-3 bg-black/60 p-3 rounded-xl text-yellow-300 border border-yellow-500/50 leading-tight uppercase shrink-0">${q.q}</h3><div class="flex flex-col gap-2 flex-1 justify-start w-full overflow-y-auto custom-scroll pr-1 pb-1 mt-1">${q.opts.map((o,i)=>`<button onclick="mA(${i===q.a}, '${q.opts[q.a].replace(/'/g, "\\'")}', '${q.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 bg-gray-800 rounded-xl border-b-2 border-gray-600 hover:bg-cyan-900 active:translate-y-1 text-xs font-black text-left transition-all shadow leading-tight uppercase flex items-center"><span class="bg-black/50 w-5 h-5 shrink-0 inline-flex items-center justify-center rounded-full mr-2 text-cyan-300 text-[9px]">${String.fromCharCode(65+i)}</span> <span class="flex-1">${o}</span></button>`).join('')}</div></div>`; return; 
               }
               let c=''; 
               for(let i=0;i<16;i++){ 
                   let x=i%4,y=Math.floor(i/4),ct=''; 
-                  if(x===p.x&&y===p.y) ct=pIcon; else if(activeKey && activeKey.x===x && activeKey.y===y) ct=tIcon; else if(ob.some(o=>o.x===x&&o.y===y)) ct=id==='g11'?'🕳️':'🚧'; 
-                  c+=`<div class="bg-gray-800 rounded-2xl flex items-center justify-center text-[4rem] shadow-inner border-4 border-gray-700">${ct}</div>`; 
+                  if(x===p.x&&y===p.y) ct=pIcon; else if(activeKey && activeKey.x===x && activeKey.y===y) ct=tIcon; else if(ob.some(o=>o.x===x&&o.y===y)) ct='🚧'; 
+                  c+=`<div class="bg-gray-800 rounded-xl flex items-center justify-center text-[2.2rem] shadow-inner border border-gray-700">${ct}</div>`; 
               }
-              container.innerHTML = `<div class="text-center w-full h-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16"><div class="flex flex-col items-center shrink-0 w-full md:w-auto"><div class="text-base font-black mb-6 shrink-0 bg-black/50 px-8 py-3 rounded-full border border-white/10 uppercase tracking-widest">${tName} Target: <span class="text-yellow-400 text-2xl">${keysCollected}/${totalTarget}</span></div><div class="bg-gray-700 grid grid-cols-4 grid-rows-4 gap-3 p-4 rounded-[2rem] shrink-0 shadow-2xl border-4 border-gray-600 mx-auto w-full max-w-[400px] aspect-square">${c}</div></div><div class="flex flex-col items-center gap-4 w-full max-w-[280px] shrink-0 mt-6 md:mt-0"><button onclick="mM(0,-1)" class="dpad-btn text-4xl w-[5.5rem] h-[5.5rem]">▲</button><div class="flex gap-4 w-full justify-center"><button onclick="mM(-1,0)" class="dpad-btn text-4xl w-[5.5rem] h-[5.5rem]">◀</button><button onclick="mM(0,1)" class="dpad-btn text-4xl w-[5.5rem] h-[5.5rem]">▼</button><button onclick="mM(1,0)" class="dpad-btn text-4xl w-[5.5rem] h-[5.5rem]">▶</button></div></div></div>`;
+              container.innerHTML = `<div class="text-center w-full h-full flex flex-col items-center justify-center gap-3"><div class="flex flex-col items-center shrink-0 w-full"><div class="text-[10px] font-black mb-2 shrink-0 bg-black/50 px-4 py-1.5 rounded-full border border-white/10 uppercase tracking-widest">${tName} Target: <span class="text-yellow-400 text-xs ml-1">${keysCollected}/${totalTarget}</span></div><div class="bg-gray-700 grid grid-cols-4 grid-rows-4 gap-2 p-2 rounded-2xl shrink-0 shadow-xl border-2 border-gray-600 mx-auto w-full max-w-[260px] aspect-square">${c}</div></div><div class="flex flex-col items-center gap-1.5 w-full max-w-[180px] shrink-0"><button onclick="mM(0,-1)" class="dpad-btn text-2xl w-[3.5rem] h-[3.8rem]">▲</button><div class="flex gap-2 w-full justify-center"><button onclick="mM(-1,0)" class="dpad-btn text-2xl w-[3.5rem] h-[3.8rem]">◀</button><button onclick="mM(0,1)" class="dpad-btn text-2xl w-[3.5rem] h-[3.8rem]">▼</button><button onclick="mM(1,0)" class="dpad-btn text-2xl w-[3.5rem] h-[3.8rem]">▶</button></div></div></div>`;
            };
            window.mM = (dx,dy) => { if(!cm) return; let nx=p.x+dx,ny=p.y+dy; if(nx<0||nx>3||ny<0||ny>3) return; if(ob.some(o=>o.x===nx&&o.y===ny)){playSound('wrong');completeGame(false);return;} playSound('pop'); p={x:nx,y:ny}; if(activeKey && nx===activeKey.x && ny===activeKey.y){playSound('happy');cm=false;} ren(); };
            window.mA = (iC, correctText, expText) => { 
-               if(iC){ playSound('happy'); cm=true; qI++; keysCollected++; state.totalCorrect++; if(keysCollected >= totalTarget) setTimeout(()=>completeGame(true),500); else { spawnKey(); ren(); }
-               } else { playSound('wrong'); showExplanation(correctText, expText, () => { completeGame(false); }); } 
+               if(iC){ 
+                   playSound('happy'); state.totalCorrect++;
+                   showExplanation(correctText, expText, () => {
+                       cm=true; qI++; keysCollected++; if(keysCollected >= totalTarget) setTimeout(()=>completeGame(true),500); else { spawnKey(); ren(); }
+                   }, true);
+               } else { 
+                   playSound('wrong'); showExplanation(correctText, expText, () => { completeGame(false); }, false); 
+               } 
            }; ren();
        }
-       // Kota Ramah Disabilitas (G9)
-       else if (id === 'g9') { 
-           let actCount = Math.min(21, diffLevel + 1); 
-           const act = FASILITAS_KOTA.slice(0, actCount).map(s=>({...s, d:false})); let sT = null;
-           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full max-w-2xl mx-auto"><h3 class="text-base font-black text-yellow-300 mb-6 shrink-0 bg-black/50 py-3 rounded-full border border-yellow-500/30 uppercase tracking-widest">Perbaiki ${actCount} Fasilitas!</h3><div class="flex justify-center flex-wrap gap-3 mb-8 shrink-0">${act.map(s=>`<button onclick="sCT('${s.id}')" class="w-20 h-20 rounded-3xl border-4 text-4xl active:scale-95 flex flex-col items-center justify-center transition-all ${sT===s.id?'bg-cyan-500 border-white shadow-[0_0_20px_cyan] scale-110':'bg-gray-800 border-gray-600 hover:bg-gray-700'}"><span>${s.f}</span></button>`).join('')}</div><div class="grid grid-cols-3 gap-4 flex-1 content-start overflow-y-auto min-h-0 pr-2 pb-6 custom-scroll">${act.map((s,i)=>`<div onclick="aCT(${i})" class="rounded-3xl border-b-4 flex flex-col items-center justify-center p-4 active:translate-y-1 active:border-b-0 transition-all shadow-md cursor-pointer min-h-[120px] ${s.d?'bg-green-900 border-green-700':'bg-red-900 border-red-700'}"><div class="text-[3.5rem] mb-2 drop-shadow-md">${s.d?s.f:s.b}</div><div class="text-[10px] font-black mt-2 text-center leading-tight w-full uppercase">${s.n}</div></div>`).join('')}</div></div>`; };
-           window.sCT = (i) => { sT = i; playSound('pop'); ren(); }; 
-           window.aCT = (i) => { if(!sT||act[i].d)return; if(act[i].id===sT){playSound('happy');act[i].d=true;sT=null; state.totalCorrect++; if(act.every(s=>s.d))setTimeout(()=>completeGame(true),500);else ren();} else{playSound('wrong');completeGame(false);} }; ren();
-       }
-       // Susun Kata (G10, D2) - DENGAN SKENARIO
        else if (id === 'd2' || id === 'g10') { 
            let cs = activeMode==='DAKSA' ? SUSUN_DAKSA : SUSUN_UMUM;
            const dt = fisherYatesShuffle(deepClone(cs))[0], sh = fisherYatesShuffle([...dt.w]); let an = [];
-           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full justify-center max-w-2xl mx-auto"><h3 class="text-sm font-black text-yellow-400 mb-4 shrink-0 bg-black/60 p-4 rounded-xl border border-yellow-500/50 uppercase tracking-widest">${dt.c}</h3><p class="text-xs text-white mb-6 uppercase tracking-widest">Susun ${dt.w.length} Kata Di Bawah Ini:</p><div class="bg-gray-800 border-4 border-gray-600 flex-1 min-h-[200px] p-8 rounded-[3rem] mb-10 flex flex-wrap content-start justify-center gap-4 shadow-inner overflow-y-auto custom-scroll">${an.map((w,i)=>`<span onclick="rW(${i})" class="bg-cyan-600 px-6 py-4 rounded-2xl font-black text-lg text-white active:scale-90 border-b-4 border-cyan-800 cursor-pointer shadow-md uppercase tracking-wide hover:bg-cyan-500">${w}</span>`).join('')}</div><div class="flex flex-wrap justify-center gap-5 shrink-0">${sh.map(w=>`<button onclick="pW('${w}')" ${an.includes(w)?'disabled':''} class="px-6 py-4 rounded-[2rem] font-black text-lg border-b-4 active:translate-y-1 transition-all shadow-md uppercase tracking-wide ${an.includes(w)?'bg-gray-700 opacity-50 border-gray-800':'bg-gray-800 text-white border-gray-600 hover:bg-cyan-900 hover:border-cyan-700'}">${w}</button>`).join('')}</div></div>`; };
+           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full justify-center max-w-xs mx-auto"><h3 class="text-xs font-black text-yellow-400 mb-2 shrink-0 bg-black/60 p-3 rounded-xl border border-yellow-500/50 uppercase tracking-widest leading-tight">${dt.c}</h3><p class="text-[9px] text-white mb-3 uppercase tracking-widest">Susun Kata Di Bawah Ini:</p><div class="bg-gray-800 border-2 border-gray-600 flex-1 min-h-[100px] p-3 rounded-2xl mb-3 flex flex-wrap content-start justify-center gap-1.5 shadow-inner overflow-y-auto custom-scroll">${an.map((w,i)=>`<span onclick="rW(${i})" class="bg-cyan-600 px-3 py-1.5 rounded-lg font-black text-xs text-white active:scale-90 border-b-2 border-cyan-800 cursor-pointer shadow uppercase tracking-wide">${w}</span>`).join('')}</div><div class="flex flex-wrap justify-center gap-1.5 shrink-0 overflow-y-auto custom-scroll max-h-[120px] p-1">${sh.map(w=>`<button onclick="pW('${w}')" ${an.includes(w)?'disabled':''} class="px-3 py-1.5 rounded-lg font-black text-xs border-b-2 active:translate-y-1 transition-all shadow uppercase tracking-wide ${an.includes(w)?'bg-gray-700 opacity-50 border-gray-800':'bg-gray-800 text-white border-gray-600 hover:bg-cyan-900'}">${w}</button>`).join('')}</div></div>`; };
            window.pW = (w) => { playSound('pop'); an.push(w); if(an.length===dt.w.length){if(an.join('')===dt.w.join('')){playSound('happy');state.totalCorrect++;setTimeout(()=>completeGame(true),500);}else{playSound('wrong');setTimeout(()=>completeGame(false),500);}}else ren(); }; window.rW = (i) => { playSound('pop'); an.splice(i,1); ren(); }; ren();
        }
-       // Survival Jalan (D4 - Waktu Meningkat - KONTROL BAWAH)
        else if (id === 'd4') { 
            let px = 1, obs = [], tL = 10 + (diffLevel * 2), iP = true, tk = 0;
-           let spawnRate = Math.max(2, 8 - Math.floor(diffLevel*0.3)); let fallSpeed = 3 + (diffLevel*0.4);
-           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full items-center justify-center gap-6"><div class="flex flex-col flex-1 w-full max-w-lg shrink-0 h-full max-h-[500px]"><div class="flex justify-between text-yellow-400 font-black mb-6 text-base bg-black/60 px-6 py-4 rounded-full shrink-0 border border-yellow-500/30 uppercase tracking-widest"><span>Hindari Rintangan!</span><span class="${tL<=5?'text-red-500 animate-ping font-black text-2xl':''}">⏳ ${tL}s</span></div><div class="relative w-full flex-1 min-h-[250px] bg-gray-700 border-4 border-gray-500 overflow-hidden flex rounded-[2rem] shadow-inner"><div class="flex-1 border-r-4 border-dashed border-gray-500"></div><div class="flex-1 border-r-4 border-dashed border-gray-500"></div><div class="flex-1"></div>${obs.map(o=>`<div class="absolute text-[5rem] drop-shadow-md z-20" style="left: ${(o.x*33.3)+5}%; top: ${o.y}%">${o.t}</div>`).join('')}<div class="absolute text-[6rem] bottom-2 z-10 transition-all" style="left: ${(px*33.3)+2}%">♿</div></div></div><div class="flex gap-4 w-full shrink-0 max-w-lg mt-auto"><button onclick="mS(-1)" class="flex-1 px-8 py-8 bg-cyan-600 rounded-3xl text-[4rem] shadow-[0_8px_0_rgb(8,145,178)] active:translate-y-2 active:shadow-none transition-all">◀️</button><button onclick="mS(1)" class="flex-1 px-8 py-8 bg-cyan-600 rounded-3xl text-[4rem] shadow-[0_8px_0_rgb(8,145,178)] active:translate-y-2 active:shadow-none transition-all">▶️</button></div></div>`; };
+           let spawnRate = Math.max(6, 16 - Math.floor(diffLevel*0.3)); let fallSpeed = 2 + (diffLevel*0.15);
+           const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full items-center justify-center gap-2"><div class="flex flex-col flex-1 w-full max-w-xs shrink-0 h-full"><div class="flex justify-between text-yellow-400 font-black mb-2 text-[10px] bg-black/60 px-4 py-1.5 rounded-full shrink-0 border border-yellow-500/30 uppercase tracking-widest"><span>Hindari Rintangan!</span><span class="${tL<=5?'text-red-500 animate-ping font-black text-xs':''}">⏳ ${tL}s</span></div><div class="relative w-full flex-1 bg-gray-700 border-2 border-gray-500 overflow-hidden flex rounded-2xl shadow-inner"><div class="flex-1 border-r border-dashed border-gray-500"></div><div class="flex-1 border-r border-dashed border-gray-500"></div><div class="flex-1"></div>${obs.map(o=>`<div class="absolute text-[3rem] drop-shadow-md z-20" style="left: ${(o.x*33.3)+6}%; top: ${o.y}%">${o.t}</div>`).join('')}<div class="absolute text-[3.8rem] bottom-1 z-10 transition-all" style="left: ${(px*33.3)+2}%">♿</div></div></div><div class="flex gap-3 w-full shrink-0 max-w-xs mt-auto"><button onclick="mS(-1)" class="flex-1 py-3 bg-cyan-600 rounded-xl text-2xl shadow active:translate-y-1">◀️</button><button onclick="mS(1)" class="flex-1 py-3 bg-cyan-600 rounded-xl text-2xl shadow active:translate-y-1">▶️</button></div></div>`; };
            window.mS = (d) => { if(!iP)return; px = Math.max(0, Math.min(2, px+d)); playSound('pop'); ren(); };
            activeGameLoop = setInterval(() => { if(!iP)return; tk++; if(tk % spawnRate === 0) obs.push({x:Math.floor(Math.random()*3), y:-20, t:Math.random()>0.5?'🕳️':'🚧'}); obs.forEach(o=>o.y += fallSpeed); if(obs.some(o=>o.x===px&&o.y>65&&o.y<95)){iP=false;clearInterval(activeGameLoop);playSound('wrong');setTimeout(()=>completeGame(false),500);return;} obs=obs.filter(o=>o.y<120); if(tk%20===0){tL--;if(tL<=0){iP=false;clearInterval(activeGameLoop);playSound('victory');state.totalCorrect++;setTimeout(()=>completeGame(true),500);return;}} ren(); }, 40); ren();
        }
-       // Puzzle Empati (D5) - JAWABAN SELALU B
-       else if (id === 'd5') { 
-           const rawD = fisherYatesShuffle(deepClone(FLASHCARDS))[0]; 
-           let wrongs = rawD.opts.filter((_, i) => i !== rawD.a);
-           const d = { ...rawD, ...forceAnswerToB(rawD.opts[rawD.a], wrongs), t: [rawD.i, '✅', '🚫', '❓'] };
+       else if (id === 'd3' || id === 'g9') {
+           let isDaksaPov = (id === 'd3');
+           let scenarioIdx = Math.min(diffLevel - 1, 2);
+           let currentScenario = isDaksaPov ? D3_SCENARIOS[scenarioIdx] : G9_SCENARIOS[scenarioIdx];
            
-           let gr = fisherYatesShuffle([...d.t]), sl = null;
-           const ren = () => { if(gr.join('')===d.t.join('')){
-               playSound('happy');
-               container.innerHTML=`<div class="text-center w-full flex flex-col h-full justify-center max-w-lg mx-auto"><h3 class="text-base font-black mb-8 bg-black/60 p-6 rounded-3xl border-2 border-yellow-500 flex flex-col items-center shadow-lg"><div class="text-[6rem] mb-4 drop-shadow-md">${rawD.i}</div><div class="text-sm text-yellow-300 mb-6 bg-black/50 px-5 py-2 rounded-full uppercase tracking-widest">${rawD.t}</div>${rawD.q}</h3><div class="flex flex-col gap-5 flex-1 overflow-y-auto pb-4 custom-scroll">${d.opts.map((o,i)=>`<button onclick="sE(${i===d.a}, '${d.opts[d.a]}', '${d.exp.replace(/'/g, "\\'")}')" class="flex-1 min-h-[80px] p-5 bg-gray-800 border-b-4 border-cyan-700 rounded-2xl font-black text-sm active:translate-y-1 active:border-b-0 flex items-center justify-center text-left shadow-md hover:bg-cyan-900 transition-all uppercase leading-snug"><span class="bg-black/50 w-8 h-8 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> ${o}</button>`).join('')}</div></div>`; return; 
-           }
-              container.innerHTML = `<div class="text-center w-full flex flex-col items-center h-full justify-center relative"><div class="absolute top-0 right-0 bg-gray-900 border-2 border-yellow-400 p-3 rounded-2xl scale-90 shadow-2xl z-50"><p class="text-xs text-yellow-400 font-black mb-2 uppercase tracking-widest">Target</p><div class="grid grid-cols-2 gap-2 bg-blue-950 p-2 rounded-xl mb-2 border border-blue-800">${d.t.map(i=>`<div class="w-8 h-8 text-2xl flex justify-center items-center">${i}</div>`).join('')}</div><p class="text-[10px] text-white font-bold leading-tight w-[80px] truncate uppercase">${d.t.join('')}</p></div><h3 class="text-4xl font-black text-cyan-300 mb-4 drop-shadow-md uppercase tracking-widest">Susun Puzzle!</h3><p class="text-sm font-bold text-gray-300 mb-8 md:mb-12 bg-black/50 px-6 py-2 rounded-full border border-gray-600 uppercase tracking-widest">Ketuk 2 kotak untuk menukar posisi.</p><div class="grid grid-cols-2 gap-4 bg-blue-900 p-5 rounded-[2.5rem] border-4 border-blue-600 mx-auto z-10 shadow-2xl shrink-0 w-full max-w-[400px] aspect-square">${gr.map((ic,i)=>`<div onclick="cP(${i})" class="w-full h-full text-[6rem] flex justify-center items-center bg-gray-800 rounded-3xl border-4 active:scale-90 transition-all cursor-pointer ${sl===i?'border-yellow-400 bg-gray-700 shadow-[0_0_20px_yellow] scale-105':'border-gray-600 shadow-md'}">${ic}</div>`).join('')}</div></div>`; };
-           window.cP = (i) => { if(sl===null){sl=i;playSound('pop');}else{playSound('happy');let tp=gr[sl];gr[sl]=gr[i];gr[i]=tp;sl=null;} ren(); }; 
-           window.sE = (iC, correctText, expText) => { if(iC){ playSound('victory'); state.totalCorrect++; completeGame(true); }else{ playSound('wrong'); showExplanation(correctText, expText, () => { completeGame(false); }); } }; ren();
-       }
-       // Minecraft-Lite: Bangun Akses (D3)
-       else if (id === 'd3') { 
-           // Grid 3x3. Start at 0,0. Goal at 2,2.
-           // Ada lubang yang harus ditutup dengan blok khusus.
-           let grid = [
-               {t: '🚶', b: true}, {t: ' ', b: false, a:'f1'}, {t: ' ', b: false, a:'f10'},
-               {t: ' ', b: false, a:'f10'}, {t: '🕳️', b: false, a:'f3'}, {t: ' ', b: false, a:'f10'},
-               {t: ' ', b: false, a:'f10'}, {t: '🕳️', b: false, a:'f2'}, {t: '🏁', b: true}
-           ];
-           // Tambah kesulitan bedasar diffLevel (lebih banyak lubang / syarat blok)
-           if (diffLevel > 5) grid[2].a = 'f3';
-           if (diffLevel > 10) grid[3].a = 'f1';
+           let d3Phase = 'walk'; 
+           let d3QCount = 0;
+           let d3QList = [];
+           let d3FixOptions = [];
+           let d3FixCorrect = {};
            
-           let selBlock = null;
-           const ren = () => {
-               let isWin = grid.every(cell => cell.b || cell.t === FASILITAS_KOTA.find(f=>f.id===cell.a).b);
-               if (isWin) { playSound('victory'); state.totalCorrect++; setTimeout(()=>completeGame(true), 500); return; }
-               
-               container.innerHTML = `<div class="text-center w-full h-full flex flex-col items-center justify-center max-w-lg mx-auto"><h3 class="text-2xl font-black mb-6 text-yellow-400 bg-black/50 px-8 py-3 rounded-full border border-yellow-500 uppercase tracking-widest">Bangun Akses Difabel!</h3><p class="text-sm font-bold text-gray-300 mb-8 bg-black/40 px-6 py-2 rounded-xl">Isi jalan yang kosong/berlubang dengan fasilitas yang tepat agar bisa dilalui.</p><div class="grid grid-cols-3 gap-3 bg-gray-700 p-4 rounded-3xl border-4 border-gray-600 mb-10 w-full max-w-[350px] aspect-square shadow-inner">${grid.map((cell, i) => `<div onclick="placeBlock(${i})" class="flex items-center justify-center text-[4rem] bg-gray-800 rounded-2xl border-4 ${cell.b ? 'border-gray-500 opacity-50' : 'border-gray-600 hover:border-yellow-400 cursor-pointer'} transition-all shadow-md">${cell.t}</div>`).join('')}</div><div class="flex flex-wrap justify-center gap-4 w-full">${FASILITAS_KOTA.slice(0, 4).map(f => `<button onclick="selBlockType('${f.b}')" class="w-20 h-20 bg-gray-800 border-b-4 ${selBlock===f.b ? 'border-yellow-400 bg-cyan-900 scale-110 shadow-[0_0_15px_cyan]' : 'border-gray-600'} rounded-2xl text-4xl flex items-center justify-center transition-all shadow-md relative group"><span class="absolute -top-10 bg-black/80 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap z-50">${f.n}</span>${f.b}</button>`).join('')}</div></div>`;
-           };
-           window.selBlockType = (type) => { selBlock = type; playSound('pop'); ren(); };
-           window.placeBlock = (i) => {
-               if (grid[i].b || !selBlock) return;
-               let targetFasilitas = FASILITAS_KOTA.find(f => f.id === grid[i].a);
-               if (selBlock === targetFasilitas.b) {
-                   playSound('happy'); grid[i].t = selBlock;
-               } else {
-                   playSound('wrong'); 
-                   showExplanation("Fasilitas Tepat", `Bagian itu membutuhkan ${targetFasilitas.n} (${targetFasilitas.b}) untuk bisa dilewati dengan aman.`, () => ren());
+           const renderD3 = () => {
+               if (d3Phase === 'walk') {
+                   container.innerHTML = `<div class="text-center w-full h-full flex flex-col items-center justify-center max-w-xs mx-auto bg-gray-900 rounded-2xl overflow-hidden border-2 border-gray-700 shadow-2xl relative"><div class="absolute inset-0 bg-sim-road opacity-80 z-0"></div><h3 class="absolute top-6 text-xs font-black mb-2 text-yellow-400 bg-black/70 px-4 py-1 rounded-full border border-yellow-500 uppercase tracking-widest z-10 animate-pulse">Menyusuri Jalan Kota...</h3><div class="z-10 mt-auto mb-12 text-[5rem] drop-shadow-[0_15px_15px_rgba(0,0,0,0.8)] animate-bounce">♿</div></div>`;
+                   setTimeout(() => { if (d3Phase === 'walk') { playSound('wrong'); d3Phase = 'crash'; renderD3(); } }, 2500);
+               } 
+               else if (d3Phase === 'crash') {
+                   container.innerHTML = `<div class="text-center w-full h-full flex flex-col items-center justify-center max-w-xs mx-auto bg-red-900 rounded-2xl overflow-hidden border-2 border-red-500 shadow-2xl relative crash-shake p-4"><div class="text-[4rem] mb-2 drop-shadow-xl animate-pulse">💥</div><h2 class="text-2xl font-black text-white mb-3 uppercase tracking-widest drop-shadow-md">KECELAKAAN!</h2><div class="bg-black/60 p-3 rounded-xl mb-4 border border-white/20 shadow-inner"><p class="text-xs font-bold text-yellow-300 leading-tight">${currentScenario}</p></div><p class="text-[9px] text-gray-300 mb-2 font-black uppercase tracking-widest">Apa tindakanmu?</p><div class="flex flex-col gap-2 w-full"><button onclick="d3Action('perbaiki')" class="w-full py-3 bg-green-500 hover:bg-green-400 rounded-xl font-black text-white text-xs shadow-[0_3px_0_rgb(21,128,61)] active:translate-y-1 transition-all uppercase tracking-widest">🛠️ PERBAIKI</button><button onclick="d3Action('abaikan')" class="w-full py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-black text-gray-300 text-xs border border-gray-500 active:scale-95 transition-all uppercase tracking-widest">❌ ABAIKAN</button></div></div>`;
                }
-               ren();
+               else if (d3Phase === 'quiz') {
+                   let q = d3QList[d3QCount];
+                   container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-start max-w-xs mx-auto"><h3 class="text-[10px] font-black mb-2 text-yellow-400 shrink-0 bg-black/50 py-1 rounded-full border border-yellow-500/30 uppercase tracking-widest mx-6">Soal ${d3QCount + 1} / 2</h3><div class="flex-1 flex flex-col items-center justify-start w-full overflow-hidden"><div class="text-[3rem] mb-1 shrink-0">🧠</div><h3 class="text-xs font-black mb-2 shrink-0 bg-blue-900/60 p-3 rounded-xl border border-blue-500/50 leading-tight uppercase tracking-wider w-full text-white">${q.q}</h3><div class="flex flex-col gap-2 flex-1 justify-start w-full overflow-y-auto custom-scroll pr-1 pb-1 mt-1">${q.opts.map((o,i) => `<button onclick="d3Answer(${i===q.a}, '${q.opts[q.a].replace(/'/g, "\\'")}', '${q.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 bg-gray-800 border-b-2 border-blue-700 rounded-xl font-black text-xs active:translate-y-1 text-left transition-all shadow hover:bg-blue-900 leading-tight uppercase flex items-center"><span class="bg-black/50 w-5 h-5 shrink-0 inline-flex items-center justify-center rounded-full mr-2 text-cyan-300 text-[9px]">${String.fromCharCode(65+i)}</span> <span class="flex-1">${o}</span></button>`).join('')}</div></div></div>`;
+               }
+               else if (d3Phase === 'fix') {
+                   container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-center max-w-xs mx-auto"><h3 class="text-xs font-black mb-4 text-green-400 shrink-0 bg-black/50 py-1 rounded-full border border-green-500/30 uppercase tracking-widest mx-6">Tahap Akhir</h3><div class="flex-1 flex flex-col items-center justify-center w-full"><h3 class="text-xs font-black mb-4 shrink-0 bg-gray-800 p-3 rounded-xl border-2 border-yellow-500 leading-tight uppercase tracking-wider w-full shadow text-white">Fasilitas apa yang harus diperbaiki?</h3><div class="grid grid-cols-2 gap-2 w-full">${d3FixOptions.map((opt) => `<button onclick="d3FixAnswer('${opt.id}')" class="p-2 bg-gray-800 border-b-2 border-blue-700 rounded-xl font-black text-[9px] active:translate-y-1 flex flex-col items-center justify-center transition-all shadow hover:bg-blue-900 uppercase min-h-[90px]"><div class="text-[2.2rem] mb-1 drop-shadow-md">${opt.f}</div><div class="text-center tracking-wider leading-tight">${opt.n}</div></button>`).join('')}</div></div></div>`;
+               }
            };
-           ren();
+
+           window.d3Action = (act) => {
+               playSound('pop');
+               if (act === 'abaikan') {
+                   playSound('wrong'); completeGame(false);
+               } else {
+                   let rawData = fisherYatesShuffle(deepClone(D3_QUESTIONS)).slice(0, 2);
+                   d3QList = rawData.map(r => { let forced = forceAnswerToB(r[1], [r[2], r[3], r[4]]); return { q: r[0], opts: forced.opts, a: forced.a, exp: "Fakta Keselamatan Inklusif" }; });
+                   d3Phase = 'quiz'; renderD3();
+               }
+           };
+
+           window.d3Answer = (isCorrect, correctText, expText) => {
+               if (isCorrect) {
+                   playSound('happy'); state.totalCorrect++;
+                   showExplanation(correctText, expText, () => {
+                       d3QCount++;
+                       if (d3QCount >= 2) {
+                           d3Phase = 'fix';
+                           let mapData = D3_FIX_MAP[scenarioIdx];
+                           let correctFacility = FASILITAS_KOTA.find(f => f.id === mapData.id) || FASILITAS_KOTA[0];
+                           d3FixCorrect = { ...correctFacility, exp: mapData.exp };
+                           let wrongPool = FASILITAS_KOTA.filter(f => f.id !== correctFacility.id);
+                           let shuffledWrongs = fisherYatesShuffle(wrongPool).slice(0, 3);
+                           d3FixOptions = fisherYatesShuffle([correctFacility, ...shuffledWrongs]);
+                           renderD3();
+                       } else { renderD3(); }
+                   }, true);
+               } else {
+                   playSound('wrong'); showExplanation(correctText, expText, () => { completeGame(false); }, false);
+               }
+           };
+
+           window.d3FixAnswer = (facilityId) => {
+               if (facilityId === d3FixCorrect.id) {
+                   playSound('happy'); state.totalCorrect++;
+                   showExplanation(d3FixCorrect.n, d3FixCorrect.exp, () => {
+                       playSound('victory');
+                       container.innerHTML = `<div class="text-center w-full h-full flex flex-col items-center justify-center max-w-xs mx-auto bg-green-900 rounded-2xl overflow-hidden border-2 border-green-500 shadow-2xl relative p-4"><div class="text-[5rem] mb-3 drop-shadow-xl animate-bounce">✨</div><h2 class="text-xl font-black text-white mb-2 uppercase tracking-widest drop-shadow-md">KOTA DIPERBAIKI!</h2><p class="text-[10px] font-bold text-green-200 leading-tight bg-black/40 p-3 rounded-xl">Kamu berhasil mewujudkan jalanan yang aman!</p></div>`;
+                       setTimeout(() => { completeGame(true); }, 2000);
+                   }, true);
+               } else {
+                   playSound('wrong'); showExplanation(d3FixCorrect.n, d3FixCorrect.exp, () => { completeGame(false); }, false);
+               }
+           };
+
+           renderD3();
        }
     }
 
@@ -1003,4 +1107,3 @@
   </script>
 </body>
 </html>
-<!-- redeploy -->
