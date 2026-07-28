@@ -16,10 +16,12 @@
     @keyframes warnFadeOut { 0%, 80% { opacity: 1; pointer-events: auto; visibility: visible; } 100% { opacity: 0; pointer-events: none; visibility: hidden; } }
 
     #main-ui-wrapper { max-width: 85rem !important; }
-    .dashboard-layout { display: flex; flex-direction: column; gap: 1rem; width: w-full; height: 100%; }
+    body:not(.is-landscape) #main-ui-wrapper { max-width: 430px !important; margin-left: auto; margin-right: auto; }
+    
+    .dashboard-layout { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; flex: 1; min-height: max-content; padding-bottom: 1rem; }
     
     @media (min-width: 768px) {
-        .dashboard-layout { flex-direction: row; }
+        .dashboard-layout { flex-direction: row; gap: 1rem; height: 100%; min-height: 0; padding-bottom: 0; }
         .dashboard-left { flex: 1; height: 100%; }
         .dashboard-right { flex: 1.2; height: 100%; display: flex; flex-direction: column; }
     }
@@ -54,92 +56,6 @@
     .bg-sim-road { background-color: #374151; background-image: repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(255,255,255,0.2) 50px, rgba(255,255,255,0.2) 100px); background-size: 100% 200px; animation: scrollSimRoad 1s linear infinite; }
     .crash-shake { animation: crashShake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
     @keyframes crashShake { 10%, 90% { transform: translate3d(-3px, 0, 0); } 20%, 80% { transform: translate3d(5px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-8px, 0, 0); } 40%, 60% { transform: translate3d(8px, 0, 0); } }
-
-    /* === MODE PORTRAIT SIMULATOR (DESKTOP) === */
-    @media (min-width: 768px) {
-        body.is-portrait-sim {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #020617; /* Latar gelap di luar frame HP */
-        }
-        body.is-portrait-sim #main-game-container {
-            width: 390px; /* Ukuran standar frame HP */
-            height: 844px;
-            max-height: 95vh;
-            border-radius: 2.5rem;
-            box-shadow: 0 0 0 10px #1e293b, 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-            position: relative;
-            overflow: hidden;
-        }
-        body.is-portrait-sim #orientation-warning { display: none !important; }
-        
-        /* PAS MUAT 1 LAYAR TANPA SCROLL TAPI PROPORSIONAL */
-        body.is-portrait-sim .dashboard-layout { 
-            flex-direction: column !important; 
-            gap: 0.75rem !important; 
-            overflow: hidden !important; 
-            padding-bottom: 0 !important; 
-            padding-right: 0 !important; 
-            flex: 1 !important;
-            height: 100% !important;
-        }
-        
-        body.is-portrait-sim .dashboard-left { flex: 1.3 !important; width: 100% !important; height: 100% !important; }
-        body.is-portrait-sim .dashboard-right { flex: 1 !important; width: 100% !important; height: 100% !important; }
-        body.is-portrait-sim #screen-mode > div { flex-direction: column !important; }
-        
-        /* FONT & UKURAN FLEKSIBEL (POTRET DESKTOP) */
-        body.is-portrait-sim .port-compact-top { padding: 0.75rem 1rem !important; margin-bottom: 0 !important; flex-shrink: 0 !important; }
-        body.is-portrait-sim .port-hud-text { font-size: 0.9rem !important; }
-        body.is-portrait-sim .port-hud-text button { font-size: 0.75rem !important; padding: 0.5rem 1rem !important; }
-        
-        body.is-portrait-sim .port-compact-left { padding: 1.25rem !important; min-height: 0 !important; justify-content: space-between !important; gap: 0.5rem !important; }
-        body.is-portrait-sim .port-pet-icon { font-size: min(12vh, 8rem) !important; margin-bottom: 0 !important; }
-        body.is-portrait-sim .port-btn-latihan { font-size: 1.1rem !important; padding-top: 1rem !important; padding-bottom: 1rem !important; margin-top: auto !important; }
-        
-        body.is-portrait-sim .port-compact-right { gap: 0.75rem !important; }
-        body.is-portrait-sim .port-grid-2x2 { gap: 0.75rem !important; min-height: 0 !important; flex: 1 !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-template-rows: repeat(2, minmax(0, 1fr)) !important;}
-        body.is-portrait-sim .port-grid-item { padding: 0.5rem !important; gap: 0 !important; }
-        body.is-portrait-sim .port-grid-icon { font-size: min(6vh, 3.5rem) !important; margin-bottom: 0 !important; }
-        body.is-portrait-sim .port-grid-text { font-size: 0.85rem !important; margin-top: 0.25rem !important; }
-        
-        body.is-portrait-sim .port-leaderboard { height: 3.5rem !important; min-height: 3.5rem !important; border-radius: 1.25rem !important; flex-shrink: 0 !important; }
-        body.is-portrait-sim .port-leaderboard-icon { font-size: 2rem !important; }
-        body.is-portrait-sim .port-leaderboard-text { font-size: 1rem !important; }
-    }
-
-    /* === PENGATURAN PAS MUAT 1 LAYAR (HP ASLI) === */
-    @media (max-width: 767px) {
-        .dashboard-layout { 
-            overflow: hidden !important; 
-            padding-bottom: 0 !important; 
-            gap: 0.75rem !important;
-            flex: 1 !important;
-            height: 100% !important; 
-        }
-        .dashboard-left { flex: 1.3 !important; height: 100% !important; }
-        .dashboard-right { flex: 1 !important; height: 100% !important; }
-
-        /* FONT & UKURAN FLEKSIBEL (POTRET HP) */
-        .port-compact-top { padding: 0.75rem 1rem !important; margin-bottom: 0 !important; flex-shrink: 0 !important; }
-        .port-hud-text { font-size: 0.9rem !important; }
-        .port-hud-text button { font-size: 0.75rem !important; padding: 0.5rem 1rem !important; }
-        
-        .port-compact-left { padding: 1.25rem !important; min-height: 0 !important; justify-content: space-between !important; gap: 0.5rem !important; }
-        .port-pet-icon { font-size: min(12vh, 8rem) !important; margin-bottom: 0 !important; }
-        .port-btn-latihan { font-size: 1.1rem !important; padding-top: 1rem !important; padding-bottom: 1rem !important; margin-top: auto !important; }
-        
-        .port-compact-right { gap: 0.75rem !important; }
-        .port-grid-2x2 { gap: 0.75rem !important; min-height: 0 !important; flex: 1 !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-template-rows: repeat(2, minmax(0, 1fr)) !important;}
-        .port-grid-item { padding: 0.5rem !important; gap: 0 !important; }
-        .port-grid-icon { font-size: min(6vh, 3.5rem) !important; margin-bottom: 0 !important; }
-        .port-grid-text { font-size: 0.85rem !important; margin-top: 0.25rem !important; }
-        
-        .port-leaderboard { height: 3.5rem !important; min-height: 3.5rem !important; border-radius: 1.25rem !important; flex-shrink: 0 !important; }
-        .port-leaderboard-icon { font-size: 2rem !important; }
-        .port-leaderboard-text { font-size: 1rem !important; }
-    }
   </style>
 </head>
 <body class="bg-gray-900 text-white select-none relative h-dvh w-full overflow-hidden">
@@ -220,84 +136,57 @@
         </div>
       </div>
 
-      <div id="screen-dashboard" class="hidden flex-1 flex flex-col h-full overflow-hidden">
-        <div class="flex items-center justify-between bg-[#1e293b] p-3 rounded-3xl border-4 border-gray-700 mb-4 shrink-0 shadow-lg port-compact-top">
-          <div class="bg-[#facc15] px-5 py-2 rounded-full text-black font-black text-sm border-2 border-yellow-300 port-hud-text">LVL <span id="hud-level">1</span></div>
-          <div class="text-orange-400 font-black text-lg px-4 flex items-center gap-2 port-hud-text">🔥 <span id="hud-streak">0x</span></div>
-          <div class="text-gray-200 font-black text-lg px-4 flex items-center gap-2 port-hud-text">🪙 <span id="hud-coins">500</span></div>
-          <button onclick="nav('MODE')" class="bg-red-500 text-white font-black text-[11px] px-5 py-2.5 rounded-full active:scale-90 border border-red-400 shadow-md uppercase tracking-wider port-hud-text">Ganti Mode</button>
+      <div id="screen-dashboard" class="hidden flex-1 flex flex-col h-full overflow-y-auto custom-scroll pr-1 md:pr-0">
+        <div class="flex items-center justify-between bg-[#1e293b] p-3 md:p-4 rounded-[1.5rem] border-[3px] border-gray-700 mb-3 shrink-0 shadow-lg sticky top-0 z-30">
+          <div class="bg-[#facc15] px-3 md:px-5 py-1.5 md:py-2 rounded-full text-black font-black text-[11px] md:text-sm border-2 border-yellow-300 shadow-sm">LVL <span id="hud-level">1</span></div>
+          <div class="text-orange-400 font-black text-sm md:text-lg px-1 md:px-4 flex items-center gap-1 md:gap-2">🔥 <span id="hud-streak">0x</span></div>
+          <div class="text-gray-200 font-black text-sm md:text-lg px-1 md:px-4 flex items-center gap-1 md:gap-2">🪙 <span id="hud-coins">500</span></div>
+          <button onclick="nav('MODE')" class="bg-red-500 hover:bg-red-400 text-white font-black text-[10px] md:text-[11px] px-4 md:px-5 py-2 md:py-2.5 rounded-full active:scale-90 border-2 border-red-400 shadow-md uppercase tracking-wider">MODE</button>
         </div>
 
         <div class="dashboard-layout">
-            <div class="dashboard-left bg-[#1e293b] p-6 rounded-[2.5rem] border-4 border-gray-700 relative flex flex-col justify-between items-center shadow-2xl overflow-hidden min-h-[350px] port-compact-left">
-                <div id="pet-bubble" class="hidden absolute top-6 bg-white text-black px-6 py-4 rounded-3xl rounded-bl-none font-black text-sm shadow-xl z-20 border-4 border-gray-200 max-w-[85%] text-center leading-snug">💬</div>
+            <div class="dashboard-left bg-[#1e293b] p-4 md:p-6 rounded-[2rem] md:rounded-[2.5rem] border-[3px] md:border-4 border-gray-700 relative flex flex-col justify-between items-center shadow-xl md:shadow-2xl overflow-hidden min-h-[250px] md:min-h-[350px]">
+                <div id="pet-bubble" class="hidden absolute top-4 md:top-6 bg-white text-black px-4 md:px-6 py-2 md:py-4 rounded-3xl rounded-bl-none font-black text-xs md:text-sm shadow-xl z-20 border-[3px] md:border-4 border-gray-200 max-w-[85%] text-center leading-snug">💬</div>
                 
-                <div onclick="tapPet()" class="text-[8.5rem] md:text-[10rem] leading-none mb-6 mt-auto relative inline-block animate-float cursor-pointer z-10 port-pet-icon">
+                <div onclick="tapPet()" class="text-[6rem] md:text-[10rem] leading-none mb-3 md:mb-6 relative inline-block animate-float cursor-pointer z-10 mt-auto">
                     <span id="pet-emoji">🐣</span>
-                    <div id="pet-accessory" class="absolute -top-6 right-0 text-[4rem] drop-shadow-md"></div>
-                    <div class="sparkle text-yellow-300 top-0 -left-6">✨</div>
-                    <div class="sparkle text-yellow-100 top-1/2 -right-8" style="animation-delay: 0.5s">✨</div>
+                    <div id="pet-accessory" class="absolute -top-4 md:-top-6 right-0 text-[3rem] md:text-[4rem] drop-shadow-md"></div>
+                    <div class="sparkle text-yellow-300 top-0 -left-4 md:-left-6">✨</div>
+                    <div class="sparkle text-yellow-100 top-1/2 -right-6 md:-right-8" style="animation-delay: 0.5s">✨</div>
                     <div class="sparkle text-yellow-400 bottom-2 -left-2" style="animation-delay: 1s">✨</div>
                 </div>
 
-                <div class="bg-[#ef4444] px-6 py-2 rounded-full text-white font-black text-sm mb-4 border-2 border-red-400 shadow-md">Pet Keselamatan</div>
-                <div id="daily-lock-status" class="text-[#4ade80] font-black mb-3 text-sm flex items-center gap-1"><span class="bg-[#4ade80] rounded-sm w-4 h-4 flex items-center justify-center text-black text-[10px]">✔</span> Terbuka!</div>
+                <div class="bg-[#ef4444] px-4 md:px-6 py-1.5 md:py-2 rounded-full text-white font-black text-[10px] md:text-sm mb-2 md:mb-4 border-2 border-red-400 shadow-md uppercase tracking-wider">Pet Keselamatan</div>
+                <div id="daily-lock-status" class="text-[#4ade80] font-black mb-2 md:mb-3 text-[11px] md:text-sm flex items-center gap-1"><span class="bg-[#4ade80] rounded-sm w-3.5 h-3.5 md:w-4 md:h-4 flex items-center justify-center text-black text-[8px] md:text-[10px]">✔</span> Terbuka!</div>
                 
-                <button onclick="nav('DAILY')" id="btn-daily-action" class="w-full py-5 bg-[#334155] hover:bg-[#475569] rounded-2xl font-black text-white text-lg shadow-lg active:scale-95 uppercase tracking-widest transition-colors port-btn-latihan">Latihan Lagi</button>
+                <button onclick="nav('DAILY')" id="btn-daily-action" class="w-full py-3.5 md:py-5 bg-[#334155] hover:bg-[#475569] rounded-xl md:rounded-2xl font-black text-white text-xs md:text-lg shadow-lg active:scale-95 uppercase tracking-widest transition-colors">Latihan Lagi</button>
             </div>
 
-            <div class="dashboard-right gap-4 port-compact-right">
-                <div class="grid grid-cols-2 grid-rows-2 gap-4 h-full flex-[1.5] min-h-[250px] port-grid-2x2">
-                    <div id="menu-games" onclick="goToGames()" class="cursor-pointer rounded-[2rem] bg-[#4ade80] flex flex-col justify-center items-center gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative port-grid-item">
+            <div class="dashboard-right gap-3 md:gap-4">
+                <div class="grid grid-cols-2 grid-rows-2 gap-3 md:gap-4 h-full flex-[1.5] min-h-[200px] md:min-h-[250px]">
+                    <div id="menu-games" onclick="goToGames()" class="cursor-pointer rounded-[1.5rem] md:rounded-[2rem] bg-[#4ade80] flex flex-col justify-center items-center gap-1 md:gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative">
                         <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                        <div class="text-[4rem] drop-shadow-md mb-1 port-grid-icon">🎮</div><h3 class="font-black text-base text-white tracking-wide port-grid-text">Main Game</h3>
+                        <div class="text-[3rem] md:text-[4rem] drop-shadow-md mb-0 md:mb-1">🎮</div><h3 class="font-black text-[11px] md:text-base text-white tracking-widest uppercase">Main Game</h3>
                     </div>
-                    <div onclick="nav('PUSTAKA')" class="cursor-pointer rounded-[2rem] bg-[#f97316] flex flex-col justify-center items-center gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative port-grid-item">
+                    <div onclick="nav('PUSTAKA')" class="cursor-pointer rounded-[1.5rem] md:rounded-[2rem] bg-[#f97316] flex flex-col justify-center items-center gap-1 md:gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative">
                         <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                        <div class="text-[4rem] drop-shadow-md mb-1 port-grid-icon">📖</div><h3 class="font-black text-base text-white tracking-wide port-grid-text">Pustaka</h3>
+                        <div class="text-[3rem] md:text-[4rem] drop-shadow-md mb-0 md:mb-1">📖</div><h3 class="font-black text-[11px] md:text-base text-white tracking-widest uppercase">Pustaka</h3>
                     </div>
-                    <div onclick="nav('SHOP')" class="cursor-pointer rounded-[2rem] bg-[#e81cff] flex flex-col justify-center items-center gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative port-grid-item">
+                    <div onclick="nav('SHOP')" class="cursor-pointer rounded-[1.5rem] md:rounded-[2rem] bg-[#e81cff] flex flex-col justify-center items-center gap-1 md:gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative">
                         <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                        <div class="text-[4rem] drop-shadow-md mb-1 port-grid-icon">🛍️</div><h3 class="font-black text-base text-white tracking-wide port-grid-text">Toko Pet</h3>
+                        <div class="text-[3rem] md:text-[4rem] drop-shadow-md mb-0 md:mb-1">🛍️</div><h3 class="font-black text-[11px] md:text-base text-white tracking-widest uppercase">Toko Pet</h3>
                     </div>
-                    <div onclick="nav('BADGES')" class="cursor-pointer rounded-[2rem] bg-[#eab308] flex flex-col justify-center items-center gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative port-grid-item">
+                    <div onclick="nav('BADGES')" class="cursor-pointer rounded-[1.5rem] md:rounded-[2rem] bg-[#eab308] flex flex-col justify-center items-center gap-1 md:gap-2 active:scale-95 transition-all shadow-md overflow-hidden relative">
                         <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                        <div class="text-[4rem] drop-shadow-md mb-1 port-grid-icon">🏆</div><h3 class="font-black text-base text-white tracking-wide port-grid-text">Progres</h3>
+                        <div class="text-[3rem] md:text-[4rem] drop-shadow-md mb-0 md:mb-1">🏆</div><h3 class="font-black text-[11px] md:text-base text-white tracking-widest uppercase">Progres</h3>
                     </div>
                 </div>
 
-                <div onclick="nav('LEADERBOARD')" class="cursor-pointer rounded-[2rem] bg-[#3b82f6] flex flex-row justify-center items-center gap-4 active:scale-95 transition-all shadow-md h-24 shrink-0 overflow-hidden relative border-b-4 border-blue-800 hover:border-b-0 hover:translate-y-1 port-leaderboard">
+                <div onclick="nav('LEADERBOARD')" class="cursor-pointer rounded-[1.2rem] md:rounded-[2rem] bg-[#3b82f6] flex flex-row justify-center items-center gap-3 md:gap-4 active:scale-95 transition-all shadow-md h-12 md:h-24 shrink-0 overflow-hidden relative border-b-[3px] md:border-b-4 border-blue-800 hover:border-b-0 hover:translate-y-1">
                     <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                    <div class="text-[3rem] drop-shadow-md port-leaderboard-icon">📈</div><h3 class="font-black text-lg text-white uppercase tracking-widest port-leaderboard-text">Papan Peringkat</h3>
+                    <div class="text-[2rem] md:text-[3rem] drop-shadow-md">📈</div><h3 class="font-black text-xs md:text-lg text-white uppercase tracking-widest">Papan Peringkat</h3>
                 </div>
             </div>
-        </div>
-      </div>
-
-      <!-- KUIS HARIAN -->
-      <div id="screen-daily" class="hidden absolute inset-0 bg-black/95 flex flex-col items-center justify-center p-4 rounded-xl z-50">
-        <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 px-6 py-3 rounded-full text-white font-black text-sm active:scale-90 border-2 border-gray-500 shadow-md tracking-widest">❌ KEMBALI</button>
-        
-        <div id="daily-flashcard-box" class="w-full bg-gray-800 rounded-[3rem] p-8 text-center border-4 border-yellow-500 flex flex-col items-center justify-center max-w-lg shadow-2xl relative min-h-[400px] port-daily-box">
-           <h2 class="text-yellow-400 font-black text-sm mb-6 bg-black/50 px-6 py-2 rounded-full uppercase tracking-widest border border-yellow-500/30">Misi Keselamatan</h2>
-           <div id="daily-fc-icon" class="text-[8rem] mb-6 animate-bounce drop-shadow-xl port-daily-icon"></div>
-           <h3 id="daily-fc-title" class="text-4xl font-black text-white mb-4 leading-tight"></h3>
-           <p id="daily-fc-desc" class="text-base text-gray-300 mb-8 font-bold leading-relaxed"></p>
-           <button onclick="startDailyQuiz()" class="w-full py-5 bg-[#22c55e] rounded-2xl font-black text-white text-2xl shadow-[0_6px_0_rgb(21,128,61)] active:translate-y-1 active:shadow-none transition-all uppercase tracking-widest port-btn-latihan">Mulai Kuis!</button>
-        </div>
-
-        <div id="daily-quiz-box" class="hidden w-full bg-gray-800 rounded-[3rem] p-6 border-4 border-cyan-500 flex flex-col max-w-lg shadow-2xl min-h-[400px] port-daily-box">
-           <div class="bg-cyan-900 text-cyan-300 font-black text-sm py-2 px-6 rounded-full mx-auto mb-6 border border-cyan-500 tracking-widest uppercase" id="daily-quiz-title">SOAL 1 / 5</div>
-           <h3 id="daily-quiz-question" class="text-2xl font-black mb-6 text-center shrink-0 px-2 leading-relaxed text-white"></h3>
-           <div id="daily-quiz-options" class="flex flex-col gap-3 flex-1 justify-start w-full overflow-y-auto custom-scroll pr-2 pb-4"></div>
-        </div>
-
-        <div id="daily-result-box" class="hidden w-full bg-gray-800 rounded-[3rem] p-8 text-center border-4 border-white/20 max-w-lg shadow-2xl port-daily-box">
-          <div id="daily-res-icon" class="text-[8rem] mb-6 animate-bounce port-daily-icon"></div>
-          <h2 id="daily-result-status" class="text-5xl font-black mb-4 uppercase"></h2>
-          <p id="daily-result-score" class="text-2xl font-black bg-black/50 py-4 rounded-2xl mb-8 border border-white/10 text-yellow-300 tracking-widest"></p>
-          <button id="btn-daily-retry" onclick="retryDaily()" class="hidden w-full py-5 mb-4 bg-orange-500 rounded-2xl font-black text-white active:translate-y-1 shadow-[0_6px_0_rgb(194,65,12)] active:shadow-none transition-all text-xl uppercase tracking-widest port-btn-latihan">Ulangi Kuis</button>
-          <button onclick="nav('DASHBOARD')" class="w-full py-5 bg-blue-600 rounded-2xl font-black text-white active:translate-y-1 shadow-[0_6px_0_rgb(29,78,216)] active:shadow-none transition-all text-xl uppercase tracking-widest port-btn-latihan">Kembali ke Menu</button>
         </div>
       </div>
 
@@ -993,30 +882,23 @@
        const btnGames = document.getElementById('menu-games');
 
        if (state.dailyCompletedDate === new Date().toDateString()) {
-          lockStatus.innerHTML = `<span class="bg-[#4ade80] rounded-sm w-4 h-4 flex items-center justify-center text-black text-[10px]">✔</span> Terbuka!`;
-          lockStatus.className = "text-[#4ade80] font-black mb-3 text-sm flex items-center gap-1";
+          lockStatus.innerHTML = `<span class="bg-[#4ade80] rounded-sm w-3.5 h-3.5 md:w-4 md:h-4 flex items-center justify-center text-black text-[8px] md:text-[10px]">✔</span> Terbuka!`;
+          lockStatus.className = "text-[#4ade80] font-black mb-2 md:mb-3 text-[11px] md:text-sm flex items-center gap-1";
           btnDaily.innerText = "LATIHAN LAGI"; 
-          btnDaily.className = "w-full py-5 bg-[#334155] hover:bg-[#475569] rounded-2xl font-black text-white text-lg shadow-lg active:scale-95 uppercase tracking-widest transition-colors";
+          btnDaily.className = "w-full py-3.5 md:py-5 bg-[#334155] hover:bg-[#475569] rounded-xl md:rounded-2xl font-black text-white text-xs md:text-lg shadow-lg active:scale-95 uppercase tracking-widest transition-colors";
           btnGames.classList.remove('opacity-50', 'grayscale'); 
        } else {
           lockStatus.innerHTML = `🔒 Selesaikan Misi!`;
-          lockStatus.className = "text-[#ef4444] font-black mb-3 text-sm flex items-center gap-1 animate-pulse";
+          lockStatus.className = "text-[#ef4444] font-black mb-2 md:mb-3 text-[11px] md:text-sm flex items-center gap-1 animate-pulse";
           btnDaily.innerText = "MISI HARIAN (BUKA GAME)"; 
-          btnDaily.className = "w-full py-5 bg-[#ef4444] hover:bg-[#dc2626] rounded-2xl font-black text-white text-lg shadow-lg active:scale-95 uppercase tracking-widest transition-colors";
+          btnDaily.className = "w-full py-3.5 md:py-5 bg-[#ef4444] hover:bg-[#dc2626] rounded-xl md:rounded-2xl font-black text-white text-xs md:text-lg shadow-lg active:scale-95 uppercase tracking-widest transition-colors";
           btnGames.classList.add('opacity-50', 'grayscale'); 
        }
     }
 
     function setOrientation(mode) {
         playSound('pop');
-        document.body?.classList.remove('is-landscape', 'is-portrait-sim');
-        
-        if (mode === 'landscape') {
-            document.body?.classList.add('is-landscape');
-        } else if (mode === 'portrait') {
-            document.body?.classList.add('is-portrait-sim');
-        }
-        
+        if (mode === 'landscape') document.body?.classList.add('is-landscape'); else document.body?.classList.remove('is-landscape'); 
         document.getElementById('screen-orientation')?.classList.add('hidden'); 
         document.getElementById('screen-splash')?.classList.remove('hidden');
     }
