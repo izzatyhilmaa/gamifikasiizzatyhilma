@@ -56,6 +56,478 @@
     .bg-sim-road { background-color: #374151; background-image: repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(255,255,255,0.2) 50px, rgba(255,255,255,0.2) 100px); background-size: 100% 200px; animation: scrollSimRoad 1s linear infinite; }
     .crash-shake { animation: crashShake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
     @keyframes crashShake { 10%, 90% { transform: translate3d(-3px, 0, 0); } 20%, 80% { transform: translate3d(5px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-8px, 0, 0); } 40%, 60% { transform: translate3d(8px, 0, 0); } }
+
+    /* --- TUNA DAKSA MODE ENLARGEMENTS (EKSTRA JUMBO & DISUSUN KE BAWAH) --- */
+    @media screen and (orientation: portrait) {
+        /* General Ensure Scrolling & Layout */
+        body.mode-daksa > div, body.mode-daksa .custom-scroll { 
+            overflow-y: auto !important; 
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Top HUD / Status Bar (Level, Streak, Koin) -> Disusun ke bawah (ENTER) */
+        body.mode-daksa #screen-dashboard > div.sticky {
+            display: flex !important;
+            flex-direction: column !important; /* ENTER ke bawah */
+            padding: 2.5rem !important;
+            border-radius: 3rem !important;
+            gap: 2rem !important;
+            position: relative !important; /* Hilangkan sticky agar tidak nutup layar */
+            margin-bottom: 3rem !important;
+        }
+        body.mode-daksa #screen-dashboard > div.sticky > div {
+            font-size: 3rem !important;
+            padding: 2rem !important;
+            width: 100% !important;
+            text-align: center !important;
+            justify-content: center !important;
+            display: flex !important;
+            border-radius: 2rem !important;
+        }
+        body.mode-daksa button[onclick="nav('MODE')"] {
+            font-size: 3rem !important;
+            padding: 3rem !important;
+            width: 100% !important;
+            border-radius: 2.5rem !important;
+        }
+
+        /* Dashboard Pet Area (Pet Super Besar) */
+        body.mode-daksa .dashboard-left { 
+            padding: 4rem 2rem !important; 
+            margin-bottom: 3rem !important;
+            border-radius: 4rem !important;
+            min-height: auto !important;
+        }
+        body.mode-daksa #pet-emoji { font-size: 18rem !important; margin: 4rem 0 !important; }
+        body.mode-daksa #pet-accessory { font-size: 10rem !important; top: -4rem !important; right: -4rem !important; }
+        body.mode-daksa #pet-bubble { 
+            font-size: 3rem !important; 
+            padding: 3rem !important; 
+            max-width: 100% !important;
+            line-height: 1.5 !important;
+            border-radius: 3rem !important;
+            position: relative !important;
+            margin-bottom: 2rem !important;
+        }
+        body.mode-daksa .dashboard-left > div.bg-\\[\\#ef4444\\] {
+            font-size: 2.5rem !important; padding: 2rem !important; width: 100% !important; text-align: center !important; border-radius: 2rem !important;
+        }
+        body.mode-daksa #daily-lock-status { font-size: 2.5rem !important; margin: 2rem 0 !important; }
+        body.mode-daksa #daily-lock-status span { width: 4rem !important; height: 4rem !important; font-size: 2.5rem !important; margin-right: 1rem !important; }
+        body.mode-daksa #btn-daily-action { font-size: 3.5rem !important; padding: 4rem !important; border-radius: 3rem !important; margin-top: 2rem !important; }
+
+        /* Dashboard Menu (Main Game, Pustaka, Shop, dll) -> Disusun ke bawah (ENTER) */
+        body.mode-daksa .dashboard-layout { display: flex !important; flex-direction: column !important; gap: 3rem !important; }
+        body.mode-daksa .dashboard-right > .grid {
+            display: flex !important;
+            flex-direction: column !important; /* Susun ke bawah (ENTER) */
+            gap: 3rem !important;
+        }
+        body.mode-daksa .dashboard-right > .grid > div {
+            display: flex !important;
+            flex-direction: column !important; /* Icon di atas, Teks di bawah */
+            padding: 5rem 2rem !important;
+            border-radius: 4rem !important;
+            gap: 2rem !important;
+        }
+        body.mode-daksa .dashboard-right > .grid > div > div:nth-child(2) { font-size: 12rem !important; margin-bottom: 2rem !important; }
+        body.mode-daksa .dashboard-right > .grid > div > h3 { font-size: 4rem !important; text-align: center !important; line-height: 1.2 !important; }
+        
+        body.mode-daksa .dashboard-right > div:last-child { /* Papan Peringkat */
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 5rem 2rem !important;
+            border-radius: 4rem !important;
+            gap: 2rem !important;
+            height: auto !important;
+            margin-top: 2rem !important;
+        }
+        body.mode-daksa .dashboard-right > div:last-child > div:nth-child(2) { font-size: 12rem !important; margin-bottom: 2rem !important; }
+        body.mode-daksa .dashboard-right > div:last-child > h3 { font-size: 4rem !important; text-align: center !important; }
+
+        /* Area Scroll Utama */
+        body.mode-daksa #screen-dashboard, body.mode-daksa #screen-player { padding-bottom: 25rem !important; }
+        
+        /* Modal & Quiz Areas (Kuis Harian) */
+        body.mode-daksa #daily-quiz-box, body.mode-daksa #daily-flashcard-box, body.mode-daksa #daily-result-box {
+            max-width: 100% !important;
+            width: 95% !important;
+            height: auto !important;
+            max-height: 90vh !important;
+            padding: 4rem 3rem !important;
+            border-radius: 4rem !important;
+            overflow-y: auto !important;
+            margin-top: 4rem !important;
+        }
+        body.mode-daksa #daily-quiz-title, body.mode-daksa h2.text-yellow-400 { font-size: 3rem !important; padding: 2rem 3rem !important; margin-bottom: 3rem !important; border-radius: 2rem !important; }
+        body.mode-daksa h3#daily-quiz-question, body.mode-daksa h3#daily-fc-title { font-size: 4rem !important; padding: 2rem 0 !important; line-height: 1.5 !important; }
+        body.mode-daksa p#daily-fc-desc { font-size: 3rem !important; margin-bottom: 4rem !important; line-height: 1.5 !important; }
+        body.mode-daksa #daily-fc-icon, body.mode-daksa #daily-res-icon { font-size: 15rem !important; margin-bottom: 3rem !important; }
+        body.mode-daksa button[onclick="startDailyQuiz()"] { font-size: 4rem !important; padding: 4rem !important; border-radius: 3rem !important; }
+        
+        body.mode-daksa #daily-quiz-options { gap: 2.5rem !important; padding-bottom: 5rem !important; display: flex !important; flex-direction: column !important; }
+        body.mode-daksa #daily-quiz-options button {
+            padding: 4rem 3rem !important;
+            font-size: 3rem !important;
+            border-radius: 3rem !important;
+            border-bottom-width: 12px !important;
+            line-height: 1.4 !important;
+        }
+        body.mode-daksa #daily-quiz-options button span:first-child { width: 8rem !important; height: 8rem !important; font-size: 4.5rem !important; margin-right: 2rem !important; }
+
+        /* Generic In-Game Quiz / Questions / Menus */
+        body.mode-daksa #game-play-area { padding: 3rem !important; overflow-y: auto !important; justify-content: flex-start !important; flex-direction: column !important; display: flex !important; }
+        body.mode-daksa #game-play-area h3, body.mode-daksa #game-play-area .text-xl, body.mode-daksa #game-play-area .text-2xl, body.mode-daksa #game-play-area .text-3xl { font-size: 4rem !important; line-height: 1.5 !important; padding: 3rem !important; margin-bottom: 2rem !important; border-radius: 3rem !important; }
+        body.mode-daksa #game-play-area p { font-size: 2.5rem !important; line-height: 1.5 !important; padding: 2rem !important; margin-bottom: 2rem !important; }
+        
+        body.mode-daksa #game-play-area button:not(.dpad-btn) { 
+            font-size: 3rem !important; 
+            padding: 4rem 3rem !important; 
+            margin-bottom: 2.5rem !important;
+            border-radius: 3rem !important;
+            border-bottom-width: 12px !important;
+            line-height: 1.4 !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+        body.mode-daksa #game-play-area button span.w-8, body.mode-daksa #game-play-area button span.w-10 { width: 8rem !important; height: 8rem !important; font-size: 4.5rem !important; margin-right: 2rem !important; }
+        body.mode-daksa #game-play-area .text-\\[10rem\\] { font-size: 20rem !important; margin: 4rem 0 !important; } /* Rambu Tebak Rambu G1 & R1 */
+
+        /* Minigames Grid & Other Menus (Zona Minigames) */
+        body.mode-daksa #games-grid, body.mode-daksa #pustaka-grid, body.mode-daksa #shop-items-grid, body.mode-daksa #badges-grid {
+            display: flex !important;
+            flex-direction: column !important; /* Susun ke bawah (ENTER) */
+            gap: 3rem !important;
+            padding-bottom: 25rem !important;
+        }
+        body.mode-daksa #games-grid > div {
+            display: flex !important;
+            flex-direction: column !important; /* Ikon atas, tulisan bawah */
+            padding: 5rem 3rem !important;
+            border-radius: 4rem !important;
+            text-align: center !important;
+        }
+        body.mode-daksa #games-grid .text-\\[4rem\\] { font-size: 14rem !important; width: 100% !important; margin-bottom: 3rem !important; background: transparent !important; border: none !important; }
+        body.mode-daksa #games-grid h3 { font-size: 4.5rem !important; line-height: 1.2 !important; margin-bottom: 2rem !important; }
+        body.mode-daksa #games-grid p { font-size: 3rem !important; padding: 1rem !important; color: white !important; }
+        body.mode-daksa #games-grid .bg-cyan-900 { font-size: 3rem !important; padding: 3rem !important; border-radius: 3rem !important; margin-top: 3rem !important; }
+        body.mode-daksa #games-grid .bg-cyan-900 span { font-size: 4rem !important; }
+
+        /* Pustaka & Shop Overrides */
+        body.mode-daksa #pustaka-grid > div, body.mode-daksa #shop-items-grid > div, body.mode-daksa #badges-grid > div {
+            padding: 5rem !important;
+            border-radius: 4rem !important;
+        }
+        body.mode-daksa #pustaka-grid .text-\\[5rem\\] { font-size: 15rem !important; margin-bottom: 3rem !important; }
+        body.mode-daksa #pustaka-grid h3, body.mode-daksa #shop-items-grid h3, body.mode-daksa #badges-grid h3 { font-size: 3.5rem !important; padding: 2rem !important; line-height: 1.4 !important; border-radius: 2rem !important; }
+        body.mode-daksa #shop-items-grid .text-\\[5rem\\] { font-size: 15rem !important; margin-bottom: 3rem !important; }
+        body.mode-daksa #shop-items-grid button { font-size: 4rem !important; padding: 3rem !important; border-radius: 2.5rem !important; margin-top: 2rem !important; }
+        
+        /* Pustaka Detail Modal */
+        body.mode-daksa #pustaka-detail-modal > div { max-width: 95% !important; padding: 5rem 3rem !important; border-radius: 4rem !important; }
+        body.mode-daksa #pd-icon { font-size: 18rem !important; margin-bottom: 4rem !important; }
+        body.mode-daksa #pd-title { font-size: 4.5rem !important; margin-bottom: 3rem !important; }
+        body.mode-daksa #pd-desc { font-size: 3rem !important; line-height: 1.5 !important; padding: 3rem !important; border-radius: 3rem !important; margin-bottom: 3rem !important; }
+        body.mode-daksa #pd-fact { font-size: 2.5rem !important; line-height: 1.5 !important; padding-left: 2rem !important; border-left-width: 8px !important; margin-bottom: 4rem !important; }
+        body.mode-daksa #pustaka-detail-modal button { font-size: 3.5rem !important; padding: 4rem !important; border-radius: 3rem !important; }
+
+        /* Modal Explanation (Jawaban Benar/Salah) */
+        body.mode-daksa #exp-modal-box { max-width: 95% !important; padding: 5rem 4rem !important; border-radius: 4rem !important; }
+        body.mode-daksa #exp-icon { font-size: 15rem !important; margin-bottom: 3rem !important; }
+        body.mode-daksa #exp-title { font-size: 5rem !important; line-height: 1.2 !important; margin-bottom: 3rem !important; }
+        body.mode-daksa #exp-subtitle { font-size: 3rem !important; margin-bottom: 2rem !important; }
+        body.mode-daksa #exp-correct-ans { font-size: 5rem !important; margin: 3rem 0 !important; line-height: 1.2 !important; }
+        body.mode-daksa #exp-reason { font-size: 3.5rem !important; line-height: 1.5 !important; padding: 2rem 0 !important; }
+        body.mode-daksa #exp-modal-box button { font-size: 4rem !important; padding: 4rem !important; border-radius: 3rem !important; border-bottom-width: 12px !important; margin-top: 2rem !important; }
+
+        /* Back Buttons (Tombol Kembali) */
+        body.mode-daksa button.absolute.top-4.left-4 {
+            font-size: 3rem !important;
+            padding: 3rem 4rem !important;
+            border-radius: 3rem !important;
+            position: relative !important; /* Pindah ke atas konten (bukan melayang) */
+            top: 0 !important; left: 0 !important;
+            width: 100% !important;
+            margin-bottom: 3rem !important;
+            display: block !important;
+            border-width: 4px !important;
+        }
+        
+        /* Header titles in sub menus (Zona Minigames dll) */
+        body.mode-daksa h1.text-2xl, body.mode-daksa h1.text-3xl, body.mode-daksa h1.text-4xl { font-size: 5rem !important; line-height: 1.3 !important; padding: 2rem 0 !important; text-align: center !important; }
+        body.mode-daksa p.bg-blue-900\\/50, body.mode-daksa p.bg-black\\/50 { font-size: 3rem !important; padding: 2rem 4rem !important; border-radius: 3rem !important; margin-bottom: 4rem !important; }
+        
+        /* Susun Kata D2/G10 */
+        body.mode-daksa #game-play-area .flex-wrap { gap: 3rem !important; }
+        body.mode-daksa #game-play-area .flex-wrap span, body.mode-daksa #game-play-area .flex-wrap button {
+            font-size: 4rem !important; padding: 3rem 4rem !important; border-radius: 3rem !important; border-bottom-width: 10px !important;
+        }
+
+        /* Leaderboard (Papan Peringkat List) */
+        body.mode-daksa #lb-full-list > div {
+            flex-direction: column !important; /* ENTER susun bawah */
+            padding: 4rem !important;
+            border-radius: 4rem !important;
+            gap: 2rem !important;
+            text-align: center !important;
+        }
+        body.mode-daksa #lb-full-list > div > div {
+            width: 100% !important;
+            font-size: 4rem !important;
+            text-align: center !important;
+            justify-content: center !important;
+            padding: 1rem !important;
+        }
+        body.mode-daksa #lb-full-list > div > div:nth-child(4) { font-size: 3rem !important; padding: 2rem !important; border-radius: 2rem !important; }
+    }
+    
+    /* --- SIGN LANGUAGE ANIMATION CSS --- */
+    #screen-sign-intro {
+        --skin: #ffcbab; --skin-shadow: #e0aa8b; --skin-outline: #c78d6b;
+        --shirt: #1abc9c; --pants: #34495e; --hair: #2c3e50; --trans-speed: 0.5s; 
+    }
+    .sl-scene { width: 300px; height: 380px; position: relative; perspective: 1200px; margin-bottom: 20px; }
+    .sl-character { position: absolute; width: 100%; height: 100%; transform-style: preserve-3d; transition: all var(--trans-speed) cubic-bezier(0.25, 0.8, 0.25, 1); }
+    .sl-head { position: absolute; top: 20px; left: 50%; margin-left: -45px; width: 90px; height: 110px; background: var(--skin); border-radius: 45px 45px 35px 35px; transform-origin: bottom center; z-index: 10; transition: transform var(--trans-speed); box-shadow: inset -5px -5px 10px rgba(0,0,0,0.05); }
+    .sl-hair { position: absolute; top: -10px; left: -5px; width: 100px; height: 45px; background: var(--hair); border-radius: 50px 50px 15px 15px; }
+    .sl-eyes { position: absolute; top: 55px; width: 100%; display: flex; justify-content: center; gap: 24px; }
+    .sl-eye { width: 10px; height: 10px; background: #222; border-radius: 50%; animation: sl-blink 4s infinite; }
+    .sl-mouth { position: absolute; top: 80px; left: 50%; margin-left: -12px; width: 24px; height: 8px; border-bottom: 3px solid #333; border-radius: 50%; transition: all 0.3s; }
+    .sl-torso { position: absolute; top: 120px; left: 50%; margin-left: -55px; width: 110px; height: 140px; background: var(--shirt); border-radius: 40px 40px 15px 15px; z-index: 5; }
+    .sl-arm { position: absolute; top: 130px; width: 36px; height: 80px; background: var(--shirt); border-radius: 18px; transform-origin: 18px 18px; z-index: 8; transform-style: preserve-3d; transition: transform var(--trans-speed) ease-in-out; }
+    .sl-arm.left { left: 60px; }
+    .sl-arm.right { right: 60px; }
+    .sl-lower-arm { position: absolute; top: 60px; left: 3px; width: 30px; height: 85px; background: var(--skin); border-radius: 15px; transform-origin: 15px 15px; transform-style: preserve-3d; transition: transform var(--trans-speed) ease-in-out; box-shadow: inset -2px -2px 6px rgba(0,0,0,0.1); }
+    .sl-hand { position: absolute; bottom: -25px; left: -3px; width: 36px; height: 40px; background: var(--skin); border-radius: 10px 10px 18px 18px; transform-origin: top center; transform-style: preserve-3d; transition: transform var(--trans-speed) ease-in-out; border: 1px solid var(--skin-outline); z-index: 2; }
+    .sl-finger { position: absolute; background: var(--skin); border: 1px solid var(--skin-outline); border-radius: 8px; transform-origin: top center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1; }
+    .sl-thumb { width: 12px; height: 22px; top: 12px; z-index: 3; }
+    .sl-index { width: 9px; height: 32px; bottom: -28px; left: 2px; }
+    .sl-middle { width: 9px; height: 36px; bottom: -32px; left: 11px; }
+    .sl-ring { width: 9px; height: 34px; bottom: -30px; left: 20px; }
+    .sl-pinky { width: 8px; height: 26px; bottom: -22px; left: 29px; }
+    .sl-arm.left .sl-thumb { right: -6px; transform-origin: top left; transform: rotate(-35deg); }
+    .sl-arm.right .sl-thumb { left: -6px; transform-origin: top right; transform: rotate(35deg); }
+
+    .sl-subtitles { font-size: 1.1rem; color: #95a5a6; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-weight: 600; width: 100%; margin-top: 10px; }
+    .sl-sub { padding: 8px 12px; border-radius: 8px; transition: all 0.3s; text-align: center; }
+    .sl-sub.active { background: #3498db; color: white; transform: scale(1.05); }
+    .sl-sub.active.danger { background: #e74c3c; }
+    .sl-sub.active.action { background: #2ecc71; }
+    .sl-sub.active.warning { background: #f39c12; }
+
+    .pose-rest .sl-arm { transform: rotateZ(12deg); }
+    .pose-rest .sl-arm.right { transform: rotateZ(-12deg); }
+    .pose-rest .sl-lower-arm { transform: rotateX(-15deg); }
+    .pose-rest .sl-hand { transform: rotateX(-10deg); }
+    .pose-rest .sl-finger:not(.sl-thumb) { transform: rotateX(45deg); height: 20px; background: var(--skin-shadow); }
+    .pose-rest .sl-thumb { transform: rotateX(20deg); }
+
+    .pose-click .sl-head { transform: rotateX(-10deg); }
+    .pose-click .sl-arm.right { transform: rotateZ(-10deg) rotateX(85deg); }
+    .pose-click .sl-arm.right .sl-lower-arm { transform: rotateX(-5deg); }
+    .pose-click .sl-arm.right .sl-hand { transform: rotateX(-15deg); }
+    .pose-click .sl-arm.right .sl-index { transform: rotateX(0deg); height: 32px; background: var(--skin); }
+    .pose-click .sl-arm.right .sl-middle, .pose-click .sl-arm.right .sl-ring, .pose-click .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
+    .pose-click .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
+    .pose-click-push .sl-arm.right { transform: rotateZ(-10deg) rotateX(110deg); }
+    .pose-click-push .sl-arm.right .sl-lower-arm { transform: rotateX(-15deg); }
+
+    .pose-cross .sl-head { transform: rotateZ(15deg); }
+    .pose-cross .sl-arm.left { transform: rotateZ(45deg) rotateX(80deg); }
+    .pose-cross .sl-arm.left .sl-lower-arm { transform: rotateZ(45deg); }
+    .pose-cross .sl-arm.left .sl-hand { transform: rotateX(-45deg); }
+    .pose-cross .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0); height: 32px; }
+    .pose-cross .sl-arm.right { transform: rotateZ(-20deg) rotateX(80deg); }
+    .pose-cross .sl-arm.right .sl-lower-arm { transform: rotateX(-60deg); }
+    .pose-cross .sl-arm.right .sl-hand { transform: rotateX(40deg); }
+    .pose-cross .sl-arm.right .sl-index, .pose-cross .sl-arm.right .sl-middle { transform: rotateX(0); height: 36px; background: var(--skin); }
+    .pose-cross .sl-arm.right .sl-ring, .pose-cross .sl-arm.right .sl-pinky, .pose-cross .sl-arm.right .sl-thumb { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
+
+    .pose-avoid .sl-head { transform: rotateX(15deg) translateY(-5px); }
+    .pose-avoid .sl-mouth { height: 14px; width: 14px; border: 4px solid #333; top: 76px; }
+    .pose-avoid .sl-arm { transform: rotateZ(35deg) rotateX(110deg); }
+    .pose-avoid .sl-arm.right { transform: rotateZ(-35deg) rotateX(110deg); }
+    .pose-avoid .sl-lower-arm { transform: rotateX(-120deg); }
+    .pose-avoid .sl-hand { transform: rotateX(-20deg); }
+    .pose-avoid .sl-finger { transform: rotateX(0); background: var(--skin); }
+    .pose-avoid .sl-index { height: 32px; transform: rotateZ(20deg); }
+    .pose-avoid .sl-middle { height: 36px; transform: rotateZ(0deg); }
+    .pose-avoid .sl-ring { height: 34px; transform: rotateZ(-20deg); }
+    .pose-avoid .sl-pinky { height: 26px; transform: rotateZ(-40deg); }
+    .pose-avoid .sl-arm.left .sl-thumb { transform: rotate(-70deg); }
+    .pose-avoid .sl-arm.right .sl-thumb { transform: rotate(70deg); }
+
+    .pose-car .sl-head { transform: rotateZ(0); }
+    .pose-car .sl-arm { transform: rotateZ(10deg) rotateX(80deg); }
+    .pose-car .sl-arm.right { transform: rotateZ(-10deg) rotateX(80deg); }
+    .pose-car .sl-lower-arm { transform: rotateX(-20deg); }
+    .pose-car .sl-finger:not(.sl-thumb) { transform: rotateX(160deg) translateY(12px); height: 16px; background: var(--skin-shadow); z-index: 4; }
+    .pose-car .sl-arm.left .sl-thumb { transform: rotate(60deg) translateX(10px) translateY(5px); z-index: 5; }
+    .pose-car .sl-arm.right .sl-thumb { transform: rotate(-60deg) translateX(-10px) translateY(5px); z-index: 5; }
+    .pose-car-left .sl-arm.left { transform: rotateZ(25deg) rotateX(60deg); }
+    .pose-car-left .sl-arm.right { transform: rotateZ(25deg) rotateX(100deg); }
+    .pose-car-right .sl-arm.left { transform: rotateZ(-25deg) rotateX(100deg); }
+    .pose-car-right .sl-arm.right { transform: rotateZ(-25deg) rotateX(60deg); }
+
+    /* ANIMASI ISYARAT: HELM HUNTER */
+    .pose-helm .sl-arm { transform: rotateZ(45deg) rotateX(160deg); }
+    .pose-helm .sl-arm.right { transform: rotateZ(-45deg) rotateX(160deg); }
+    .pose-helm .sl-lower-arm { transform: rotateX(-110deg); }
+    .pose-helm .sl-hand { transform: rotateX(40deg); }
+    .pose-helm .sl-finger:not(.sl-thumb) { transform: rotateX(50deg); height: 24px; background: var(--skin-shadow); }
+    .pose-helm .sl-thumb { transform: rotate(45deg) rotateX(40deg); }
+    
+    .pose-angka .sl-arm.left { transform: rotateZ(12deg); }
+    .pose-angka .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(45deg); height: 20px; background: var(--skin-shadow); }
+    .pose-angka .sl-arm.right { transform: rotateZ(-20deg) rotateX(90deg); }
+    .pose-angka .sl-arm.right .sl-lower-arm { transform: rotateX(-90deg); }
+    .pose-angka .sl-arm.right .sl-hand { transform: rotateX(0); }
+    .pose-angka .sl-arm.right .sl-index, .pose-angka .sl-arm.right .sl-middle, .pose-angka .sl-arm.right .sl-ring { transform: rotateX(0deg); height: 32px; background: var(--skin); }
+    .pose-angka .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
+    .pose-angka .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
+    
+    .pose-kiri .sl-head { transform: rotateZ(-20deg) rotateX(-15deg); }
+    .pose-kiri .sl-arm.left { transform: rotateZ(45deg) rotateX(140deg); }
+    .pose-kiri .sl-arm.left .sl-lower-arm { transform: rotateX(-10deg); }
+    .pose-kiri .sl-arm.left .sl-hand { transform: rotateX(-15deg); }
+    .pose-kiri .sl-arm.left .sl-index { transform: rotateX(0deg); height: 32px; background: var(--skin); }
+    .pose-kiri .sl-arm.left .sl-middle, .pose-kiri .sl-arm.left .sl-ring, .pose-kiri .sl-arm.left .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
+    .pose-kiri .sl-arm.left .sl-thumb { transform: rotate(-80deg) translateX(5px); z-index: 5; }
+    
+    .pose-batu .sl-arm.left { transform: rotateZ(30deg) rotateX(80deg); }
+    .pose-batu .sl-arm.left .sl-lower-arm { transform: rotateZ(45deg); }
+    .pose-batu .sl-arm.left .sl-hand { transform: rotateX(-20deg); }
+    .pose-batu .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0); height: 30px; background: var(--skin); }
+    .pose-batu .sl-arm.right { transform: rotateZ(-15deg) rotateX(90deg); }
+    .pose-batu .sl-arm.right .sl-lower-arm { transform: rotateX(-30deg); }
+    .pose-batu .sl-arm.right .sl-hand { transform: rotateX(20deg); }
+    .pose-batu .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(160deg) translateY(12px); height: 16px; background: var(--skin-shadow); z-index: 4; }
+    .pose-batu .sl-arm.right .sl-thumb { transform: rotate(-60deg) translateX(-10px) translateY(5px); z-index: 5; }
+
+    /* ANIMASI ISYARAT: TEBAK BAYANGAN (R1) */
+    .pose-tebak .sl-head { transform: rotateZ(10deg); }
+    .pose-tebak .sl-arm.right { transform: rotateZ(-15deg) rotateX(150deg); }
+    .pose-tebak .sl-arm.right .sl-lower-arm { transform: rotateX(-110deg); }
+    .pose-tebak .sl-arm.right .sl-hand { transform: rotateX(-30deg); }
+    .pose-tebak .sl-arm.right .sl-index { transform: rotateX(0deg); height: 32px; background: var(--skin); }
+    .pose-tebak .sl-arm.right .sl-middle, .pose-tebak .sl-arm.right .sl-ring, .pose-tebak .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
+    .pose-tebak .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
+    .pose-bayangan .sl-arm { transform: rotateZ(15deg) rotateX(85deg); }
+    .pose-bayangan .sl-arm.right { transform: rotateZ(-15deg) rotateX(85deg); }
+    .pose-bayangan .sl-lower-arm { transform: rotateX(-10deg); }
+    .pose-bayangan .sl-hand { transform: rotateX(70deg); }
+    .pose-bayangan .sl-finger:not(.sl-thumb) { transform: rotateX(0); height: 30px; background: var(--skin); margin-left: 1px;}
+    .pose-bayangan .sl-thumb { transform: rotate(0deg); }
+    .pose-bayangan-tanya .sl-head { transform: rotateZ(-15deg) rotateX(-5deg); }
+    .pose-bayangan-tanya .sl-mouth { height: 12px; width: 12px; border: 4px solid #333; top: 76px; }
+    .pose-rambu .sl-arm.left { transform: rotateZ(10deg) rotateX(160deg); }
+    .pose-rambu .sl-arm.left .sl-lower-arm { transform: rotateX(0deg); }
+    .pose-rambu .sl-arm.left .sl-hand { transform: rotateX(0deg); }
+    .pose-rambu .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(160deg) translateY(12px); height: 16px; background: var(--skin-shadow); z-index: 4; }
+    .pose-rambu .sl-arm.right { transform: rotateZ(-40deg) rotateX(120deg); }
+    .pose-rambu .sl-arm.right .sl-lower-arm { transform: rotateX(-80deg); }
+    .pose-rambu .sl-arm.right .sl-hand { transform: rotateX(60deg) rotateZ(20deg); }
+    .pose-rambu .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 32px; background: var(--skin); margin-left: 2px;}
+    .pose-sesuai .sl-arm { transform: rotateZ(25deg) rotateX(90deg); }
+    .pose-sesuai .sl-arm.right { transform: rotateZ(-25deg) rotateX(90deg); }
+    .pose-sesuai .sl-lower-arm { transform: rotateX(-20deg); }
+    .pose-sesuai .sl-hand { transform: rotateX(-10deg); }
+    .pose-sesuai .sl-index { transform: rotateX(0deg); height: 32px; background: var(--skin); }
+    .pose-sesuai .sl-middle, .pose-sesuai .sl-ring, .pose-sesuai .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
+    .pose-sesuai .sl-arm.left .sl-thumb { transform: rotate(-80deg) translateX(5px); z-index: 5; }
+    .pose-sesuai .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
+    .pose-tanya .sl-head { transform: rotateZ(20deg) rotateX(10deg); }
+    .pose-tanya .sl-arm { transform: rotateZ(20deg) rotateX(40deg); }
+    .pose-tanya .sl-arm.right { transform: rotateZ(-20deg) rotateX(40deg); }
+    .pose-tanya .sl-lower-arm { transform: rotateZ(-10deg) rotateX(-50deg); }
+    .pose-tanya .sl-hand { transform: rotateX(-60deg); }
+    .pose-tanya .sl-finger:not(.sl-thumb) { transform: rotateX(20deg); height: 28px; background: var(--skin); margin-left: 2px;}
+    .pose-tanya .sl-thumb { transform: rotateX(10deg); }
+
+    /* ANIMASI ISYARAT: PUZZLE AMAN (G2) */
+    .pose-puzzle .sl-arm { transform: rotateZ(35deg) rotateX(90deg); }
+    .pose-puzzle .sl-arm.right { transform: rotateZ(-35deg) rotateX(90deg); }
+    .pose-puzzle .sl-lower-arm { transform: rotateZ(0deg) rotateX(-50deg); }
+    .pose-puzzle .sl-hand { transform: rotateX(-30deg); }
+    .pose-puzzle .sl-finger:not(.sl-thumb) { transform: rotateX(70deg); height: 24px; background: var(--skin-shadow); margin-left: 1px;}
+    .pose-puzzle .sl-thumb { transform: rotateX(30deg); }
+    .pose-gambar .sl-arm { transform: rotateZ(30deg) rotateX(110deg); }
+    .pose-gambar .sl-arm.right { transform: rotateZ(-30deg) rotateX(110deg); }
+    .pose-gambar .sl-lower-arm { transform: rotateX(-90deg); }
+    .pose-gambar .sl-hand { transform: rotateX(0deg); }
+    .pose-gambar .sl-arm.left .sl-index { transform: rotateX(0deg) rotateZ(90deg) translateX(10px); height: 32px; background: var(--skin); }
+    .pose-gambar .sl-arm.right .sl-index { transform: rotateX(0deg) rotateZ(-90deg) translateX(-10px); height: 32px; background: var(--skin); }
+    .pose-gambar .sl-arm.left .sl-thumb { transform: rotate(35deg); height: 26px; }
+    .pose-gambar .sl-arm.right .sl-thumb { transform: rotate(-35deg); height: 26px; }
+    .pose-gambar .sl-middle, .pose-gambar .sl-ring, .pose-gambar .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
+
+    /* ANIMASI ISYARAT: TEBAK RAMBU (G1) */
+    .pose-ingat .sl-head { transform: rotateZ(-3deg) rotateX(-5deg); }
+    .pose-ingat .sl-arm.right { transform: rotateZ(-135deg) rotateX(15deg) translateX(10px) translateY(-15px) translateZ(40px); z-index: 30; } 
+    .pose-ingat .sl-arm.right .sl-lower-arm { transform: rotateZ(-55deg) rotateX(-10deg); } 
+    .pose-ingat .sl-arm.right .sl-hand { transform: rotateZ(-30deg) rotateX(10deg); }
+    .pose-ingat .sl-arm.right .sl-index { transform: rotateX(0deg) translateY(-2px); height: 35px; background: var(--skin); }
+    .pose-ingat .sl-arm.right .sl-middle, .pose-ingat .sl-arm.right .sl-ring, .pose-ingat .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
+    .pose-ingat .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
+
+    .pose-uji .sl-head { transform: rotateX(10deg); }
+    .pose-uji .sl-arm { transform: rotateZ(20deg) rotateX(70deg); }
+    .pose-uji .sl-arm.right { transform: rotateZ(-20deg) rotateX(70deg); }
+    .pose-uji .sl-lower-arm { transform: rotateX(-30deg); }
+    .pose-uji .sl-hand { transform: rotateX(-40deg); }
+    .pose-uji .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 30px; background: var(--skin); }
+    .pose-uji .sl-thumb { transform: rotateX(10deg); }
+
+    .pose-jawab .sl-head { transform: rotateZ(-5deg); }
+    .pose-jawab .sl-arm.left { transform: rotateZ(20deg) rotateX(60deg); }
+    .pose-jawab .sl-arm.left .sl-lower-arm { transform: rotateX(-40deg); }
+    .pose-jawab .sl-arm.left .sl-hand { transform: rotateX(-20deg); }
+    .pose-jawab .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 30px; background: var(--skin); }
+    .pose-jawab .sl-arm.right { transform: rotateZ(-25deg) rotateX(110deg); }
+    .pose-jawab .sl-arm.right .sl-lower-arm { transform: rotateX(-70deg); }
+    .pose-jawab .sl-arm.right .sl-hand { transform: rotateX(10deg); }
+    .pose-jawab .sl-arm.right .sl-index { transform: rotateX(40deg); height: 26px; }
+    .pose-jawab .sl-arm.right .sl-thumb { transform: rotate(-30deg) translateY(5px); }
+    .pose-jawab .sl-arm.right .sl-middle, .pose-jawab .sl-arm.right .sl-ring, .pose-jawab .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
+
+    /* ANIMASI ISYARAT: PARKIR TEPAT (G6) */
+    .pose-tekan .sl-head { transform: rotateZ(-2deg) rotateX(-5deg); }
+    .pose-tekan .sl-arm.right { transform: rotateZ(-25deg) rotateX(90deg) translateZ(30px); z-index: 20; }
+    .pose-tekan .sl-arm.right .sl-lower-arm { transform: rotateX(10deg); }
+    .pose-tekan .sl-arm.right .sl-hand { transform: rotateX(70deg); } 
+    .pose-tekan .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
+    .pose-tekan .sl-arm.right .sl-thumb { transform: rotate(45deg); }
+
+    .pose-berhenti .sl-arm.left { transform: rotateZ(35deg) rotateX(90deg); z-index: 10; }
+    .pose-berhenti .sl-arm.left .sl-lower-arm { transform: rotateZ(-70deg) rotateX(-20deg); } 
+    .pose-berhenti .sl-arm.left .sl-hand { transform: rotateX(-20deg) rotateZ(30deg); }
+    .pose-berhenti .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
+    .pose-berhenti .sl-arm.right { transform: rotateZ(-20deg) rotateX(100deg); z-index: 15; }
+    .pose-berhenti .sl-arm.right .sl-lower-arm { transform: rotateX(-40deg); }
+    .pose-berhenti .sl-arm.right .sl-hand { transform: rotateX(20deg); } 
+    .pose-berhenti .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
+
+    .pose-mobil .sl-arm { transform: rotateZ(20deg) rotateX(80deg); }
+    .pose-mobil .sl-arm.right { transform: rotateZ(-20deg) rotateX(80deg); }
+    .pose-mobil .sl-lower-arm { transform: rotateX(-15deg); }
+    .pose-mobil .sl-hand { transform: rotateX(-30deg); }
+    .pose-mobil .sl-finger:not(.sl-thumb) { transform: rotateX(90deg); height: 20px; background: var(--skin-shadow); }
+    .pose-mobil .sl-thumb { transform: rotateX(30deg); }
+
+    .pose-parkir .sl-arm.left { transform: rotateZ(20deg) rotateX(90deg); z-index: 5; }
+    .pose-parkir .sl-arm.left .sl-lower-arm { transform: rotateZ(-50deg); } 
+    .pose-parkir .sl-arm.left .sl-hand { transform: rotateX(-20deg); }
+    .pose-parkir .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
+    .pose-parkir .sl-arm.right { transform: rotateZ(-15deg) rotateX(80deg) translateZ(10px); z-index: 10; }
+    .pose-parkir .sl-arm.right .sl-lower-arm { transform: rotateX(-60deg) rotateZ(10deg); } 
+    .pose-parkir .sl-arm.right .sl-hand { transform: rotateX(50deg); } 
+    .pose-parkir .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
+
+    @keyframes walkIndex { 0%, 100% { transform: rotateX(0deg) translateY(0); } 50% { transform: rotateX(40deg) translateY(-5px); } }
+    @keyframes walkMiddle { 0%, 100% { transform: rotateX(40deg) translateY(-5px); } 50% { transform: rotateX(0deg) translateY(0); } }
+    .pose-cross-walk .sl-arm.right .sl-index { animation: walkIndex 0.5s infinite; }
+    .pose-cross-walk .sl-arm.right .sl-middle { animation: walkMiddle 0.5s infinite; }
+    @keyframes sl-blink { 0%, 96%, 100% { transform: scaleY(1); } 98% { transform: scaleY(0.1); } }
   </style>
 </head>
 <body class="bg-gray-900 text-white select-none relative h-dvh w-full overflow-hidden">
@@ -123,15 +595,27 @@
 
       <div id="screen-mode" class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 bg-[#0B1E36]/95 backdrop-blur-md rounded-xl z-50">
         <h2 class="text-3xl font-black text-yellow-300 mb-6 text-center bg-black/50 px-6 py-3 rounded-xl border border-yellow-500/50 uppercase tracking-widest">Kondisi Pemain</h2>
-        <div class="flex flex-col md:flex-row gap-4 w-full px-4 max-w-4xl mx-auto">
-          <div onclick="selectMode('UMUM')" class="flex-1 cursor-pointer p-6 rounded-[2rem] bg-blue-600 border-4 border-blue-400 active:scale-95 transition text-center shadow-lg flex flex-col items-center gap-2">
-            <div class="text-[5rem]">👦</div><h3 class="text-2xl font-black text-white uppercase tracking-widest">Umum</h3>
+        <div class="flex flex-col gap-4 w-full px-4 max-w-xl mx-auto overflow-y-auto custom-scroll py-2">
+          <div onclick="selectMode('UMUM')" class="w-full cursor-pointer p-6 rounded-[2rem] bg-blue-600 border-4 border-blue-400 active:scale-95 transition shadow-lg flex flex-row items-center gap-6">
+            <div class="text-[4rem] drop-shadow-md">👦</div>
+            <div class="text-left flex-1">
+                <h3 class="text-2xl font-black text-white uppercase tracking-widest">Umum</h3>
+                <p class="text-sm font-bold text-blue-200">Mode Standar</p>
+            </div>
           </div>
-          <div onclick="selectMode('RUNGU')" class="flex-1 cursor-pointer p-6 rounded-[2rem] bg-purple-600 border-4 border-purple-400 active:scale-95 transition text-center shadow-lg flex flex-col items-center gap-2">
-            <div class="text-[5rem]">🧏</div><h3 class="text-2xl font-black text-white uppercase tracking-widest">Tuna Rungu</h3><p class="text-xs font-bold text-yellow-200">Subtitle Aktif</p>
+          <div onclick="selectMode('RUNGU')" class="w-full cursor-pointer p-6 rounded-[2rem] bg-purple-600 border-4 border-purple-400 active:scale-95 transition shadow-lg flex flex-row items-center gap-6">
+            <div class="text-[4rem] drop-shadow-md">🧏</div>
+            <div class="text-left flex-1">
+                <h3 class="text-2xl font-black text-white uppercase tracking-widest">Tuna Rungu</h3>
+                <p class="text-sm font-bold text-yellow-200">Dilengkapi Subtitle & Bahasa Isyarat</p>
+            </div>
           </div>
-          <div onclick="selectMode('DAKSA')" class="flex-1 cursor-pointer p-6 rounded-[2rem] bg-green-600 border-4 border-green-400 active:scale-95 transition text-center shadow-lg flex flex-col items-center gap-2">
-            <div class="text-[5rem]">♿</div><h3 class="text-2xl font-black text-white uppercase tracking-widest">Tuna Daksa</h3>
+          <div onclick="selectMode('DAKSA')" class="w-full cursor-pointer p-6 rounded-[2rem] bg-green-600 border-4 border-green-400 active:scale-95 transition shadow-lg flex flex-row items-center gap-6">
+            <div class="text-[4rem] drop-shadow-md">♿</div>
+            <div class="text-left flex-1">
+                <h3 class="text-2xl font-black text-white uppercase tracking-widest">Tuna Daksa</h3>
+                <p class="text-sm font-bold text-yellow-200">Tombol UI Ekstra Besar</p>
+            </div>
           </div>
         </div>
       </div>
@@ -184,7 +668,7 @@
 
                 <div onclick="nav('LEADERBOARD')" class="cursor-pointer rounded-[1.2rem] md:rounded-[2rem] bg-[#3b82f6] flex flex-row justify-center items-center gap-3 md:gap-4 active:scale-95 transition-all shadow-md h-12 md:h-24 shrink-0 overflow-hidden relative border-b-[3px] md:border-b-4 border-blue-800 hover:border-b-0 hover:translate-y-1">
                     <div class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
-                    <div class="text-[2rem] md:text-[3rem] drop-shadow-md">📈</div><h3 class="font-black text-xs md:text-lg text-white uppercase tracking-widest">Papan Peringkat</h3>
+                    <div class="text-[2rem] md:text-[3rem] drop-shadow-md">📈</div><h3 class="font-black text-xs md:text-lg text-white uppercase tracking-wider leading-relaxed" style="word-spacing: 0.15em;">Papan Peringkat</h3>
                 </div>
             </div>
         </div>
@@ -202,10 +686,12 @@
            <button onclick="startDailyQuiz()" class="w-full py-5 bg-[#22c55e] rounded-2xl font-black text-white text-2xl shadow-[0_6px_0_rgb(21,128,61)] active:translate-y-1 active:shadow-none transition-all uppercase tracking-widest">Mulai Kuis!</button>
         </div>
 
-        <div id="daily-quiz-box" class="hidden w-full bg-gray-800 rounded-[3rem] p-6 border-4 border-cyan-500 flex flex-col max-w-lg shadow-2xl min-h-[400px]">
-           <div class="bg-cyan-900 text-cyan-300 font-black text-sm py-2 px-6 rounded-full mx-auto mb-6 border border-cyan-500 tracking-widest uppercase" id="daily-quiz-title">SOAL 1 / 5</div>
-           <h3 id="daily-quiz-question" class="text-2xl font-black mb-6 text-center shrink-0 px-2 leading-relaxed text-white"></h3>
-           <div id="daily-quiz-options" class="flex flex-col gap-3 flex-1 justify-start w-full overflow-y-auto custom-scroll pr-2 pb-4"></div>
+        <div id="daily-quiz-box" class="hidden w-full bg-gray-800 rounded-[3rem] p-6 border-4 border-cyan-500 flex flex-col max-w-lg shadow-2xl h-[70vh] min-h-[400px] max-h-[600px] overflow-hidden">
+           <div class="bg-cyan-900 text-cyan-300 font-black text-sm py-2 px-6 rounded-full mx-auto mb-4 border border-cyan-500 tracking-widest uppercase shrink-0" id="daily-quiz-title">SOAL 1 / 5</div>
+           <div class="flex-1 w-full overflow-y-auto custom-scroll pr-2 pb-4 flex flex-col items-center">
+               <h3 id="daily-quiz-question" class="text-2xl font-black mb-6 text-center shrink-0 px-2 leading-relaxed text-white w-full"></h3>
+               <div id="daily-quiz-options" class="flex flex-col gap-3 w-full shrink-0"></div>
+           </div>
         </div>
 
         <div id="daily-result-box" class="hidden w-full bg-gray-800 rounded-[3rem] p-8 text-center border-4 border-white/20 max-w-lg shadow-2xl">
@@ -234,8 +720,8 @@
       <!-- PAPAN PERINGKAT -->
       <div id="screen-leaderboard" class="hidden absolute inset-0 bg-gray-900 p-4 flex flex-col text-center rounded-xl z-50">
           <button onclick="nav('DASHBOARD')" class="absolute top-4 left-4 bg-gray-800 px-6 py-3 rounded-full text-white font-black text-xs active:scale-90 border-2 border-gray-600 shadow-lg tracking-widest z-10">❌ KEMBALI</button>
-          <h1 class="text-4xl font-black text-blue-400 mb-4 mt-16 shrink-0 drop-shadow-md uppercase tracking-widest">Papan Peringkat Global</h1>
-          <p class="font-black text-white mb-8 bg-blue-900/50 inline-block mx-auto px-6 py-2.5 rounded-full border border-blue-500 text-sm shadow-inner uppercase tracking-widest">Persaingan Pahlawan Jalanan!</p>
+          <h1 class="text-3xl md:text-4xl font-black text-blue-400 mb-4 mt-16 shrink-0 drop-shadow-md uppercase tracking-wider" style="word-spacing: 0.15em;">Papan Peringkat Global</h1>
+          <p class="font-black text-white mb-8 bg-blue-900/50 inline-block mx-auto px-6 py-2.5 rounded-full border border-blue-500 text-sm shadow-inner uppercase tracking-wider">Persaingan Pahlawan Jalanan!</p>
           
           <div class="flex justify-around bg-gray-800 p-4 rounded-t-2xl font-black text-sm text-gray-400 border border-gray-700 w-full max-w-3xl mx-auto uppercase tracking-wider shadow-md">
               <span class="w-12 text-center">No</span><span class="flex-1 text-left px-4">Akun Pemain</span><span class="w-20 text-center">Jawaban</span><span class="w-20 text-center">Level</span><span class="w-20 text-right pr-2">Streak</span>
@@ -268,6 +754,68 @@
             <div class="w-24"></div> 
         </div>
         <div id="games-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-y-auto pb-6 pr-2 w-full max-w-5xl mx-auto content-start custom-scroll"></div>
+      </div>
+
+      <!-- INTRO ANIMASI TUNARUNGU -->
+      <div id="screen-sign-intro" class="hidden absolute inset-0 bg-gray-900/95 backdrop-blur-md flex flex-col items-center justify-center p-4 z-50 rounded-xl overflow-y-auto custom-scroll">
+          <h2 class="text-2xl md:text-3xl font-black text-cyan-400 mb-2 uppercase tracking-widest text-center mt-10 shrink-0">Bahasa Isyarat</h2>
+          <p class="text-xs md:text-sm text-gray-200 font-bold mb-6 text-center bg-black/50 px-5 py-2 rounded-xl border border-white/10 shrink-0 uppercase tracking-widest">Pahami gerakan ini sebelum bermain!</p>
+          
+          <div class="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col items-center max-w-sm w-full relative shrink-0">
+              <div class="sl-scene">
+                  <div class="sl-character pose-rest" id="sl-character">
+                      <div class="sl-head">
+                          <div class="sl-hair"></div>
+                          <div class="sl-eyes"><div class="sl-eye"></div><div class="sl-eye"></div></div>
+                          <div class="sl-mouth"></div>
+                      </div>
+                      <div class="sl-torso"></div>
+                      <div class="sl-arm left"><div class="sl-lower-arm"><div class="sl-hand"><div class="sl-finger sl-thumb"></div><div class="sl-finger sl-index"></div><div class="sl-finger sl-middle"></div><div class="sl-finger sl-ring"></div><div class="sl-finger sl-pinky"></div></div></div></div>
+                      <div class="sl-arm right"><div class="sl-lower-arm"><div class="sl-hand"><div class="sl-finger sl-thumb"></div><div class="sl-finger sl-index"></div><div class="sl-finger sl-middle"></div><div class="sl-finger sl-ring"></div><div class="sl-finger sl-pinky"></div></div></div></div>
+                  </div>
+              </div>
+              <div class="sl-subtitles" id="sl-subtitles-g4">
+                  <span class="sl-sub" id="sl-txt-click">Klik tombol MAJU</span>
+                  <span class="sl-sub" id="sl-txt-cross">apabila ingin menyeberang.</span>
+                  <span class="sl-sub" id="sl-txt-avoid">Hindari</span>
+                  <span class="sl-sub" id="sl-txt-car">mobil dan kendaraan lainnya.</span>
+              </div>
+              <div class="sl-subtitles hidden" id="sl-subtitles-g3">
+                  <span class="sl-sub" id="sl-txt-helm">Dapatkan helm</span>
+                  <span class="sl-sub" id="sl-txt-angka">sesuai angka</span>
+                  <span class="sl-sub" id="sl-txt-kanan">di kanan atas</span>
+                  <span class="sl-sub" id="sl-txt-hindari">dan hindari batu.</span>
+              </div>
+              <div class="sl-subtitles hidden" id="sl-subtitles-r1">
+                  <span class="sl-sub" id="sl-txt-tebak">Tebak bayangan</span>
+                  <span class="sl-sub" id="sl-txt-rambu">yang diberikan gambar rambu</span>
+                  <span class="sl-sub" id="sl-txt-sesuai">manakah yang sesuai</span>
+                  <span class="sl-sub" id="sl-txt-bayangan">dengan bayangan?</span>
+              </div>
+              <div class="sl-subtitles hidden" id="sl-subtitles-g2">
+                  <span class="sl-sub" id="sl-txt-puzzle">Cocokkan puzzle,</span>
+                  <span class="sl-sub" id="sl-txt-arti">cocokkan arti</span>
+                  <span class="sl-sub" id="sl-txt-rambu2">rambu,</span>
+                  <span class="sl-sub" id="sl-txt-gambar">dan gambar yang...</span>
+                  <span class="sl-sub" id="sl-txt-lanjut">sesuai!</span>
+              </div>
+              <div class="sl-subtitles hidden" id="sl-subtitles-g1">
+                  <span class="sl-sub" id="sl-txt-ingat">Ingat</span>
+                  <span class="sl-sub" id="sl-txt-rambu-g1">rambu,</span>
+                  <span class="sl-sub" id="sl-txt-uji">dan uji ingatanmu</span>
+                  <span class="sl-sub" id="sl-txt-jawab">dengan menjawab soal!</span>
+              </div>
+              <div class="sl-subtitles hidden" id="sl-subtitles-g6">
+                  <span class="sl-sub" id="sl-txt-tekan">Tekan tombol merah (stop),</span>
+                  <span class="sl-sub" id="sl-txt-berhenti">untuk berhenti,</span>
+                  <span class="sl-sub" id="sl-txt-mobil">dan parkirkan mobilmu</span>
+                  <span class="sl-sub" id="sl-txt-parkir">di kotak hijau.</span>
+              </div>
+          </div>
+
+          <button id="btn-skip-sign" class="mt-8 mb-10 shrink-0 px-8 py-5 bg-gradient-to-b from-[#4ade80] to-[#16a34a] rounded-full font-black text-xl shadow-[0_0_20px_rgba(74,222,128,0.4)] border-4 border-white text-white uppercase tracking-widest active:scale-95 transition-transform hover:scale-105">
+              MULAI BERMAIN ➔
+          </button>
       </div>
 
       <!-- PLAYER ARENA -->
@@ -571,7 +1119,7 @@
         { id: 'g11', title: 'Labirin Jalan', icon: '🏃', desc: 'Ambil kunci & jawab soal umum.' }, 
         { id: 'g7', title: 'Empati Difabel', icon: '🦽', desc: 'Labirin tes empati di jalan.' }, 
         { id: 'g10', title: 'Susun Kata', icon: '📝', desc: 'Pecahkan skenario lalin umum.' }, 
-        { id: 'g9', title: 'Survive Kota', icon: '🏙️', desc: 'Perbaiki jalan kota difabel.' } // Diubah dari Kota Ramah
+        { id: 'g9', title: 'Survive Kota', icon: '🏙️', desc: 'Perbaiki jalan kota difabel.' }
     ];
     const DAKSA_GAMES = [ 
         { id: 'g1', title: 'Tebak Rambu', icon: '🚦', desc: 'Ingat bentuk rambu lalu lintas.' },
@@ -580,6 +1128,15 @@
         { id: 'd3', title: 'Survive Kota', icon: '🏙️', desc: 'Simulasi jalan Tuna Daksa.' }, 
         { id: 'd4', title: 'Survival Jalan', icon: '⏳', desc: 'Bertahan dari rintangan lubang.' }, 
         { id: 'd5', title: 'Puzzle Empati', icon: '🧩', desc: 'Pahami fungsi fasilitas khusus.' } 
+    ];
+    // DAFTAR GAME KHUSUS TUNA RUNGU (Tanpa banyak teks, fokus visual)
+    const RUNGU_GAMES = [
+        { id: 'g1', title: 'Tebak Rambu', icon: '🚦', desc: 'Ingat bentuk rambu lalu lintas.' },
+        { id: 'g4', title: 'Menyeberang', icon: ZEBRA_ICON, desc: 'Maju pelan lewati Zebra Cross.' },
+        { id: 'g3', title: 'Helm Hunter', icon: HELMET_ICON, desc: 'Tangkap helm yang jatuh!' },
+        { id: 'g6', title: 'Parkir Tepat', icon: STOP_SIGN_ICON, desc: 'Berhenti pas di area hijau.' },
+        { id: 'g2', title: 'Puzzle Aman', icon: '🧩', desc: 'Cocokkan pasangan alat keselamatan.' },
+        { id: 'r1', title: 'Tebak Bayangan', icon: '👤', desc: 'Tebak bayangan dari rambu.' } // GAME BARU VISUAL
     ];
     
     const SHOP_ITEMS = [
@@ -905,7 +1462,8 @@
 
     function nav(screenId) {
        playSound('pop'); if (activeGameLoop) clearInterval(activeGameLoop);
-       ['orientation', 'splash', 'mode', 'dashboard', 'daily', 'games', 'player', 'shop', 'badges', 'pustaka', 'leaderboard'].forEach(s => {
+       stopSignAnimation();
+       ['orientation', 'splash', 'mode', 'dashboard', 'daily', 'games', 'player', 'shop', 'badges', 'pustaka', 'leaderboard', 'sign-intro'].forEach(s => {
           const el = document.getElementById(`screen-${s}`); if (el) el.classList.add('hidden');
        });
        document.getElementById(`screen-${screenId.toLowerCase()}`).classList.remove('hidden');
@@ -919,7 +1477,15 @@
     }
     
     function startGame() { if (!isMusicOn) toggleMusic(); playSound('start'); nav('MODE'); }
-    function selectMode(m) { activeMode = m; nav('DASHBOARD'); }
+    function selectMode(m) { 
+        activeMode = m; 
+        if (m === 'DAKSA') {
+            document.body.classList.add('mode-daksa');
+        } else {
+            document.body.classList.remove('mode-daksa');
+        }
+        nav('DASHBOARD'); 
+    }
     function goToGames() { if (state.dailyCompletedDate !== new Date().toDateString()) { playSound('wrong'); tapPet(); return; } nav('GAMES'); }
 
     function showStreakAnimation() {
@@ -1050,7 +1616,7 @@
 
     function renderGamesHub() {
        const grid = document.getElementById('games-grid'); grid.innerHTML = '';
-       const list = activeMode === 'DAKSA' ? DAKSA_GAMES : ALL_GAMES;
+       const list = activeMode === 'DAKSA' ? DAKSA_GAMES : (activeMode === 'RUNGU' ? RUNGU_GAMES : ALL_GAMES);
        list.forEach(g => {
           let gLvl = state.gameLevels[g.id] || 1; let maxLvl = 100;
           grid.innerHTML += `<div onclick="playGame('${g.id}')" class="bg-gray-800 p-5 rounded-[2rem] border-4 border-gray-700 cursor-pointer text-left shadow-lg hover:border-cyan-500 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-4">
@@ -1067,7 +1633,23 @@
     }
 
     function playGame(id) {
-       const list = activeMode === 'DAKSA' ? DAKSA_GAMES : ALL_GAMES; currentGameDetails = list.find(x => x.id === id);
+       if (activeMode === 'RUNGU' && (id === 'g4' || id === 'g3' || id === 'r1' || id === 'g2' || id === 'g1' || id === 'g6')) { // KHUSUS GAME TUNARUNGU BER-ANIMASI
+           document.getElementById('screen-games').classList.add('hidden');
+           document.getElementById('screen-sign-intro').classList.remove('hidden');
+           playSound('pop');
+           
+           // Sembunyikan tombol skip agar pemain wajib menonton 2x putaran
+           document.getElementById('btn-skip-sign').classList.add('hidden');
+           
+           startSignAnimation(id);
+       } else {
+           continuePlayGame(id);
+       }
+    }
+
+    function continuePlayGame(id) {
+       const list = activeMode === 'DAKSA' ? DAKSA_GAMES : (activeMode === 'RUNGU' ? RUNGU_GAMES : ALL_GAMES); 
+       currentGameDetails = list.find(x => x.id === id);
        document.getElementById('game-play-area').classList.remove('hidden'); document.getElementById('game-win-area').classList.add('hidden'); document.getElementById('game-lost-area').classList.add('hidden');
        let gLevel = state.gameLevels[id] || 1; document.getElementById('player-lvl-badge').innerText = `LEVEL ${gLevel}/100`;
        nav('PLAYER'); playSound('start'); initSpecificGame(id);
@@ -1078,7 +1660,54 @@
        const actualLevel = state.gameLevels[id] || 1; const diffLevel = Math.min(20, actualLevel); 
        const container = document.getElementById('game-play-area'); container.innerHTML = '';
 
-       if (id === 'g1') { 
+       // KHUSUS TUNA RUNGU - TEBAK BAYANGAN
+       if (id === 'r1') {
+           // SISTEM LEVEL: Pastikan level 1-30 tidak ada soal (rambu) yang berulang
+           if(!state.r1Order || state.r1Order.length < FLASHCARDS.length) {
+               state.r1Order = fisherYatesShuffle(Array.from({length: FLASHCARDS.length}, (_, i) => i));
+               saveState();
+           }
+           let targetIndex = state.r1Order[(actualLevel - 1) % state.r1Order.length];
+           let target = FLASHCARDS[targetIndex];
+           
+           // Ambil 3 pilihan salah secara acak
+           let otherCards = FLASHCARDS.filter((_, idx) => idx !== targetIndex);
+           let wrongOpts = fisherYatesShuffle(otherCards).slice(0, 3);
+           let options = fisherYatesShuffle([target, ...wrongOpts]);
+
+           const ren = () => {
+               container.innerHTML = `
+               <div class="text-center w-full flex flex-col h-full max-w-lg mx-auto overflow-hidden py-2">
+                   <h3 class="text-2xl font-black mb-2 text-yellow-400 bg-black/50 px-8 py-3 rounded-full inline-block mx-auto uppercase tracking-widest border border-yellow-500 shadow-md shrink-0">Tebak Bayangan!</h3>
+                   <p class="text-[10px] md:text-xs font-bold text-white mb-4 uppercase tracking-widest bg-cyan-900/80 px-6 py-2 rounded-full inline-block mx-auto border border-cyan-500 shadow-inner shrink-0">Kenali bentuk rambu untuk keselamatan</p>
+                   
+                   <!-- AREA SCROLL: Biar gambar dan kotak jawaban bisa di-scroll ke bawah kalau kepanjangan -->
+                   <div class="flex-1 w-full overflow-y-auto custom-scroll pr-2 pb-6 flex flex-col items-center">
+                       <div class="text-[8rem] md:text-[10rem] mb-8 mt-2 drop-shadow-xl animate-pulse shrink-0" style="filter: brightness(0) invert(1) drop-shadow(0 0 15px rgba(255,255,255,0.4));">${target.i}</div>
+                       <div class="grid grid-cols-2 gap-4 w-full shrink-0">
+                           ${options.map((opt) => `
+                               <button onclick="sR1('${opt.t === target.t}', '${target.t}', '${target.d}')" class="bg-gray-800 p-4 md:p-6 rounded-3xl border-4 border-gray-600 active:translate-y-1 shadow-lg hover:border-cyan-500 hover:bg-gray-700 transition-all flex justify-center items-center text-[4rem] md:text-[5rem] drop-shadow-md min-h-[120px]">
+                                   ${opt.i}
+                               </button>
+                           `).join('')}
+                       </div>
+                   </div>
+               </div>`;
+           };
+           window.sR1 = (isC, ans, desc) => {
+               if(isC === 'true') {
+                   playSound('happy'); state.totalCorrect++; 
+                   // FITUR EDUKASI: Tampilkan penjelasan & nama rambu saat benar!
+                   showExplanation(ans, desc, () => completeGame(true), true);
+               } else {
+                   playSound('wrong'); 
+                   // FITUR EDUKASI: Beritahu nama dan fungsi rambu jika salah tebak!
+                   showExplanation(ans, "Perhatikan bentuk bayangannya! Itu adalah " + ans + " (" + desc + ")", () => completeGame(false), false);
+               }
+           };
+           ren();
+       }
+       else if (id === 'g1') { 
           let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
           if(!state.g1Order) state.g1Order = [];
           if(state.g1Order.length < unlockedCount) {
@@ -1091,15 +1720,54 @@
           }
 
           const fIndex = state.g1Order[(actualLevel - 1) % state.g1Order.length];
-          const rawData = deepClone(getFlashcard(fIndex));
-          let wrongs = rawData.opts.filter((_, i) => i !== rawData.a);
-          const data = { ...rawData, ...forceAnswerToB(rawData.opts[rawData.a], wrongs) };
+          
+          if (activeMode === 'RUNGU') {
+              // TUNARUNGU MODE: Fase Memorize -> Soal Teks -> Pilihan Gambar Rambu
+              const target = FLASHCARDS[fIndex];
+              let otherCards = FLASHCARDS.filter((_, idx) => idx !== fIndex);
+              let wrongOpts = fisherYatesShuffle(otherCards).slice(0, 3);
+              let options = fisherYatesShuffle([target, ...wrongOpts]);
 
-          container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-center"><h3 class="text-2xl font-black mb-6 text-yellow-400 bg-black/50 px-8 py-3 rounded-full inline-block mx-auto uppercase tracking-widest border border-yellow-500">INGAT RAMBU INI!</h3><div class="text-[10rem] mb-6 drop-shadow-xl animate-pulse">${data.i}</div><h2 class="text-4xl font-black text-cyan-300 border-b-4 border-cyan-500 pb-3 inline-block mx-auto uppercase tracking-widest">${data.t}</h2></div>`;
-          setTimeout(() => { 
-              container.innerHTML = `<div class="text-center w-full flex flex-col h-full"><div class="text-[8rem] mb-6 shrink-0 drop-shadow-md">${data.i}</div><h3 class="text-2xl font-black mb-6 shrink-0 bg-black/40 p-6 rounded-2xl border border-white/20 leading-relaxed">${data.q}</h3><div class="flex flex-col gap-3 flex-1 justify-start w-full max-w-lg mx-auto overflow-y-auto custom-scroll pr-2 pb-4">${data.opts.map((opt, i) => `<button onclick="submitG1(${i === data.a}, '${data.opts[data.a]}', '${data.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 md:p-4 bg-gray-800 border-b-4 border-gray-600 rounded-2xl font-black text-sm md:text-base text-left active:translate-y-1 active:border-b-0 shadow-lg hover:bg-cyan-900 hover:border-cyan-700 transition-all uppercase leading-tight tracking-wider flex items-center"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${opt}</span></button>`).join('')}</div></div>`; 
-          }, 2500);
-          window.submitG1 = (isC, correctText, expText) => { if(isC) { playSound('happy'); state.totalCorrect++; completeGame(true); } else { playSound('wrong'); showExplanation(correctText, expText, () => completeGame(false), false); } }
+              // Fase Memorize
+              container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-center"><h3 class="text-2xl font-black mb-6 text-yellow-400 bg-black/50 px-8 py-3 rounded-full inline-block mx-auto uppercase tracking-widest border border-yellow-500">INGAT RAMBU INI!</h3><div class="text-[10rem] mb-6 drop-shadow-xl animate-pulse">${target.i}</div><h2 class="text-4xl font-black text-cyan-300 border-b-4 border-cyan-500 pb-3 inline-block mx-auto uppercase tracking-widest">${target.t}</h2></div>`;
+              
+              // Transisi ke Kuis
+              setTimeout(() => { 
+                  container.innerHTML = `<div class="text-center w-full flex flex-col h-full max-w-lg mx-auto overflow-hidden py-2">
+                      <div class="flex-1 w-full overflow-y-auto custom-scroll pr-2 pb-4 flex flex-col items-center">
+                          <h3 class="text-2xl md:text-3xl font-black mb-6 shrink-0 bg-black/40 p-6 rounded-2xl border border-white/20 leading-relaxed w-full shadow-lg">Pilih gambar untuk rambu:<br><span class="text-yellow-400 text-3xl md:text-4xl mt-2 block drop-shadow-md">${target.t}</span></h3>
+                          <div class="grid grid-cols-2 gap-4 w-full shrink-0">
+                              ${options.map((opt) => `
+                                  <button onclick="submitG1Rungu('${opt.t === target.t}', '${target.t.replace(/'/g, "\\'")}', '${target.exp.replace(/'/g, "\\'")}')" class="bg-gray-800 p-4 md:p-6 rounded-3xl border-4 border-gray-600 active:translate-y-1 shadow-lg hover:border-cyan-500 hover:bg-gray-700 transition-all flex justify-center items-center text-[4rem] md:text-[5rem] drop-shadow-md min-h-[120px]">
+                                      ${opt.i}
+                                  </button>
+                              `).join('')}
+                          </div>
+                      </div>
+                  </div>`; 
+              }, 3000); // 3 detik memorize untuk Tunarungu
+
+              window.submitG1Rungu = (isC, ans, desc) => { 
+                  if(isC === 'true') { 
+                      playSound('happy'); state.totalCorrect++; 
+                      completeGame(true); 
+                  } else { 
+                      playSound('wrong'); 
+                      showExplanation(ans, desc, () => completeGame(false), false); 
+                  } 
+              };
+          } else {
+              // MODE UMUM/DAKSA (Default)
+              const rawData = deepClone(getFlashcard(fIndex));
+              let wrongs = rawData.opts.filter((_, i) => i !== rawData.a);
+              const data = { ...rawData, ...forceAnswerToB(rawData.opts[rawData.a], wrongs) };
+
+              container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-center"><h3 class="text-2xl font-black mb-6 text-yellow-400 bg-black/50 px-8 py-3 rounded-full inline-block mx-auto uppercase tracking-widest border border-yellow-500">INGAT RAMBU INI!</h3><div class="text-[10rem] mb-6 drop-shadow-xl animate-pulse">${data.i}</div><h2 class="text-4xl font-black text-cyan-300 border-b-4 border-cyan-500 pb-3 inline-block mx-auto uppercase tracking-widest">${data.t}</h2></div>`;
+              setTimeout(() => { 
+                  container.innerHTML = `<div class="text-center w-full flex flex-col h-full max-w-lg mx-auto overflow-hidden py-2"><div class="flex-1 w-full overflow-y-auto custom-scroll pr-2 pb-4 flex flex-col items-center"><div class="text-[8rem] mb-6 shrink-0 drop-shadow-md">${data.i}</div><h3 class="text-2xl font-black mb-6 shrink-0 bg-black/40 p-6 rounded-2xl border border-white/20 leading-relaxed w-full">${data.q}</h3><div class="flex flex-col gap-3 w-full shrink-0">${data.opts.map((opt, i) => `<button onclick="submitG1(${i === data.a}, '${data.opts[data.a]}', '${data.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 md:p-4 bg-gray-800 border-b-4 border-gray-600 rounded-2xl font-black text-sm md:text-base text-left active:translate-y-1 active:border-b-0 shadow-lg hover:bg-cyan-900 hover:border-cyan-700 transition-all uppercase leading-tight tracking-wider flex items-center"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${opt}</span></button>`).join('')}</div></div></div>`; 
+              }, 2500);
+              window.submitG1 = (isC, correctText, expText) => { if(isC) { playSound('happy'); state.totalCorrect++; completeGame(true); } else { playSound('wrong'); showExplanation(correctText, expText, () => completeGame(false), false); } }
+          }
        }
        else if (id === 'g2') { 
            // Menyesuaikan batas kemunculan kartu Puzzle
@@ -1135,7 +1803,7 @@
           let pP = 10, bP = 10; 
           let pool = generateBotQuestions(); 
           let qI = 0;
-          const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full max-w-2xl mx-auto"><div class="relative w-full h-36 bg-gray-800 rounded-3xl border-4 border-gray-600 p-5 mb-6 flex flex-col justify-around shrink-0 shadow-lg"><div class="w-full bg-red-900/50 rounded-full h-8 relative"><div class="absolute bg-red-500 h-full rounded-full transition-all" style="width:${bP}%"></div><span class="absolute text-[4rem] -mt-5" style="left:${bP-5}%">🤖</span></div><div class="w-full bg-cyan-900/50 rounded-full h-8 relative"><div class="absolute bg-cyan-500 h-full rounded-full transition-all" style="width:${pP}%"></div><span class="absolute text-[4rem] -mt-5" style="left:${pP-5}%">🏎️</span></div></div><h3 class="text-xl font-black mb-6 text-white shrink-0 bg-black/50 p-5 rounded-xl border border-white/10 leading-relaxed uppercase tracking-wider">${pool[qI].q}</h3><div class="flex flex-col gap-3 flex-1 justify-start overflow-y-auto custom-scroll pr-2 pb-4">${pool[qI].opts.map((opt, i) => `<button onclick="aR(${i===pool[qI].a}, '${pool[qI].opts[pool[qI].a]}', '${pool[qI].exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 md:p-4 bg-gray-800 rounded-2xl text-left font-black text-sm md:text-base border-b-4 border-gray-600 hover:bg-cyan-900 hover:border-cyan-700 active:translate-y-1 active:border-b-0 shadow-md flex items-center transition-all leading-tight uppercase tracking-wider"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${opt}</span></button>`).join('')}</div></div>`; };
+          const ren = () => { container.innerHTML = `<div class="text-center w-full flex flex-col h-full max-w-2xl mx-auto overflow-hidden py-2"><div class="relative w-full h-36 bg-gray-800 rounded-3xl border-4 border-gray-600 p-5 mb-4 flex flex-col justify-around shrink-0 shadow-lg"><div class="w-full bg-red-900/50 rounded-full h-8 relative"><div class="absolute bg-red-500 h-full rounded-full transition-all" style="width:${bP}%"></div><span class="absolute text-[4rem] -mt-5" style="left:${bP-5}%">🤖</span></div><div class="w-full bg-cyan-900/50 rounded-full h-8 relative"><div class="absolute bg-cyan-500 h-full rounded-full transition-all" style="width:${pP}%"></div><span class="absolute text-[4rem] -mt-5" style="left:${pP-5}%">🏎️</span></div></div><div class="flex-1 w-full overflow-y-auto custom-scroll pr-2 pb-4 flex flex-col"><h3 class="text-xl font-black mb-6 text-white shrink-0 bg-black/50 p-5 rounded-xl border border-white/10 leading-relaxed uppercase tracking-wider">${pool[qI].q}</h3><div class="flex flex-col gap-3 w-full shrink-0">${pool[qI].opts.map((opt, i) => `<button onclick="aR(${i===pool[qI].a}, '${pool[qI].opts[pool[qI].a]}', '${pool[qI].exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 md:p-4 bg-gray-800 rounded-2xl text-left font-black text-sm md:text-base border-b-4 border-gray-600 hover:bg-cyan-900 hover:border-cyan-700 active:translate-y-1 active:border-b-0 shadow-md flex items-center transition-all leading-tight uppercase tracking-wider"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${opt}</span></button>`).join('')}</div></div></div>`; };
           
           window.aR = (isC, correctText, expText) => { 
               if(isC) { 
@@ -1173,7 +1841,7 @@
            const ren = () => {
               if(!cm) { 
                   let q=qs[qI % qs.length]; 
-                  container.innerHTML=`<div class="text-center w-full flex flex-col h-full justify-center max-w-lg mx-auto"><h2 class="text-[8rem] mb-6 animate-bounce drop-shadow-lg shrink-0">${tIcon}</h2><h3 class="text-xl font-black mb-6 bg-black/60 p-6 rounded-3xl text-yellow-300 border-2 border-yellow-500/50 leading-relaxed uppercase tracking-wider shrink-0">${q.q}</h3><div class="flex flex-col gap-3 flex-1 justify-start w-full overflow-y-auto custom-scroll pr-2 pb-4 mt-2">${q.opts.map((o,i)=>`<button onclick="mA(${i===q.a}, '${q.opts[q.a].replace(/'/g, "\\'")}', '${q.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 md:p-4 bg-gray-800 rounded-2xl border-b-4 border-gray-600 hover:bg-cyan-900 active:translate-y-1 active:border-b-0 text-sm md:text-base font-black text-left transition-all shadow-md leading-tight uppercase tracking-wider flex items-center"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${o}</span></button>`).join('')}</div></div>`; return; 
+                  container.innerHTML=`<div class="text-center w-full flex flex-col h-full justify-start max-w-lg mx-auto overflow-hidden py-2"><div class="flex-1 w-full overflow-y-auto custom-scroll pr-2 pb-4 flex flex-col"><h2 class="text-[8rem] mb-6 animate-bounce drop-shadow-lg shrink-0">${tIcon}</h2><h3 class="text-xl font-black mb-6 bg-black/60 p-6 rounded-3xl text-yellow-300 border-2 border-yellow-500/50 leading-relaxed uppercase tracking-wider shrink-0">${q.q}</h3><div class="flex flex-col gap-3 w-full shrink-0">${q.opts.map((o,i)=>`<button onclick="mA(${i===q.a}, '${q.opts[q.a].replace(/'/g, "\\'")}', '${q.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 p-3 md:p-4 bg-gray-800 rounded-2xl border-b-4 border-gray-600 hover:bg-cyan-900 active:translate-y-1 active:border-b-0 text-sm md:text-base font-black text-left transition-all shadow-md leading-tight uppercase tracking-wider flex items-center"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${o}</span></button>`).join('')}</div></div></div>`; return; 
               }
               let c=''; 
               for(let i=0;i<16;i++){ 
@@ -1216,7 +1884,7 @@
            let gr = fisherYatesShuffle([...d.t]), sl = null;
            const ren = () => { if(gr.join('')===d.t.join('')){
                playSound('happy');
-               container.innerHTML=`<div class="text-center w-full flex flex-col h-full justify-center max-w-lg mx-auto"><h3 class="text-base font-black mb-6 bg-black/60 p-4 rounded-3xl border-2 border-yellow-500 flex flex-col items-center shadow-lg shrink-0"><div class="text-[5rem] mb-2 drop-shadow-md">${rawD.i}</div><div class="text-sm text-yellow-300 mb-4 bg-black/50 px-5 py-2 rounded-full uppercase tracking-widest">${rawD.t}</div>${rawD.q}</h3><div class="flex flex-col gap-3 flex-1 justify-start w-full overflow-y-auto custom-scroll pr-2 pb-4 mt-2">${d.opts.map((o,i)=>`<button onclick="sE(${i===d.a}, '${d.opts[d.a]}', '${d.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 min-h-[60px] p-3 md:p-4 bg-gray-800 border-b-4 border-cyan-700 rounded-2xl font-black text-sm md:text-base active:translate-y-1 active:border-b-0 flex items-center text-left shadow-md hover:bg-cyan-900 transition-all uppercase leading-tight"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${o}</span></button>`).join('')}</div></div>`; return; 
+               container.innerHTML=`<div class="text-center w-full flex flex-col h-full justify-start max-w-lg mx-auto overflow-hidden py-2"><div class="flex-1 flex flex-col items-center w-full overflow-y-auto custom-scroll pr-2 pb-4"><h3 class="text-base font-black mb-6 bg-black/60 p-4 rounded-3xl border-2 border-yellow-500 flex flex-col items-center shadow-lg w-full shrink-0"><div class="text-[5rem] mb-2 drop-shadow-md">${rawD.i}</div><div class="text-sm text-yellow-300 mb-4 bg-black/50 px-5 py-2 rounded-full uppercase tracking-widest">${rawD.t}</div><div class="text-center w-full">${rawD.q}</div></h3><div class="flex flex-col gap-3 w-full shrink-0">${d.opts.map((o,i)=>`<button onclick="sE(${i===d.a}, '${d.opts[d.a]}', '${d.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 min-h-[60px] p-3 md:p-4 bg-gray-800 border-b-4 border-cyan-700 rounded-2xl font-black text-sm md:text-base active:translate-y-1 active:border-b-0 flex items-center text-left shadow-md hover:bg-cyan-900 transition-all uppercase leading-tight"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${o}</span></button>`).join('')}</div></div></div>`; return; 
            }
               container.innerHTML = `<div class="text-center w-full flex flex-col items-center h-full justify-center relative"><div class="absolute top-0 right-0 bg-gray-900 border-2 border-yellow-400 p-3 rounded-2xl scale-90 shadow-2xl z-50"><p class="text-xs text-yellow-400 font-black mb-2 uppercase tracking-widest">Target</p><div class="grid grid-cols-2 gap-2 bg-blue-950 p-2 rounded-xl mb-2 border border-blue-800">${d.t.map(i=>`<div class="w-8 h-8 text-2xl flex justify-center items-center">${i}</div>`).join('')}</div><p class="text-[10px] text-white font-bold leading-tight w-[80px] truncate uppercase">${d.t.join('')}</p></div><h3 class="text-4xl font-black text-cyan-300 mb-4 drop-shadow-md uppercase tracking-widest">Susun Puzzle!</h3><p class="text-sm font-bold text-gray-300 mb-8 md:mb-12 bg-black/50 px-6 py-2 rounded-full border border-gray-600 uppercase tracking-widest">Ketuk 2 kotak untuk menukar posisi.</p><div class="grid grid-cols-2 gap-4 bg-blue-900 p-5 rounded-[2.5rem] border-4 border-blue-600 mx-auto z-10 shadow-2xl shrink-0 w-full max-w-[400px] aspect-square">${gr.map((ic,i)=>`<div onclick="cP(${i})" class="w-full h-full text-[6rem] flex justify-center items-center bg-gray-800 rounded-3xl border-4 active:scale-90 transition-all cursor-pointer ${sl===i?'border-yellow-400 bg-gray-700 shadow-[0_0_20px_yellow] scale-105':'border-gray-600 shadow-md'}">${ic}</div>`).join('')}</div></div>`; };
            window.cP = (i) => { if(sl===null){sl=i;playSound('pop');}else{playSound('happy');let tp=gr[sl];gr[sl]=gr[i];gr[i]=tp;sl=null;} ren(); }; 
@@ -1252,7 +1920,7 @@
                }
                else if (d3Phase === 'quiz') {
                    let q = d3QList[d3QCount];
-                   container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-start max-w-xl mx-auto"><h3 class="text-base font-black mb-6 text-yellow-400 shrink-0 bg-black/50 py-3 rounded-full border border-yellow-500/30 uppercase tracking-widest">Misi Bantuan: Soal ${d3QCount + 1} / 3</h3><div class="flex-1 flex flex-col items-center justify-start w-full overflow-hidden"><div class="text-[4rem] mb-2 drop-shadow-md shrink-0">🧠</div><h3 class="text-xl font-black mb-4 shrink-0 bg-blue-900/60 p-5 rounded-2xl border border-blue-500/50 leading-relaxed uppercase tracking-wider w-full shadow-inner text-white">${q.q}</h3><div class="flex flex-col gap-3 flex-1 justify-start w-full overflow-y-auto custom-scroll pr-2 pb-4 mt-2">${q.opts.map((o,i) => `<button onclick="d3Answer(${i===q.a}, '${q.opts[q.a].replace(/'/g, "\\'")}', '${q.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 min-h-[60px] p-3 md:p-4 bg-gray-800 border-b-4 border-blue-700 rounded-2xl font-black text-sm md:text-base active:translate-y-1 active:border-b-0 text-left transition-all shadow-md hover:bg-blue-900 leading-tight uppercase tracking-wider flex items-center"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${o}</span></button>`).join('')}</div></div></div>`;
+                   container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-start max-w-xl mx-auto overflow-hidden py-2"><h3 class="text-base font-black mb-4 text-yellow-400 shrink-0 bg-black/50 py-3 rounded-full border border-yellow-500/30 uppercase tracking-widest">Misi Bantuan: Soal ${d3QCount + 1} / 3</h3><div class="flex-1 w-full overflow-y-auto custom-scroll pr-2 pb-4 flex flex-col items-center"><div class="text-[4rem] mb-2 drop-shadow-md shrink-0">🧠</div><h3 class="text-xl font-black mb-4 shrink-0 bg-blue-900/60 p-5 rounded-2xl border border-blue-500/50 leading-relaxed uppercase tracking-wider w-full shadow-inner text-white">${q.q}</h3><div class="flex flex-col gap-3 w-full shrink-0">${q.opts.map((o,i) => `<button onclick="d3Answer(${i===q.a}, '${q.opts[q.a].replace(/'/g, "\\'")}', '${q.exp.replace(/'/g, "\\'")}')" class="w-full shrink-0 min-h-[60px] p-3 md:p-4 bg-gray-800 border-b-4 border-blue-700 rounded-2xl font-black text-sm md:text-base active:translate-y-1 active:border-b-0 text-left transition-all shadow-md hover:bg-blue-900 leading-tight uppercase tracking-wider flex items-center"><span class="bg-black/50 w-8 h-8 shrink-0 inline-flex items-center justify-center rounded-full mr-3 text-cyan-300">${String.fromCharCode(65+i)}</span> <span class="flex-1">${o}</span></button>`).join('')}</div></div></div>`;
                }
                else if (d3Phase === 'fix') {
                    container.innerHTML = `<div class="text-center w-full h-full flex flex-col justify-center max-w-xl mx-auto"><h3 class="text-base font-black mb-6 text-green-400 shrink-0 bg-black/50 py-3 rounded-full border border-green-500/30 uppercase tracking-widest">Tahap Perbaikan Akhir</h3><div class="flex-1 flex flex-col items-center justify-center w-full"><h3 class="text-lg font-black mb-10 shrink-0 bg-gray-800 p-6 rounded-2xl border-4 border-yellow-500 leading-relaxed uppercase tracking-wider w-full shadow-inner text-white">Fasilitas kota apa yang harus dibangun atau diperbaiki untuk mencegah kecelakaan ini terjadi lagi?</h3><div class="grid grid-cols-2 gap-3 w-full">${d3FixOptions.map((opt) => `<button onclick="d3FixAnswer('${opt.id}')" class="p-3 md:p-4 bg-gray-800 border-b-4 border-blue-700 rounded-2xl font-black text-xs md:text-sm active:translate-y-1 active:border-b-0 flex flex-col items-center justify-center transition-all shadow-md hover:bg-blue-900 uppercase"><div class="text-[3rem] md:text-[4rem] mb-2 drop-shadow-md">${opt.f}</div><div class="text-center tracking-wider leading-tight">${opt.n}</div></button>`).join('')}</div></div></div>`;
@@ -1318,13 +1986,281 @@
 
     function showWinScreen() {
        document.getElementById('game-play-area').classList.add('hidden'); document.getElementById('game-win-area').classList.remove('hidden');
-       document.getElementById('game-win-rewards').innerHTML = `+KOIN & +XP!<br>NAIK KE LEVEL ${Math.min(100, (state.gameLevels[currentGameDetails.id] || 1))}`; document.getElementById('btn-next-lvl').onclick = () => playGame(currentGameDetails.id); playSound('victory');
+       document.getElementById('game-win-rewards').innerHTML = `+KOIN & +XP!<br>NAIK KE LEVEL ${Math.min(100, (state.gameLevels[currentGameDetails.id] || 1))}`; 
+       // Perubahan: Menggunakan continuePlayGame agar tidak mengulang animasi isyarat saat lanjut level
+       document.getElementById('btn-next-lvl').onclick = () => continuePlayGame(currentGameDetails.id); 
+       playSound('victory');
     }
+    
     function showLostScreen() {
        document.getElementById('game-play-area').classList.add('hidden'); document.getElementById('game-lost-area').classList.remove('hidden');
-       document.getElementById('btn-replay').onclick = () => playGame(currentGameDetails.id); playSound('wrong');
+       // Perubahan: Menggunakan continuePlayGame agar bisa langsung coba lagi tanpa ulang intro
+       document.getElementById('btn-replay').onclick = () => continuePlayGame(currentGameDetails.id); 
+       playSound('wrong');
     }
+
+    // --- SIGN LANGUAGE ANIMATION LOGIC ---
+    let signAnimActive = false;
+    const slWait = ms => new Promise(r => setTimeout(r, ms));
+
+    async function startSignAnimation(gameId) {
+        if (signAnimActive) return;
+        signAnimActive = true;
+        
+        const char = document.getElementById('sl-character');
+        
+        // Atur subtitle yang tampil sesuai game
+        document.getElementById('sl-subtitles-g4').classList.add('hidden');
+        document.getElementById('sl-subtitles-g3').classList.add('hidden');
+        document.getElementById('sl-subtitles-r1').classList.add('hidden');
+        document.getElementById('sl-subtitles-g2').classList.add('hidden');
+        document.getElementById('sl-subtitles-g1').classList.add('hidden');
+        document.getElementById('sl-subtitles-g6').classList.add('hidden');
+        
+        let t1, t2, t3, t4, t5;
+        if (gameId === 'g4') {
+            document.getElementById('sl-subtitles-g4').classList.remove('hidden');
+            t1 = document.getElementById('sl-txt-click');
+            t2 = document.getElementById('sl-txt-cross');
+            t3 = document.getElementById('sl-txt-avoid');
+            t4 = document.getElementById('sl-txt-car');
+        } else if (gameId === 'g3') {
+            document.getElementById('sl-subtitles-g3').classList.remove('hidden');
+            t1 = document.getElementById('sl-txt-helm');
+            t2 = document.getElementById('sl-txt-angka');
+            t3 = document.getElementById('sl-txt-kanan');
+            t4 = document.getElementById('sl-txt-hindari');
+        } else if (gameId === 'r1') {
+            document.getElementById('sl-subtitles-r1').classList.remove('hidden');
+            t1 = document.getElementById('sl-txt-tebak');
+            t2 = document.getElementById('sl-txt-rambu');
+            t3 = document.getElementById('sl-txt-sesuai');
+            t4 = document.getElementById('sl-txt-bayangan');
+        } else if (gameId === 'g2') {
+            document.getElementById('sl-subtitles-g2').classList.remove('hidden');
+            t1 = document.getElementById('sl-txt-puzzle');
+            t2 = document.getElementById('sl-txt-arti');
+            t3 = document.getElementById('sl-txt-rambu2');
+            t4 = document.getElementById('sl-txt-gambar');
+            t5 = document.getElementById('sl-txt-lanjut');
+        } else if (gameId === 'g1') {
+            document.getElementById('sl-subtitles-g1').classList.remove('hidden');
+            t1 = document.getElementById('sl-txt-ingat');
+            t2 = document.getElementById('sl-txt-rambu-g1');
+            t3 = document.getElementById('sl-txt-uji');
+            t4 = document.getElementById('sl-txt-jawab');
+        } else if (gameId === 'g6') {
+            document.getElementById('sl-subtitles-g6').classList.remove('hidden');
+            t1 = document.getElementById('sl-txt-tekan');
+            t2 = document.getElementById('sl-txt-berhenti');
+            t3 = document.getElementById('sl-txt-mobil');
+            t4 = document.getElementById('sl-txt-parkir');
+        }
+
+        function resetAll() {
+            if(!char) return;
+            char.className = 'sl-character';
+            if(t1) t1.className = 'sl-sub';
+            if(t2) t2.className = 'sl-sub';
+            if(t3) t3.className = 'sl-sub';
+            if(t4) t4.className = 'sl-sub';
+            if(t5) t5.className = 'sl-sub';
+        }
+
+        // Ulang tepat 2 kali putaran
+        for (let loopCount = 0; loopCount < 2; loopCount++) {
+            if (gameId === 'g4') {
+                // 1. KLIK
+                resetAll(); if(!signAnimActive) break;
+                char.classList.add('pose-click'); t1.classList.add('active');
+                await slWait(800); if(!signAnimActive) break;
+                char.classList.add('pose-click-push');
+                await slWait(400); if(!signAnimActive) break;
+                char.classList.remove('pose-click-push');
+                await slWait(1000);
+
+                // 2. MENYEBERANG
+                resetAll(); if(!signAnimActive) break;
+                t2.classList.add('active', 'action'); char.classList.add('pose-cross');
+                await slWait(600); if(!signAnimActive) break;
+                char.classList.add('pose-cross-walk');
+                await slWait(2000);
+
+                // 3. HINDARI
+                resetAll(); if(!signAnimActive) break;
+                char.classList.add('pose-avoid'); t3.classList.add('active', 'danger');
+                await slWait(2200);
+
+                // 4. MOBIL
+                resetAll(); if(!signAnimActive) break;
+                t4.classList.add('active', 'action'); char.classList.add('pose-car');
+                await slWait(400); if(!signAnimActive) break;
+                char.classList.add('pose-car-left');
+                await slWait(700); if(!signAnimActive) break;
+                char.classList.remove('pose-car-left'); char.classList.add('pose-car-right');
+                await slWait(700); if(!signAnimActive) break;
+                char.classList.remove('pose-car-right'); char.classList.add('pose-car-left');
+                await slWait(600);
+            } 
+            else if (gameId === 'g3') {
+                // 1. DAPATKAN HELM
+                resetAll(); if(!signAnimActive) break;
+                char.classList.add('pose-helm'); t1.classList.add('active', 'action');
+                await slWait(1800); 
+
+                // 2. SESUAI ANGKA
+                resetAll(); if(!signAnimActive) break;
+                char.classList.add('pose-angka'); t2.classList.add('active');
+                await slWait(1800);
+
+                // 3. DI KANAN ATAS
+                resetAll(); if(!signAnimActive) break;
+                char.classList.add('pose-kiri'); t3.classList.add('active', 'action');
+                await slWait(1800); 
+
+                // 4. HINDARI BATU
+                resetAll(); if(!signAnimActive) break;
+                t4.classList.add('active', 'danger');
+                char.classList.add('pose-avoid'); 
+                await slWait(1200); if(!signAnimActive) break;
+                char.classList.remove('pose-avoid');
+                char.classList.add('pose-batu');
+                await slWait(1500);
+            }
+            else if (gameId === 'r1') {
+                // 1. TEBAK BAYANGAN
+                resetAll(); if(!signAnimActive) break;
+                t1.classList.add('active', 'action');
+                char.classList.add('pose-tebak'); 
+                await slWait(1200); if(!signAnimActive) break;
+                char.classList.remove('pose-tebak');
+                char.classList.add('pose-bayangan');
+                await slWait(1200);
+
+                // 2. GAMBAR RAMBU
+                resetAll(); if(!signAnimActive) break;
+                t2.classList.add('active', 'warning');
+                char.classList.add('pose-rambu'); 
+                await slWait(2200);
+
+                // 3. MANAKAH YANG SESUAI
+                resetAll(); if(!signAnimActive) break;
+                t3.classList.add('active');
+                char.classList.add('pose-sesuai');
+                await slWait(1200); if(!signAnimActive) break;
+                char.classList.remove('pose-sesuai');
+                char.classList.add('pose-tanya');
+                await slWait(1200); 
+
+                // 4. DENGAN BAYANGAN?
+                resetAll(); if(!signAnimActive) break;
+                t4.classList.add('active', 'danger');
+                char.classList.add('pose-bayangan', 'pose-bayangan-tanya'); 
+                await slWait(1800);
+            }
+            else if (gameId === 'g2') {
+                // 1. COCOKKAN PUZZLE
+                resetAll(); if(!signAnimActive) break;
+                t1.classList.add('active', 'action');
+                char.classList.add('pose-puzzle'); 
+                await slWait(2200); 
+
+                // 2. COCOKKAN ARTI
+                resetAll(); if(!signAnimActive) break;
+                t2.classList.add('active');
+                char.classList.add('pose-sesuai'); 
+                await slWait(1800);
+
+                // 3. RAMBU
+                resetAll(); if(!signAnimActive) break;
+                t3.classList.add('active', 'warning');
+                char.classList.add('pose-rambu');
+                await slWait(1800);
+
+                // 4. DAN GAMBAR YANG...
+                resetAll(); if(!signAnimActive) break;
+                t4.classList.add('active', 'danger');
+                char.classList.add('pose-gambar'); 
+                await slWait(2000);
+
+                // 5. SESUAI
+                resetAll(); if(!signAnimActive) break;
+                t5.classList.add('active', 'action');
+                char.classList.add('pose-sesuai');
+                await slWait(1800);
+            }
+            else if (gameId === 'g1') {
+                // 1. INGAT
+                resetAll(); if(!signAnimActive) break;
+                t1.classList.add('active', 'action');
+                char.classList.add('pose-ingat'); 
+                await slWait(1800); 
+
+                // 2. RAMBU
+                resetAll(); if(!signAnimActive) break;
+                t2.classList.add('active', 'warning');
+                char.classList.add('pose-rambu'); 
+                await slWait(1800);
+
+                // 3. UJI INGATANMU
+                resetAll(); if(!signAnimActive) break;
+                t3.classList.add('active');
+                char.classList.add('pose-ingat'); 
+                await slWait(800); if(!signAnimActive) break;
+                char.classList.remove('pose-ingat');
+                char.classList.add('pose-uji'); 
+                await slWait(1400);
+
+                // 4. MENJAWAB SOAL
+                resetAll(); if(!signAnimActive) break;
+                t4.classList.add('active', 'danger');
+                char.classList.add('pose-jawab'); 
+                await slWait(2200);
+            }
+            else if (gameId === 'g6') {
+                // 1. TEKAN TOMBOL MERAH
+                resetAll(); if(!signAnimActive) break;
+                t1.classList.add('active', 'danger');
+                char.classList.add('pose-tekan'); 
+                await slWait(2200); 
+
+                // 2. UNTUK BERHENTI
+                resetAll(); if(!signAnimActive) break;
+                t2.classList.add('active', 'warning');
+                char.classList.add('pose-berhenti'); 
+                await slWait(1800);
+
+                // 3. PARKIRKAN MOBILMU
+                resetAll(); if(!signAnimActive) break;
+                t3.classList.add('active'); 
+                char.classList.add('pose-mobil'); 
+                await slWait(2000);
+
+                // 4. DI KOTAK HIJAU
+                resetAll(); if(!signAnimActive) break;
+                t4.classList.add('active', 'action');
+                char.classList.add('pose-parkir'); 
+                await slWait(2200);
+            }
+
+            // ISTIRAHAT (Berlaku untuk semua game)
+            resetAll(); if(!signAnimActive) break;
+            char.classList.add('pose-rest');
+            await slWait(1500);
+        }
+
+        // Otomatis pindah ke game jika animasi selesai normal (tidak di-cancel)
+        if (signAnimActive) {
+            document.getElementById('screen-sign-intro').classList.add('hidden');
+            stopSignAnimation();
+            continuePlayGame(gameId);
+        }	
+    }
+
+    function stopSignAnimation() {
+        signAnimActive = false;
+    }
+
   </script>
 </body>
 </html>
-<!-- Redeploy Trigger -->
