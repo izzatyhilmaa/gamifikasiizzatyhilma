@@ -57,228 +57,104 @@
     .crash-shake { animation: crashShake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
     @keyframes crashShake { 10%, 90% { transform: translate3d(-3px, 0, 0); } 20%, 80% { transform: translate3d(5px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-8px, 0, 0); } 40%, 60% { transform: translate3d(8px, 0, 0); } }
 
-    /* --- TUNA DAKSA MODE ENLARGEMENTS (EKSTRA JUMBO & DISUSUN KE BAWAH) --- */
+    /* --- TUNA DAKSA MODE ENLARGEMENTS (SUPER SIZED & ELEGANT) --- */
     @media screen and (orientation: portrait) {
-        /* General Ensure Scrolling & Layout */
-        body.mode-daksa > div, body.mode-daksa .custom-scroll { 
-            overflow-y: auto !important; 
-            -webkit-overflow-scrolling: touch;
+        body.mode-daksa button { min-height: 4.5rem; }
+        body.mode-daksa button.text-left { 
+            padding: 2rem !important; 
+            font-size: 1.5rem !important; 
+            line-height: 1.6 !important;
+            border-radius: 2rem !important; 
+            min-height: 6.5rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4) !important;
+        }
+        body.mode-daksa #daily-quiz-options, body.mode-daksa #game-play-area .custom-scroll { gap: 1.5rem !important; }
+        body.mode-daksa .bg-black\/50.w-8.h-8, body.mode-daksa .bg-black\/50.w-10.h-10 { 
+            width: 4rem !important; height: 4rem !important; font-size: 2rem !important; border-radius: 1.25rem !important;
+        }
+        body.mode-daksa h3#daily-quiz-question, body.mode-daksa #game-play-area h3 { 
+            font-size: 2rem !important; line-height: 1.5 !important; padding: 2rem !important; font-weight: 900 !important;
+        }
+        body.mode-daksa .dpad-btn { 
+            width: 7.5rem !important; height: 7.5rem !important; font-size: 4rem !important; border-radius: 2.5rem !important;
+        }
+        body.mode-daksa button[onclick^="nav('"] { 
+            font-size: 1.15rem !important; padding: 1.25rem 2rem !important; min-height: 4rem !important;
         }
         
-        /* Top HUD / Status Bar (Level, Streak, Koin) -> Disusun ke bawah (ENTER) */
-        body.mode-daksa #screen-dashboard > div.sticky {
-            display: flex !important;
-            flex-direction: column !important; /* ENTER ke bawah */
-            padding: 2.5rem !important;
-            border-radius: 3rem !important;
-            gap: 2rem !important;
-            position: relative !important; /* Hilangkan sticky agar tidak nutup layar */
-            margin-bottom: 3rem !important;
-        }
-        body.mode-daksa #screen-dashboard > div.sticky > div {
-            font-size: 3rem !important;
-            padding: 2rem !important;
-            width: 100% !important;
-            text-align: center !important;
-            justify-content: center !important;
-            display: flex !important;
-            border-radius: 2rem !important;
-        }
-        body.mode-daksa button[onclick="nav('MODE')"] {
-            font-size: 3rem !important;
-            padding: 3rem !important;
-            width: 100% !important;
-            border-radius: 2.5rem !important;
-        }
-
-        /* Dashboard Pet Area (Pet Super Besar) */
-        body.mode-daksa .dashboard-left { 
-            padding: 4rem 2rem !important; 
-            margin-bottom: 3rem !important;
-            border-radius: 4rem !important;
-            min-height: auto !important;
-        }
-        body.mode-daksa #pet-emoji { font-size: 18rem !important; margin: 4rem 0 !important; }
-        body.mode-daksa #pet-accessory { font-size: 10rem !important; top: -4rem !important; right: -4rem !important; }
-        body.mode-daksa #pet-bubble { 
-            font-size: 3rem !important; 
-            padding: 3rem !important; 
-            max-width: 100% !important;
-            line-height: 1.5 !important;
-            border-radius: 3rem !important;
-            position: relative !important;
-            margin-bottom: 2rem !important;
-        }
-        body.mode-daksa .dashboard-left > div.bg-\\[\\#ef4444\\] {
-            font-size: 2.5rem !important; padding: 2rem !important; width: 100% !important; text-align: center !important; border-radius: 2rem !important;
-        }
-        body.mode-daksa #daily-lock-status { font-size: 2.5rem !important; margin: 2rem 0 !important; }
-        body.mode-daksa #daily-lock-status span { width: 4rem !important; height: 4rem !important; font-size: 2.5rem !important; margin-right: 1rem !important; }
-        body.mode-daksa #btn-daily-action { font-size: 3.5rem !important; padding: 4rem !important; border-radius: 3rem !important; margin-top: 2rem !important; }
-
-        /* Dashboard Menu (Main Game, Pustaka, Shop, dll) -> Disusun ke bawah (ENTER) */
-        body.mode-daksa .dashboard-layout { display: flex !important; flex-direction: column !important; gap: 3rem !important; }
+        /* MENGUBAH MENU DASHBOARD MENJADI LIST KE BAWAH (ELEGAN & BESAR) */
         body.mode-daksa .dashboard-right > .grid {
-            display: flex !important;
-            flex-direction: column !important; /* Susun ke bawah (ENTER) */
-            gap: 3rem !important;
+            grid-template-columns: 1fr !important; /* Paksa jadi 1 kolom menyusun ke bawah */
+            grid-template-rows: auto !important;
         }
         body.mode-daksa .dashboard-right > .grid > div {
-            display: flex !important;
-            flex-direction: column !important; /* Icon di atas, Teks di bawah */
-            padding: 5rem 2rem !important;
-            border-radius: 4rem !important;
-            gap: 2rem !important;
+            flex-direction: row !important; /* Icon di kiri, teks di kanan */
+            justify-content: flex-start !important;
+            padding: 1.5rem 2rem !important;
+            min-height: 130px !important;
+            gap: 1.5rem !important;
+            border-radius: 2.5rem !important;
         }
-        body.mode-daksa .dashboard-right > .grid > div > div:nth-child(2) { font-size: 12rem !important; margin-bottom: 2rem !important; }
-        body.mode-daksa .dashboard-right > .grid > div > h3 { font-size: 4rem !important; text-align: center !important; line-height: 1.2 !important; }
-        
-        body.mode-daksa .dashboard-right > div:last-child { /* Papan Peringkat */
-            display: flex !important;
-            flex-direction: column !important;
-            padding: 5rem 2rem !important;
-            border-radius: 4rem !important;
-            gap: 2rem !important;
-            height: auto !important;
-            margin-top: 2rem !important;
-        }
-        body.mode-daksa .dashboard-right > div:last-child > div:nth-child(2) { font-size: 12rem !important; margin-bottom: 2rem !important; }
-        body.mode-daksa .dashboard-right > div:last-child > h3 { font-size: 4rem !important; text-align: center !important; }
-
-        /* Area Scroll Utama */
-        body.mode-daksa #screen-dashboard, body.mode-daksa #screen-player { padding-bottom: 25rem !important; }
-        
-        /* Modal & Quiz Areas (Kuis Harian) */
-        body.mode-daksa #daily-quiz-box, body.mode-daksa #daily-flashcard-box, body.mode-daksa #daily-result-box {
-            max-width: 100% !important;
-            width: 95% !important;
-            height: auto !important;
-            max-height: 90vh !important;
-            padding: 4rem 3rem !important;
-            border-radius: 4rem !important;
-            overflow-y: auto !important;
-            margin-top: 4rem !important;
-        }
-        body.mode-daksa #daily-quiz-title, body.mode-daksa h2.text-yellow-400 { font-size: 3rem !important; padding: 2rem 3rem !important; margin-bottom: 3rem !important; border-radius: 2rem !important; }
-        body.mode-daksa h3#daily-quiz-question, body.mode-daksa h3#daily-fc-title { font-size: 4rem !important; padding: 2rem 0 !important; line-height: 1.5 !important; }
-        body.mode-daksa p#daily-fc-desc { font-size: 3rem !important; margin-bottom: 4rem !important; line-height: 1.5 !important; }
-        body.mode-daksa #daily-fc-icon, body.mode-daksa #daily-res-icon { font-size: 15rem !important; margin-bottom: 3rem !important; }
-        body.mode-daksa button[onclick="startDailyQuiz()"] { font-size: 4rem !important; padding: 4rem !important; border-radius: 3rem !important; }
-        
-        body.mode-daksa #daily-quiz-options { gap: 2.5rem !important; padding-bottom: 5rem !important; display: flex !important; flex-direction: column !important; }
-        body.mode-daksa #daily-quiz-options button {
-            padding: 4rem 3rem !important;
-            font-size: 3rem !important;
-            border-radius: 3rem !important;
-            border-bottom-width: 12px !important;
-            line-height: 1.4 !important;
-        }
-        body.mode-daksa #daily-quiz-options button span:first-child { width: 8rem !important; height: 8rem !important; font-size: 4.5rem !important; margin-right: 2rem !important; }
-
-        /* Generic In-Game Quiz / Questions / Menus */
-        body.mode-daksa #game-play-area { padding: 3rem !important; overflow-y: auto !important; justify-content: flex-start !important; flex-direction: column !important; display: flex !important; }
-        body.mode-daksa #game-play-area h3, body.mode-daksa #game-play-area .text-xl, body.mode-daksa #game-play-area .text-2xl, body.mode-daksa #game-play-area .text-3xl { font-size: 4rem !important; line-height: 1.5 !important; padding: 3rem !important; margin-bottom: 2rem !important; border-radius: 3rem !important; }
-        body.mode-daksa #game-play-area p { font-size: 2.5rem !important; line-height: 1.5 !important; padding: 2rem !important; margin-bottom: 2rem !important; }
-        
-        body.mode-daksa #game-play-area button:not(.dpad-btn) { 
-            font-size: 3rem !important; 
-            padding: 4rem 3rem !important; 
-            margin-bottom: 2.5rem !important;
-            border-radius: 3rem !important;
-            border-bottom-width: 12px !important;
-            line-height: 1.4 !important;
-            display: flex !important;
-            align-items: center !important;
-        }
-        body.mode-daksa #game-play-area button span.w-8, body.mode-daksa #game-play-area button span.w-10 { width: 8rem !important; height: 8rem !important; font-size: 4.5rem !important; margin-right: 2rem !important; }
-        body.mode-daksa #game-play-area .text-\\[10rem\\] { font-size: 20rem !important; margin: 4rem 0 !important; } /* Rambu Tebak Rambu G1 & R1 */
-
-        /* Minigames Grid & Other Menus (Zona Minigames) */
-        body.mode-daksa #games-grid, body.mode-daksa #pustaka-grid, body.mode-daksa #shop-items-grid, body.mode-daksa #badges-grid {
-            display: flex !important;
-            flex-direction: column !important; /* Susun ke bawah (ENTER) */
-            gap: 3rem !important;
-            padding-bottom: 25rem !important;
-        }
-        body.mode-daksa #games-grid > div {
-            display: flex !important;
-            flex-direction: column !important; /* Ikon atas, tulisan bawah */
-            padding: 5rem 3rem !important;
-            border-radius: 4rem !important;
-            text-align: center !important;
-        }
-        body.mode-daksa #games-grid .text-\\[4rem\\] { font-size: 14rem !important; width: 100% !important; margin-bottom: 3rem !important; background: transparent !important; border: none !important; }
-        body.mode-daksa #games-grid h3 { font-size: 4.5rem !important; line-height: 1.2 !important; margin-bottom: 2rem !important; }
-        body.mode-daksa #games-grid p { font-size: 3rem !important; padding: 1rem !important; color: white !important; }
-        body.mode-daksa #games-grid .bg-cyan-900 { font-size: 3rem !important; padding: 3rem !important; border-radius: 3rem !important; margin-top: 3rem !important; }
-        body.mode-daksa #games-grid .bg-cyan-900 span { font-size: 4rem !important; }
-
-        /* Pustaka & Shop Overrides */
-        body.mode-daksa #pustaka-grid > div, body.mode-daksa #shop-items-grid > div, body.mode-daksa #badges-grid > div {
-            padding: 5rem !important;
-            border-radius: 4rem !important;
-        }
-        body.mode-daksa #pustaka-grid .text-\\[5rem\\] { font-size: 15rem !important; margin-bottom: 3rem !important; }
-        body.mode-daksa #pustaka-grid h3, body.mode-daksa #shop-items-grid h3, body.mode-daksa #badges-grid h3 { font-size: 3.5rem !important; padding: 2rem !important; line-height: 1.4 !important; border-radius: 2rem !important; }
-        body.mode-daksa #shop-items-grid .text-\\[5rem\\] { font-size: 15rem !important; margin-bottom: 3rem !important; }
-        body.mode-daksa #shop-items-grid button { font-size: 4rem !important; padding: 3rem !important; border-radius: 2.5rem !important; margin-top: 2rem !important; }
-        
-        /* Pustaka Detail Modal */
-        body.mode-daksa #pustaka-detail-modal > div { max-width: 95% !important; padding: 5rem 3rem !important; border-radius: 4rem !important; }
-        body.mode-daksa #pd-icon { font-size: 18rem !important; margin-bottom: 4rem !important; }
-        body.mode-daksa #pd-title { font-size: 4.5rem !important; margin-bottom: 3rem !important; }
-        body.mode-daksa #pd-desc { font-size: 3rem !important; line-height: 1.5 !important; padding: 3rem !important; border-radius: 3rem !important; margin-bottom: 3rem !important; }
-        body.mode-daksa #pd-fact { font-size: 2.5rem !important; line-height: 1.5 !important; padding-left: 2rem !important; border-left-width: 8px !important; margin-bottom: 4rem !important; }
-        body.mode-daksa #pustaka-detail-modal button { font-size: 3.5rem !important; padding: 4rem !important; border-radius: 3rem !important; }
-
-        /* Modal Explanation (Jawaban Benar/Salah) */
-        body.mode-daksa #exp-modal-box { max-width: 95% !important; padding: 5rem 4rem !important; border-radius: 4rem !important; }
-        body.mode-daksa #exp-icon { font-size: 15rem !important; margin-bottom: 3rem !important; }
-        body.mode-daksa #exp-title { font-size: 5rem !important; line-height: 1.2 !important; margin-bottom: 3rem !important; }
-        body.mode-daksa #exp-subtitle { font-size: 3rem !important; margin-bottom: 2rem !important; }
-        body.mode-daksa #exp-correct-ans { font-size: 5rem !important; margin: 3rem 0 !important; line-height: 1.2 !important; }
-        body.mode-daksa #exp-reason { font-size: 3.5rem !important; line-height: 1.5 !important; padding: 2rem 0 !important; }
-        body.mode-daksa #exp-modal-box button { font-size: 4rem !important; padding: 4rem !important; border-radius: 3rem !important; border-bottom-width: 12px !important; margin-top: 2rem !important; }
-
-        /* Back Buttons (Tombol Kembali) */
-        body.mode-daksa button.absolute.top-4.left-4 {
-            font-size: 3rem !important;
-            padding: 3rem 4rem !important;
-            border-radius: 3rem !important;
-            position: relative !important; /* Pindah ke atas konten (bukan melayang) */
-            top: 0 !important; left: 0 !important;
-            width: 100% !important;
-            margin-bottom: 3rem !important;
-            display: block !important;
-            border-width: 4px !important;
-        }
-        
-        /* Header titles in sub menus (Zona Minigames dll) */
-        body.mode-daksa h1.text-2xl, body.mode-daksa h1.text-3xl, body.mode-daksa h1.text-4xl { font-size: 5rem !important; line-height: 1.3 !important; padding: 2rem 0 !important; text-align: center !important; }
-        body.mode-daksa p.bg-blue-900\\/50, body.mode-daksa p.bg-black\\/50 { font-size: 3rem !important; padding: 2rem 4rem !important; border-radius: 3rem !important; margin-bottom: 4rem !important; }
-        
-        /* Susun Kata D2/G10 */
-        body.mode-daksa #game-play-area .flex-wrap { gap: 3rem !important; }
-        body.mode-daksa #game-play-area .flex-wrap span, body.mode-daksa #game-play-area .flex-wrap button {
-            font-size: 4rem !important; padding: 3rem 4rem !important; border-radius: 3rem !important; border-bottom-width: 10px !important;
-        }
-
-        /* Leaderboard (Papan Peringkat List) */
-        body.mode-daksa #lb-full-list > div {
-            flex-direction: column !important; /* ENTER susun bawah */
-            padding: 4rem !important;
-            border-radius: 4rem !important;
-            gap: 2rem !important;
-            text-align: center !important;
-        }
-        body.mode-daksa #lb-full-list > div > div {
-            width: 100% !important;
+        body.mode-daksa .dashboard-right > .grid > div > div:nth-child(2) {
             font-size: 4rem !important;
-            text-align: center !important;
-            justify-content: center !important;
-            padding: 1rem !important;
+            margin-bottom: 0 !important;
         }
-        body.mode-daksa #lb-full-list > div > div:nth-child(4) { font-size: 3rem !important; padding: 2rem !important; border-radius: 2rem !important; }
+        body.mode-daksa .dashboard-right > .grid > div > h3 {
+            font-size: 1.6rem !important;
+            text-align: left !important;
+            line-height: 1.2 !important;
+        }
+        
+        body.mode-daksa .dashboard-right > div:last-child {
+            justify-content: flex-start !important;
+            padding-left: 2rem !important;
+            min-height: 130px !important;
+            gap: 1.5rem !important;
+            border-radius: 2.5rem !important;
+        }
+        body.mode-daksa .dashboard-right > div:last-child > div:nth-child(2) {
+            font-size: 4rem !important;
+        }
+        body.mode-daksa .dashboard-right > div:last-child > h3 {
+            font-size: 1.6rem !important;
+        }
+
+        body.mode-daksa #games-grid .bg-gray-800 { 
+            padding: 2rem !important; min-height: 150px; border-radius: 2.5rem !important;
+        }
+        body.mode-daksa #games-grid h3 { font-size: 1.6rem !important; }
+        body.mode-daksa #games-grid p { font-size: 1.1rem !important; line-height: 1.5 !important; }
+
+        /* --- FIX TUNA DAKSA MODE UNTUK POTRET (MOBILE) --- */
+        @media (max-width: 767px) {
+            body.mode-daksa #games-grid,
+            body.mode-daksa #shop-items-grid, 
+            body.mode-daksa #badges-grid, 
+            body.mode-daksa #pustaka-grid {
+                grid-template-columns: 1fr !important;
+                padding-bottom: 6rem !important; /* Ruang ekstra agar item bawah tidak tertutup */
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch; /* Scroll mulus di HP */
+            }
+            body.mode-daksa #screen-dashboard {
+                padding-bottom: 5rem !important;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            body.mode-daksa .dashboard-left {
+                min-height: 400px !important; /* Ruang bernafas ekstra untuk Pet */
+            }
+            body.mode-daksa #game-play-area {
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4rem !important;
+                justify-content: flex-start !important; /* Mencegah bagian atas terpotong saat konten kebesaran */
+            }
+            body.mode-daksa .custom-scroll {
+                overscroll-behavior-y: contain; /* Mencegah scroll bocor ke background */
+            }
+        }
     }
     
     /* --- SIGN LANGUAGE ANIMATION CSS --- */
@@ -607,7 +483,7 @@
             <div class="text-[4rem] drop-shadow-md">🧏</div>
             <div class="text-left flex-1">
                 <h3 class="text-2xl font-black text-white uppercase tracking-widest">Tuna Rungu</h3>
-                <p class="text-sm font-bold text-yellow-200">Dilengkapi Subtitle & Bahasa Isyarat</p>
+                <p class="text-sm font-bold text-yellow-200">Subtitle Bantuan Aktif</p>
             </div>
           </div>
           <div onclick="selectMode('DAKSA')" class="w-full cursor-pointer p-6 rounded-[2rem] bg-green-600 border-4 border-green-400 active:scale-95 transition shadow-lg flex flex-row items-center gap-6">
@@ -2264,3 +2140,4 @@
   </script>
 </body>
 </html>
+<!-- Redeploy Trigger -->
