@@ -37,9 +37,23 @@
     @keyframes sparkleRotate { 0% { transform: rotate(0deg) scale(0.8); opacity: 0.5; } 50% { transform: rotate(180deg) scale(1.2); opacity: 1; } 100% { transform: rotate(360deg) scale(0.8); opacity: 0.5; } }
     .sparkle { position: absolute; font-size: 2.5rem; animation: sparkleRotate 2s linear infinite; pointer-events: none; z-index: 20; }
 
-    @keyframes streakExplode { 0% { transform: translate(-50%, -50%) scale(0.1); color: #9ca3af; opacity: 1; } 60% { transform: translate(-50%, -50%) scale(4); color: #ef4444; text-shadow: 0 0 50px red; opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.5); color: #ef4444; opacity: 0; } }
-    #streak-overlay { top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
-    .streak-anim-active { animation: streakExplode 2.5s ease-out forwards; display: block !important; }
+    /* --- ANIMASI STREAK ALA TIKTOK (LEBIH RINGAN & SMOOTH DI HP) --- */
+    @keyframes tiktokFire { 
+        0% { transform: scale(0.2); filter: grayscale(100%); opacity: 0; } 
+        15% { transform: scale(1.2); filter: grayscale(100%); opacity: 1; } 
+        25% { transform: scale(1); filter: grayscale(100%); opacity: 1; } 
+        45% { transform: scale(1.3); filter: grayscale(0%) drop-shadow(0 0 20px rgba(239,68,68,0.8)); opacity: 1; } 
+        80% { transform: scale(1); filter: grayscale(0%) drop-shadow(0 0 20px rgba(239,68,68,0.8)); opacity: 1; } 
+        100% { transform: scale(0.5); opacity: 0; } 
+    }
+    @keyframes tiktokText { 
+        0%, 35% { transform: translateY(30px); opacity: 0; } 
+        50%, 85% { transform: translateY(0); opacity: 1; } 
+        100% { transform: translateY(-20px); opacity: 0; } 
+    }
+    .streak-bg-anim { display: flex !important; }
+    .streak-fire-anim { animation: tiktokFire 3.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; will-change: transform, filter; }
+    .streak-text-anim { animation: tiktokText 3.5s ease-out forwards; will-change: transform, opacity; }
 
     @keyframes fadeSubtitle { 0% { opacity: 0; bottom: 5px; } 20% { opacity: 1; bottom: 20px; } 80% { opacity: 1; bottom: 20px; } 100% { opacity: 0; bottom: 40px; } }
     .subtitle-anim { animation: fadeSubtitle 2.5s ease-out forwards; }
@@ -59,28 +73,28 @@
 
     /* --- TUNA DAKSA MODE ENLARGEMENTS (SUPER SIZED & ELEGANT) --- */
     @media screen and (orientation: portrait) {
-        body.mode-daksa button { min-height: 4.5rem; }
+        body.mode-daksa button { min-height: 3.5rem; }
         body.mode-daksa button.text-left { 
-            padding: 2rem !important; 
-            font-size: 1.5rem !important; 
-            line-height: 1.6 !important;
-            border-radius: 2rem !important; 
-            min-height: 6.5rem;
+            padding: 1.5rem !important; 
+            font-size: 1.25rem !important; 
+            line-height: 1.5 !important;
+            border-radius: 1.5rem !important; 
+            min-height: 5rem;
             margin-bottom: 0.75rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4) !important;
         }
-        body.mode-daksa #daily-quiz-options, body.mode-daksa #game-play-area .custom-scroll { gap: 1.5rem !important; }
+        body.mode-daksa #daily-quiz-options, body.mode-daksa #game-play-area .custom-scroll { gap: 1.25rem !important; }
         body.mode-daksa .bg-black\/50.w-8.h-8, body.mode-daksa .bg-black\/50.w-10.h-10 { 
-            width: 4rem !important; height: 4rem !important; font-size: 2rem !important; border-radius: 1.25rem !important;
+            width: 3rem !important; height: 3rem !important; font-size: 1.5rem !important; border-radius: 1rem !important;
         }
         body.mode-daksa h3#daily-quiz-question, body.mode-daksa #game-play-area h3 { 
-            font-size: 2rem !important; line-height: 1.5 !important; padding: 2rem !important; font-weight: 900 !important;
+            font-size: 1.5rem !important; line-height: 1.5 !important; padding: 1.5rem !important; font-weight: 900 !important;
         }
         body.mode-daksa .dpad-btn { 
-            width: 7.5rem !important; height: 7.5rem !important; font-size: 4rem !important; border-radius: 2.5rem !important;
+            width: 5.5rem !important; height: 5.5rem !important; font-size: 2.5rem !important; border-radius: 1.75rem !important;
         }
         body.mode-daksa button[onclick^="nav('"] { 
-            font-size: 1.15rem !important; padding: 1.25rem 2rem !important; min-height: 4rem !important;
+            font-size: 1rem !important; padding: 1rem 1.5rem !important; min-height: 3.5rem !important;
         }
         
         /* MENGUBAH MENU DASHBOARD MENJADI LIST KE BAWAH (ELEGAN & BESAR) */
@@ -91,40 +105,40 @@
         body.mode-daksa .dashboard-right > .grid > div {
             flex-direction: row !important; /* Icon di kiri, teks di kanan */
             justify-content: flex-start !important;
-            padding: 1.5rem 2rem !important;
-            min-height: 130px !important;
-            gap: 1.5rem !important;
-            border-radius: 2.5rem !important;
+            padding: 1.25rem 1.5rem !important;
+            min-height: 100px !important;
+            gap: 1.25rem !important;
+            border-radius: 2rem !important;
         }
         body.mode-daksa .dashboard-right > .grid > div > div:nth-child(2) {
-            font-size: 4rem !important;
+            font-size: 3rem !important;
             margin-bottom: 0 !important;
         }
         body.mode-daksa .dashboard-right > .grid > div > h3 {
-            font-size: 1.6rem !important;
+            font-size: 1.3rem !important;
             text-align: left !important;
             line-height: 1.2 !important;
         }
         
         body.mode-daksa .dashboard-right > div:last-child {
             justify-content: flex-start !important;
-            padding-left: 2rem !important;
-            min-height: 130px !important;
-            gap: 1.5rem !important;
-            border-radius: 2.5rem !important;
+            padding-left: 1.5rem !important;
+            min-height: 100px !important;
+            gap: 1.25rem !important;
+            border-radius: 2rem !important;
         }
         body.mode-daksa .dashboard-right > div:last-child > div:nth-child(2) {
-            font-size: 4rem !important;
+            font-size: 3rem !important;
         }
         body.mode-daksa .dashboard-right > div:last-child > h3 {
-            font-size: 1.6rem !important;
+            font-size: 1.3rem !important;
         }
 
         body.mode-daksa #games-grid .bg-gray-800 { 
-            padding: 2rem !important; min-height: 150px; border-radius: 2.5rem !important;
+            padding: 1.5rem !important; min-height: 120px; border-radius: 2rem !important;
         }
-        body.mode-daksa #games-grid h3 { font-size: 1.6rem !important; }
-        body.mode-daksa #games-grid p { font-size: 1.1rem !important; line-height: 1.5 !important; }
+        body.mode-daksa #games-grid h3 { font-size: 1.4rem !important; }
+        body.mode-daksa #games-grid p { font-size: 1rem !important; line-height: 1.4 !important; }
 
         /* --- FIX TUNA DAKSA MODE UNTUK POTRET (MOBILE) --- */
         @media (max-width: 767px) {
@@ -157,253 +171,50 @@
         }
     }
     
-    /* --- SIGN LANGUAGE ANIMATION CSS --- */
-    #screen-sign-intro {
-        --skin: #ffcbab; --skin-shadow: #e0aa8b; --skin-outline: #c78d6b;
-        --shirt: #1abc9c; --pants: #34495e; --hair: #2c3e50; --trans-speed: 0.5s; 
+    /* --- GLOBAL FONT ENLARGEMENT & BEAUTIFICATION (NGE-BLOCK & CANTIK) --- */
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
     }
-    .sl-scene { width: 300px; height: 380px; position: relative; perspective: 1200px; margin-bottom: 20px; }
-    .sl-character { position: absolute; width: 100%; height: 100%; transform-style: preserve-3d; transition: all var(--trans-speed) cubic-bezier(0.25, 0.8, 0.25, 1); }
-    .sl-head { position: absolute; top: 20px; left: 50%; margin-left: -45px; width: 90px; height: 110px; background: var(--skin); border-radius: 45px 45px 35px 35px; transform-origin: bottom center; z-index: 10; transition: transform var(--trans-speed); box-shadow: inset -5px -5px 10px rgba(0,0,0,0.05); }
-    .sl-hair { position: absolute; top: -10px; left: -5px; width: 100px; height: 45px; background: var(--hair); border-radius: 50px 50px 15px 15px; }
-    .sl-eyes { position: absolute; top: 55px; width: 100%; display: flex; justify-content: center; gap: 24px; }
-    .sl-eye { width: 10px; height: 10px; background: #222; border-radius: 50%; animation: sl-blink 4s infinite; }
-    .sl-mouth { position: absolute; top: 80px; left: 50%; margin-left: -12px; width: 24px; height: 8px; border-bottom: 3px solid #333; border-radius: 50%; transition: all 0.3s; }
-    .sl-torso { position: absolute; top: 120px; left: 50%; margin-left: -55px; width: 110px; height: 140px; background: var(--shirt); border-radius: 40px 40px 15px 15px; z-index: 5; }
-    .sl-arm { position: absolute; top: 130px; width: 36px; height: 80px; background: var(--shirt); border-radius: 18px; transform-origin: 18px 18px; z-index: 8; transform-style: preserve-3d; transition: transform var(--trans-speed) ease-in-out; }
-    .sl-arm.left { left: 60px; }
-    .sl-arm.right { right: 60px; }
-    .sl-lower-arm { position: absolute; top: 60px; left: 3px; width: 30px; height: 85px; background: var(--skin); border-radius: 15px; transform-origin: 15px 15px; transform-style: preserve-3d; transition: transform var(--trans-speed) ease-in-out; box-shadow: inset -2px -2px 6px rgba(0,0,0,0.1); }
-    .sl-hand { position: absolute; bottom: -25px; left: -3px; width: 36px; height: 40px; background: var(--skin); border-radius: 10px 10px 18px 18px; transform-origin: top center; transform-style: preserve-3d; transition: transform var(--trans-speed) ease-in-out; border: 1px solid var(--skin-outline); z-index: 2; }
-    .sl-finger { position: absolute; background: var(--skin); border: 1px solid var(--skin-outline); border-radius: 8px; transform-origin: top center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1; }
-    .sl-thumb { width: 12px; height: 22px; top: 12px; z-index: 3; }
-    .sl-index { width: 9px; height: 32px; bottom: -28px; left: 2px; }
-    .sl-middle { width: 9px; height: 36px; bottom: -32px; left: 11px; }
-    .sl-ring { width: 9px; height: 34px; bottom: -30px; left: 20px; }
-    .sl-pinky { width: 8px; height: 26px; bottom: -22px; left: 29px; }
-    .sl-arm.left .sl-thumb { right: -6px; transform-origin: top left; transform: rotate(-35deg); }
-    .sl-arm.right .sl-thumb { left: -6px; transform-origin: top right; transform: rotate(35deg); }
-
-    .sl-subtitles { font-size: 1.1rem; color: #95a5a6; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-weight: 600; width: 100%; margin-top: 10px; }
-    .sl-sub { padding: 8px 12px; border-radius: 8px; transition: all 0.3s; text-align: center; }
-    .sl-sub.active { background: #3498db; color: white; transform: scale(1.05); }
-    .sl-sub.active.danger { background: #e74c3c; }
-    .sl-sub.active.action { background: #2ecc71; }
-    .sl-sub.active.warning { background: #f39c12; }
-
-    .pose-rest .sl-arm { transform: rotateZ(12deg); }
-    .pose-rest .sl-arm.right { transform: rotateZ(-12deg); }
-    .pose-rest .sl-lower-arm { transform: rotateX(-15deg); }
-    .pose-rest .sl-hand { transform: rotateX(-10deg); }
-    .pose-rest .sl-finger:not(.sl-thumb) { transform: rotateX(45deg); height: 20px; background: var(--skin-shadow); }
-    .pose-rest .sl-thumb { transform: rotateX(20deg); }
-
-    .pose-click .sl-head { transform: rotateX(-10deg); }
-    .pose-click .sl-arm.right { transform: rotateZ(-10deg) rotateX(85deg); }
-    .pose-click .sl-arm.right .sl-lower-arm { transform: rotateX(-5deg); }
-    .pose-click .sl-arm.right .sl-hand { transform: rotateX(-15deg); }
-    .pose-click .sl-arm.right .sl-index { transform: rotateX(0deg); height: 32px; background: var(--skin); }
-    .pose-click .sl-arm.right .sl-middle, .pose-click .sl-arm.right .sl-ring, .pose-click .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
-    .pose-click .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
-    .pose-click-push .sl-arm.right { transform: rotateZ(-10deg) rotateX(110deg); }
-    .pose-click-push .sl-arm.right .sl-lower-arm { transform: rotateX(-15deg); }
-
-    .pose-cross .sl-head { transform: rotateZ(15deg); }
-    .pose-cross .sl-arm.left { transform: rotateZ(45deg) rotateX(80deg); }
-    .pose-cross .sl-arm.left .sl-lower-arm { transform: rotateZ(45deg); }
-    .pose-cross .sl-arm.left .sl-hand { transform: rotateX(-45deg); }
-    .pose-cross .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0); height: 32px; }
-    .pose-cross .sl-arm.right { transform: rotateZ(-20deg) rotateX(80deg); }
-    .pose-cross .sl-arm.right .sl-lower-arm { transform: rotateX(-60deg); }
-    .pose-cross .sl-arm.right .sl-hand { transform: rotateX(40deg); }
-    .pose-cross .sl-arm.right .sl-index, .pose-cross .sl-arm.right .sl-middle { transform: rotateX(0); height: 36px; background: var(--skin); }
-    .pose-cross .sl-arm.right .sl-ring, .pose-cross .sl-arm.right .sl-pinky, .pose-cross .sl-arm.right .sl-thumb { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
-
-    .pose-avoid .sl-head { transform: rotateX(15deg) translateY(-5px); }
-    .pose-avoid .sl-mouth { height: 14px; width: 14px; border: 4px solid #333; top: 76px; }
-    .pose-avoid .sl-arm { transform: rotateZ(35deg) rotateX(110deg); }
-    .pose-avoid .sl-arm.right { transform: rotateZ(-35deg) rotateX(110deg); }
-    .pose-avoid .sl-lower-arm { transform: rotateX(-120deg); }
-    .pose-avoid .sl-hand { transform: rotateX(-20deg); }
-    .pose-avoid .sl-finger { transform: rotateX(0); background: var(--skin); }
-    .pose-avoid .sl-index { height: 32px; transform: rotateZ(20deg); }
-    .pose-avoid .sl-middle { height: 36px; transform: rotateZ(0deg); }
-    .pose-avoid .sl-ring { height: 34px; transform: rotateZ(-20deg); }
-    .pose-avoid .sl-pinky { height: 26px; transform: rotateZ(-40deg); }
-    .pose-avoid .sl-arm.left .sl-thumb { transform: rotate(-70deg); }
-    .pose-avoid .sl-arm.right .sl-thumb { transform: rotate(70deg); }
-
-    .pose-car .sl-head { transform: rotateZ(0); }
-    .pose-car .sl-arm { transform: rotateZ(10deg) rotateX(80deg); }
-    .pose-car .sl-arm.right { transform: rotateZ(-10deg) rotateX(80deg); }
-    .pose-car .sl-lower-arm { transform: rotateX(-20deg); }
-    .pose-car .sl-finger:not(.sl-thumb) { transform: rotateX(160deg) translateY(12px); height: 16px; background: var(--skin-shadow); z-index: 4; }
-    .pose-car .sl-arm.left .sl-thumb { transform: rotate(60deg) translateX(10px) translateY(5px); z-index: 5; }
-    .pose-car .sl-arm.right .sl-thumb { transform: rotate(-60deg) translateX(-10px) translateY(5px); z-index: 5; }
-    .pose-car-left .sl-arm.left { transform: rotateZ(25deg) rotateX(60deg); }
-    .pose-car-left .sl-arm.right { transform: rotateZ(25deg) rotateX(100deg); }
-    .pose-car-right .sl-arm.left { transform: rotateZ(-25deg) rotateX(100deg); }
-    .pose-car-right .sl-arm.right { transform: rotateZ(-25deg) rotateX(60deg); }
-
-    /* ANIMASI ISYARAT: HELM HUNTER */
-    .pose-helm .sl-arm { transform: rotateZ(45deg) rotateX(160deg); }
-    .pose-helm .sl-arm.right { transform: rotateZ(-45deg) rotateX(160deg); }
-    .pose-helm .sl-lower-arm { transform: rotateX(-110deg); }
-    .pose-helm .sl-hand { transform: rotateX(40deg); }
-    .pose-helm .sl-finger:not(.sl-thumb) { transform: rotateX(50deg); height: 24px; background: var(--skin-shadow); }
-    .pose-helm .sl-thumb { transform: rotate(45deg) rotateX(40deg); }
     
-    .pose-angka .sl-arm.left { transform: rotateZ(12deg); }
-    .pose-angka .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(45deg); height: 20px; background: var(--skin-shadow); }
-    .pose-angka .sl-arm.right { transform: rotateZ(-20deg) rotateX(90deg); }
-    .pose-angka .sl-arm.right .sl-lower-arm { transform: rotateX(-90deg); }
-    .pose-angka .sl-arm.right .sl-hand { transform: rotateX(0); }
-    .pose-angka .sl-arm.right .sl-index, .pose-angka .sl-arm.right .sl-middle, .pose-angka .sl-arm.right .sl-ring { transform: rotateX(0deg); height: 32px; background: var(--skin); }
-    .pose-angka .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
-    .pose-angka .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
+    /* Efek "Nge-Block" yang dilembutkan (tegas tapi tetap bersih) untuk elemen teks */
+    h1, h2, h3, h4, button, .font-black, .font-bold {
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        letter-spacing: 0.01em;
+    }
     
-    .pose-kiri .sl-head { transform: rotateZ(-20deg) rotateX(-15deg); }
-    .pose-kiri .sl-arm.left { transform: rotateZ(45deg) rotateX(140deg); }
-    .pose-kiri .sl-arm.left .sl-lower-arm { transform: rotateX(-10deg); }
-    .pose-kiri .sl-arm.left .sl-hand { transform: rotateX(-15deg); }
-    .pose-kiri .sl-arm.left .sl-index { transform: rotateX(0deg); height: 32px; background: var(--skin); }
-    .pose-kiri .sl-arm.left .sl-middle, .pose-kiri .sl-arm.left .sl-ring, .pose-kiri .sl-arm.left .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
-    .pose-kiri .sl-arm.left .sl-thumb { transform: rotate(-80deg) translateX(5px); z-index: 5; }
+    /* Hindari efek shadow mengotori emoji */
+    .drop-shadow-md, .drop-shadow-lg, .drop-shadow-xl {
+        text-shadow: none !important; 
+    }
+
+    /* Perbesar font di SEMUA mode secara umum (Mobile & Desktop) */
+    .text-xs   { font-size: 0.95rem !important; line-height: 1.35rem !important; }
+    .text-sm   { font-size: 1.1rem !important; line-height: 1.5rem !important; }
+    .text-base { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+    .text-lg   { font-size: 1.4rem !important; line-height: 1.9rem !important; }
+    .text-xl   { font-size: 1.6rem !important; line-height: 2.1rem !important; }
     
-    .pose-batu .sl-arm.left { transform: rotateZ(30deg) rotateX(80deg); }
-    .pose-batu .sl-arm.left .sl-lower-arm { transform: rotateZ(45deg); }
-    .pose-batu .sl-arm.left .sl-hand { transform: rotateX(-20deg); }
-    .pose-batu .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0); height: 30px; background: var(--skin); }
-    .pose-batu .sl-arm.right { transform: rotateZ(-15deg) rotateX(90deg); }
-    .pose-batu .sl-arm.right .sl-lower-arm { transform: rotateX(-30deg); }
-    .pose-batu .sl-arm.right .sl-hand { transform: rotateX(20deg); }
-    .pose-batu .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(160deg) translateY(12px); height: 16px; background: var(--skin-shadow); z-index: 4; }
-    .pose-batu .sl-arm.right .sl-thumb { transform: rotate(-60deg) translateX(-10px) translateY(5px); z-index: 5; }
-
-    /* ANIMASI ISYARAT: TEBAK BAYANGAN (R1) */
-    .pose-tebak .sl-head { transform: rotateZ(10deg); }
-    .pose-tebak .sl-arm.right { transform: rotateZ(-15deg) rotateX(150deg); }
-    .pose-tebak .sl-arm.right .sl-lower-arm { transform: rotateX(-110deg); }
-    .pose-tebak .sl-arm.right .sl-hand { transform: rotateX(-30deg); }
-    .pose-tebak .sl-arm.right .sl-index { transform: rotateX(0deg); height: 32px; background: var(--skin); }
-    .pose-tebak .sl-arm.right .sl-middle, .pose-tebak .sl-arm.right .sl-ring, .pose-tebak .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
-    .pose-tebak .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
-    .pose-bayangan .sl-arm { transform: rotateZ(15deg) rotateX(85deg); }
-    .pose-bayangan .sl-arm.right { transform: rotateZ(-15deg) rotateX(85deg); }
-    .pose-bayangan .sl-lower-arm { transform: rotateX(-10deg); }
-    .pose-bayangan .sl-hand { transform: rotateX(70deg); }
-    .pose-bayangan .sl-finger:not(.sl-thumb) { transform: rotateX(0); height: 30px; background: var(--skin); margin-left: 1px;}
-    .pose-bayangan .sl-thumb { transform: rotate(0deg); }
-    .pose-bayangan-tanya .sl-head { transform: rotateZ(-15deg) rotateX(-5deg); }
-    .pose-bayangan-tanya .sl-mouth { height: 12px; width: 12px; border: 4px solid #333; top: 76px; }
-    .pose-rambu .sl-arm.left { transform: rotateZ(10deg) rotateX(160deg); }
-    .pose-rambu .sl-arm.left .sl-lower-arm { transform: rotateX(0deg); }
-    .pose-rambu .sl-arm.left .sl-hand { transform: rotateX(0deg); }
-    .pose-rambu .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(160deg) translateY(12px); height: 16px; background: var(--skin-shadow); z-index: 4; }
-    .pose-rambu .sl-arm.right { transform: rotateZ(-40deg) rotateX(120deg); }
-    .pose-rambu .sl-arm.right .sl-lower-arm { transform: rotateX(-80deg); }
-    .pose-rambu .sl-arm.right .sl-hand { transform: rotateX(60deg) rotateZ(20deg); }
-    .pose-rambu .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 32px; background: var(--skin); margin-left: 2px;}
-    .pose-sesuai .sl-arm { transform: rotateZ(25deg) rotateX(90deg); }
-    .pose-sesuai .sl-arm.right { transform: rotateZ(-25deg) rotateX(90deg); }
-    .pose-sesuai .sl-lower-arm { transform: rotateX(-20deg); }
-    .pose-sesuai .sl-hand { transform: rotateX(-10deg); }
-    .pose-sesuai .sl-index { transform: rotateX(0deg); height: 32px; background: var(--skin); }
-    .pose-sesuai .sl-middle, .pose-sesuai .sl-ring, .pose-sesuai .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
-    .pose-sesuai .sl-arm.left .sl-thumb { transform: rotate(-80deg) translateX(5px); z-index: 5; }
-    .pose-sesuai .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
-    .pose-tanya .sl-head { transform: rotateZ(20deg) rotateX(10deg); }
-    .pose-tanya .sl-arm { transform: rotateZ(20deg) rotateX(40deg); }
-    .pose-tanya .sl-arm.right { transform: rotateZ(-20deg) rotateX(40deg); }
-    .pose-tanya .sl-lower-arm { transform: rotateZ(-10deg) rotateX(-50deg); }
-    .pose-tanya .sl-hand { transform: rotateX(-60deg); }
-    .pose-tanya .sl-finger:not(.sl-thumb) { transform: rotateX(20deg); height: 28px; background: var(--skin); margin-left: 2px;}
-    .pose-tanya .sl-thumb { transform: rotateX(10deg); }
-
-    /* ANIMASI ISYARAT: PUZZLE AMAN (G2) */
-    .pose-puzzle .sl-arm { transform: rotateZ(35deg) rotateX(90deg); }
-    .pose-puzzle .sl-arm.right { transform: rotateZ(-35deg) rotateX(90deg); }
-    .pose-puzzle .sl-lower-arm { transform: rotateZ(0deg) rotateX(-50deg); }
-    .pose-puzzle .sl-hand { transform: rotateX(-30deg); }
-    .pose-puzzle .sl-finger:not(.sl-thumb) { transform: rotateX(70deg); height: 24px; background: var(--skin-shadow); margin-left: 1px;}
-    .pose-puzzle .sl-thumb { transform: rotateX(30deg); }
-    .pose-gambar .sl-arm { transform: rotateZ(30deg) rotateX(110deg); }
-    .pose-gambar .sl-arm.right { transform: rotateZ(-30deg) rotateX(110deg); }
-    .pose-gambar .sl-lower-arm { transform: rotateX(-90deg); }
-    .pose-gambar .sl-hand { transform: rotateX(0deg); }
-    .pose-gambar .sl-arm.left .sl-index { transform: rotateX(0deg) rotateZ(90deg) translateX(10px); height: 32px; background: var(--skin); }
-    .pose-gambar .sl-arm.right .sl-index { transform: rotateX(0deg) rotateZ(-90deg) translateX(-10px); height: 32px; background: var(--skin); }
-    .pose-gambar .sl-arm.left .sl-thumb { transform: rotate(35deg); height: 26px; }
-    .pose-gambar .sl-arm.right .sl-thumb { transform: rotate(-35deg); height: 26px; }
-    .pose-gambar .sl-middle, .pose-gambar .sl-ring, .pose-gambar .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
-
-    /* ANIMASI ISYARAT: TEBAK RAMBU (G1) */
-    .pose-ingat .sl-head { transform: rotateZ(-3deg) rotateX(-5deg); }
-    .pose-ingat .sl-arm.right { transform: rotateZ(-135deg) rotateX(15deg) translateX(10px) translateY(-15px) translateZ(40px); z-index: 30; } 
-    .pose-ingat .sl-arm.right .sl-lower-arm { transform: rotateZ(-55deg) rotateX(-10deg); } 
-    .pose-ingat .sl-arm.right .sl-hand { transform: rotateZ(-30deg) rotateX(10deg); }
-    .pose-ingat .sl-arm.right .sl-index { transform: rotateX(0deg) translateY(-2px); height: 35px; background: var(--skin); }
-    .pose-ingat .sl-arm.right .sl-middle, .pose-ingat .sl-arm.right .sl-ring, .pose-ingat .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
-    .pose-ingat .sl-arm.right .sl-thumb { transform: rotate(80deg) translateX(-5px); z-index: 5; }
-
-    .pose-uji .sl-head { transform: rotateX(10deg); }
-    .pose-uji .sl-arm { transform: rotateZ(20deg) rotateX(70deg); }
-    .pose-uji .sl-arm.right { transform: rotateZ(-20deg) rotateX(70deg); }
-    .pose-uji .sl-lower-arm { transform: rotateX(-30deg); }
-    .pose-uji .sl-hand { transform: rotateX(-40deg); }
-    .pose-uji .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 30px; background: var(--skin); }
-    .pose-uji .sl-thumb { transform: rotateX(10deg); }
-
-    .pose-jawab .sl-head { transform: rotateZ(-5deg); }
-    .pose-jawab .sl-arm.left { transform: rotateZ(20deg) rotateX(60deg); }
-    .pose-jawab .sl-arm.left .sl-lower-arm { transform: rotateX(-40deg); }
-    .pose-jawab .sl-arm.left .sl-hand { transform: rotateX(-20deg); }
-    .pose-jawab .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 30px; background: var(--skin); }
-    .pose-jawab .sl-arm.right { transform: rotateZ(-25deg) rotateX(110deg); }
-    .pose-jawab .sl-arm.right .sl-lower-arm { transform: rotateX(-70deg); }
-    .pose-jawab .sl-arm.right .sl-hand { transform: rotateX(10deg); }
-    .pose-jawab .sl-arm.right .sl-index { transform: rotateX(40deg); height: 26px; }
-    .pose-jawab .sl-arm.right .sl-thumb { transform: rotate(-30deg) translateY(5px); }
-    .pose-jawab .sl-arm.right .sl-middle, .pose-jawab .sl-arm.right .sl-ring, .pose-jawab .sl-arm.right .sl-pinky { transform: rotateX(150deg) translateY(15px); height: 15px; background: var(--skin-shadow); z-index: 4; }
-
-    /* ANIMASI ISYARAT: PARKIR TEPAT (G6) */
-    .pose-tekan .sl-head { transform: rotateZ(-2deg) rotateX(-5deg); }
-    .pose-tekan .sl-arm.right { transform: rotateZ(-25deg) rotateX(90deg) translateZ(30px); z-index: 20; }
-    .pose-tekan .sl-arm.right .sl-lower-arm { transform: rotateX(10deg); }
-    .pose-tekan .sl-arm.right .sl-hand { transform: rotateX(70deg); } 
-    .pose-tekan .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
-    .pose-tekan .sl-arm.right .sl-thumb { transform: rotate(45deg); }
-
-    .pose-berhenti .sl-arm.left { transform: rotateZ(35deg) rotateX(90deg); z-index: 10; }
-    .pose-berhenti .sl-arm.left .sl-lower-arm { transform: rotateZ(-70deg) rotateX(-20deg); } 
-    .pose-berhenti .sl-arm.left .sl-hand { transform: rotateX(-20deg) rotateZ(30deg); }
-    .pose-berhenti .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
-    .pose-berhenti .sl-arm.right { transform: rotateZ(-20deg) rotateX(100deg); z-index: 15; }
-    .pose-berhenti .sl-arm.right .sl-lower-arm { transform: rotateX(-40deg); }
-    .pose-berhenti .sl-arm.right .sl-hand { transform: rotateX(20deg); } 
-    .pose-berhenti .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
-
-    .pose-mobil .sl-arm { transform: rotateZ(20deg) rotateX(80deg); }
-    .pose-mobil .sl-arm.right { transform: rotateZ(-20deg) rotateX(80deg); }
-    .pose-mobil .sl-lower-arm { transform: rotateX(-15deg); }
-    .pose-mobil .sl-hand { transform: rotateX(-30deg); }
-    .pose-mobil .sl-finger:not(.sl-thumb) { transform: rotateX(90deg); height: 20px; background: var(--skin-shadow); }
-    .pose-mobil .sl-thumb { transform: rotateX(30deg); }
-
-    .pose-parkir .sl-arm.left { transform: rotateZ(20deg) rotateX(90deg); z-index: 5; }
-    .pose-parkir .sl-arm.left .sl-lower-arm { transform: rotateZ(-50deg); } 
-    .pose-parkir .sl-arm.left .sl-hand { transform: rotateX(-20deg); }
-    .pose-parkir .sl-arm.left .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
-    .pose-parkir .sl-arm.right { transform: rotateZ(-15deg) rotateX(80deg) translateZ(10px); z-index: 10; }
-    .pose-parkir .sl-arm.right .sl-lower-arm { transform: rotateX(-60deg) rotateZ(10deg); } 
-    .pose-parkir .sl-arm.right .sl-hand { transform: rotateX(50deg); } 
-    .pose-parkir .sl-arm.right .sl-finger:not(.sl-thumb) { transform: rotateX(0deg); height: 35px; background: var(--skin); }
-
-    @keyframes walkIndex { 0%, 100% { transform: rotateX(0deg) translateY(0); } 50% { transform: rotateX(40deg) translateY(-5px); } }
-    @keyframes walkMiddle { 0%, 100% { transform: rotateX(40deg) translateY(-5px); } 50% { transform: rotateX(0deg) translateY(0); } }
-    .pose-cross-walk .sl-arm.right .sl-index { animation: walkIndex 0.5s infinite; }
-    .pose-cross-walk .sl-arm.right .sl-middle { animation: walkMiddle 0.5s infinite; }
-    @keyframes sl-blink { 0%, 96%, 100% { transform: scaleY(1); } 98% { transform: scaleY(0.1); } }
+    /* APALAGI DI LANDSCAPE MODE (Peningkatan Ekstrem Biar Gede & Menarik) */
+    @media screen and (orientation: landscape) {
+        .md\:text-xs   { font-size: 1.15rem !important; line-height: 1.6rem !important; }
+        .md\:text-sm   { font-size: 1.35rem !important; line-height: 1.8rem !important; }
+        .md\:text-base { font-size: 1.55rem !important; line-height: 2rem !important; }
+        .md\:text-lg   { font-size: 1.75rem !important; line-height: 2.2rem !important; }
+        .md\:text-xl   { font-size: 1.95rem !important; line-height: 2.4rem !important; }
+        .md\:text-2xl  { font-size: 2.4rem !important; line-height: 2.8rem !important; }
+        .md\:text-3xl  { font-size: 2.8rem !important; line-height: 3.2rem !important; }
+        .md\:text-4xl  { font-size: 3.4rem !important; line-height: 3.8rem !important; }
+        
+        /* Target font spesifik pada dashboard & UI yang pakai nilai kecil */
+        .md\:text-\[10px\], .md\:text-\[11px\] { font-size: 1.15rem !important; }
+        
+        /* Perbesar judul game & menu di dashboard lanskap biar makin "Nge-Block" */
+        .dashboard-right h3 { font-size: 1.6rem !important; letter-spacing: 0.05em; }
+        #hud-streak, #hud-coins, #hud-level { font-size: 1.5rem !important; }
+        .dashboard-left button { font-size: 1.4rem !important; }
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-white select-none relative h-dvh w-full overflow-hidden">
@@ -416,7 +227,10 @@
 
   <div id="main-game-container" class="h-full w-full relative">
     
-    <div id="streak-overlay" class="fixed z-[150] font-black text-6xl hidden absolute w-full text-center">🔥 +1</div>
+    <div id="streak-overlay" class="fixed inset-0 z-[200] hidden flex-col items-center justify-center pointer-events-none">
+        <div id="streak-fire" class="text-[15rem] leading-none mb-4 drop-shadow-2xl">🔥</div>
+        <div id="streak-text" class="text-6xl font-black text-white drop-shadow-xl uppercase tracking-widest"><span id="streak-overlay-num" class="text-red-500"></span> HARI!</div>
+    </div>
 
     <button id="btn-music-toggle" onclick="toggleMusic()" class="fixed top-3 right-4 z-[90] bg-gray-800 text-white px-4 py-2 rounded-full font-black shadow-lg border-2 border-gray-600 active:scale-95 transition-transform text-xs flex items-center gap-2">
         🔇 Musik: OFF
@@ -493,6 +307,13 @@
                 <p class="text-sm font-bold text-yellow-200">Tombol UI Ekstra Besar</p>
             </div>
           </div>
+          <div onclick="selectMode('GRAHITA')" class="w-full cursor-pointer p-6 rounded-[2rem] bg-pink-600 border-4 border-pink-400 active:scale-95 transition shadow-lg flex flex-row items-center gap-6">
+            <div class="text-[4rem] drop-shadow-md">🧠</div>
+            <div class="text-left flex-1">
+                <h3 class="text-2xl font-black text-white uppercase tracking-widest">Tuna Grahita Ringan</h3>
+                <p class="text-sm font-bold text-pink-200">Fokus Visual Sederhana</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -505,10 +326,10 @@
         </div>
 
         <div class="dashboard-layout">
-            <div class="dashboard-left bg-[#1e293b] p-4 md:p-6 rounded-[2rem] md:rounded-[2.5rem] border-[3px] md:border-4 border-gray-700 relative flex flex-col justify-between items-center shadow-xl md:shadow-2xl overflow-hidden min-h-[250px] md:min-h-[350px]">
-                <div id="pet-bubble" class="hidden absolute top-4 md:top-6 bg-white text-black px-4 md:px-6 py-2 md:py-4 rounded-3xl rounded-bl-none font-black text-xs md:text-sm shadow-xl z-20 border-[3px] md:border-4 border-gray-200 max-w-[85%] text-center leading-snug">💬</div>
+            <div class="dashboard-left bg-[#1e293b] p-4 md:p-6 rounded-[2rem] md:rounded-[2.5rem] border-[3px] md:border-4 border-gray-700 relative flex flex-col justify-between items-center shadow-xl md:shadow-2xl min-h-[250px] md:min-h-[350px]">
                 
-                <div onclick="tapPet()" class="text-[6rem] md:text-[10rem] leading-none mb-3 md:mb-6 relative inline-block animate-float cursor-pointer z-10 mt-auto">
+                <div onclick="tapPet()" class="text-[6rem] md:text-[10rem] leading-none mb-3 md:mb-6 relative inline-block animate-float cursor-pointer z-30 mt-auto">
+                    <div id="pet-bubble" class="hidden absolute bottom-[100%] mb-2 left-1/2 -translate-x-1/2 bg-white text-black px-4 py-2 md:px-6 md:py-3 rounded-3xl rounded-bl-none font-black shadow-2xl z-[100] border-[3px] md:border-4 border-gray-200 w-max max-w-[200px] md:max-w-[250px] text-center leading-snug break-words pointer-events-none animate-bounce" style="font-size: 14px; text-shadow: none; letter-spacing: normal;">💬</div>
                     <span id="pet-emoji">🐣</span>
                     <div id="pet-accessory" class="absolute -top-4 md:-top-6 right-0 text-[3rem] md:text-[4rem] drop-shadow-md"></div>
                     <div class="sparkle text-yellow-300 top-0 -left-4 md:-left-6">✨</div>
@@ -632,72 +453,12 @@
         <div id="games-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-y-auto pb-6 pr-2 w-full max-w-5xl mx-auto content-start custom-scroll"></div>
       </div>
 
-      <!-- INTRO ANIMASI TUNARUNGU -->
-      <div id="screen-sign-intro" class="hidden absolute inset-0 bg-gray-900/95 backdrop-blur-md flex flex-col items-center justify-center p-4 z-50 rounded-xl overflow-y-auto custom-scroll">
-          <h2 class="text-2xl md:text-3xl font-black text-cyan-400 mb-2 uppercase tracking-widest text-center mt-10 shrink-0">Bahasa Isyarat</h2>
-          <p class="text-xs md:text-sm text-gray-200 font-bold mb-6 text-center bg-black/50 px-5 py-2 rounded-xl border border-white/10 shrink-0 uppercase tracking-widest">Pahami gerakan ini sebelum bermain!</p>
-          
-          <div class="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col items-center max-w-sm w-full relative shrink-0">
-              <div class="sl-scene">
-                  <div class="sl-character pose-rest" id="sl-character">
-                      <div class="sl-head">
-                          <div class="sl-hair"></div>
-                          <div class="sl-eyes"><div class="sl-eye"></div><div class="sl-eye"></div></div>
-                          <div class="sl-mouth"></div>
-                      </div>
-                      <div class="sl-torso"></div>
-                      <div class="sl-arm left"><div class="sl-lower-arm"><div class="sl-hand"><div class="sl-finger sl-thumb"></div><div class="sl-finger sl-index"></div><div class="sl-finger sl-middle"></div><div class="sl-finger sl-ring"></div><div class="sl-finger sl-pinky"></div></div></div></div>
-                      <div class="sl-arm right"><div class="sl-lower-arm"><div class="sl-hand"><div class="sl-finger sl-thumb"></div><div class="sl-finger sl-index"></div><div class="sl-finger sl-middle"></div><div class="sl-finger sl-ring"></div><div class="sl-finger sl-pinky"></div></div></div></div>
-                  </div>
-              </div>
-              <div class="sl-subtitles" id="sl-subtitles-g4">
-                  <span class="sl-sub" id="sl-txt-click">Klik tombol MAJU</span>
-                  <span class="sl-sub" id="sl-txt-cross">apabila ingin menyeberang.</span>
-                  <span class="sl-sub" id="sl-txt-avoid">Hindari</span>
-                  <span class="sl-sub" id="sl-txt-car">mobil dan kendaraan lainnya.</span>
-              </div>
-              <div class="sl-subtitles hidden" id="sl-subtitles-g3">
-                  <span class="sl-sub" id="sl-txt-helm">Dapatkan helm</span>
-                  <span class="sl-sub" id="sl-txt-angka">sesuai angka</span>
-                  <span class="sl-sub" id="sl-txt-kanan">di kanan atas</span>
-                  <span class="sl-sub" id="sl-txt-hindari">dan hindari batu.</span>
-              </div>
-              <div class="sl-subtitles hidden" id="sl-subtitles-r1">
-                  <span class="sl-sub" id="sl-txt-tebak">Tebak bayangan</span>
-                  <span class="sl-sub" id="sl-txt-rambu">yang diberikan gambar rambu</span>
-                  <span class="sl-sub" id="sl-txt-sesuai">manakah yang sesuai</span>
-                  <span class="sl-sub" id="sl-txt-bayangan">dengan bayangan?</span>
-              </div>
-              <div class="sl-subtitles hidden" id="sl-subtitles-g2">
-                  <span class="sl-sub" id="sl-txt-puzzle">Cocokkan puzzle,</span>
-                  <span class="sl-sub" id="sl-txt-arti">cocokkan arti</span>
-                  <span class="sl-sub" id="sl-txt-rambu2">rambu,</span>
-                  <span class="sl-sub" id="sl-txt-gambar">dan gambar yang...</span>
-                  <span class="sl-sub" id="sl-txt-lanjut">sesuai!</span>
-              </div>
-              <div class="sl-subtitles hidden" id="sl-subtitles-g1">
-                  <span class="sl-sub" id="sl-txt-ingat">Ingat</span>
-                  <span class="sl-sub" id="sl-txt-rambu-g1">rambu,</span>
-                  <span class="sl-sub" id="sl-txt-uji">dan uji ingatanmu</span>
-                  <span class="sl-sub" id="sl-txt-jawab">dengan menjawab soal!</span>
-              </div>
-              <div class="sl-subtitles hidden" id="sl-subtitles-g6">
-                  <span class="sl-sub" id="sl-txt-tekan">Tekan tombol merah (stop),</span>
-                  <span class="sl-sub" id="sl-txt-berhenti">untuk berhenti,</span>
-                  <span class="sl-sub" id="sl-txt-mobil">dan parkirkan mobilmu</span>
-                  <span class="sl-sub" id="sl-txt-parkir">di kotak hijau.</span>
-              </div>
-          </div>
-
-          <button id="btn-skip-sign" class="mt-8 mb-10 shrink-0 px-8 py-5 bg-gradient-to-b from-[#4ade80] to-[#16a34a] rounded-full font-black text-xl shadow-[0_0_20px_rgba(74,222,128,0.4)] border-4 border-white text-white uppercase tracking-widest active:scale-95 transition-transform hover:scale-105">
-              MULAI BERMAIN ➔
-          </button>
-      </div>
-
       <!-- PLAYER ARENA -->
       <div id="screen-player" class="hidden absolute inset-0 bg-gray-900 flex flex-col items-center p-4 pt-16 pb-6 rounded-xl z-50">
         <button onclick="nav('GAMES')" class="absolute z-[60] top-4 left-4 bg-red-600 px-6 py-3 rounded-full text-white font-black text-xs border-2 border-white/50 active:scale-90 shadow-lg tracking-widest uppercase">❌ BERHENTI</button>
-        <div id="player-lvl-badge" class="absolute z-[60] top-4 right-[5rem] bg-cyan-900 px-4 py-2 rounded-full text-cyan-300 font-black text-[10px] border border-cyan-500 shadow-lg tracking-widest uppercase"></div>
+        
+        <!-- Tulisan level agak diketengahkan dari kanan (right-[130px]), agar aman dari pinggir dan tidak nabrak tombol musik -->
+        <div id="player-lvl-badge" class="absolute z-[60] top-4 right-[130px] md:right-[150px] bg-cyan-900 px-5 py-2 rounded-full text-cyan-300 font-black text-xs md:text-sm border-2 border-cyan-500 shadow-lg tracking-widest uppercase whitespace-nowrap"></div>
 
         <div id="game-play-area" class="w-full flex-1 flex flex-col items-center justify-center relative overflow-hidden z-40 shadow-2xl max-w-5xl mx-auto"></div>
 
@@ -794,7 +555,6 @@
         bubble.innerText = "💬 " + PET_QUOTES[Math.floor(Math.random() * PET_QUOTES.length)];
         bubble.classList.remove('hidden');
         bubble.classList.add('animate-bounce');
-        setTimeout(() => { bubble.classList.remove('animate-bounce'); }, 1000);
         setTimeout(() => { bubble.classList.add('hidden'); }, 5000);
     }
 
@@ -803,23 +563,14 @@
         const bubble = document.getElementById('pet-bubble');
         bubble.innerText = "💬 " + PET_QUOTES[Math.floor(Math.random() * PET_QUOTES.length)];
         bubble.classList.remove('hidden');
+        bubble.classList.add('animate-bounce');
         setTimeout(() => { bubble.classList.add('hidden'); }, 5000);
     }
 
     const deepClone = obj => JSON.parse(JSON.stringify(obj));
 
     function getFlashcard(idx) {
-        if (idx < FLASHCARDS.length) return FLASHCARDS[idx];
-        return {
-            t: 'Rambu Misteri ' + (idx + 1),
-            i: '❓',
-            d: 'Rambu ini masih dalam tahap penelitian.',
-            f: 'Tingkatkan terus levelmu untuk menemukan wawasan keselamatan baru!',
-            q: 'Apa fungsi dari rambu rahasia nomor ' + (idx + 1) + '?',
-            opts: ['Menambah Wawasan', 'Tidak Diketahui', 'Hiasan Jalan', 'Rambu Alien'],
-            a: 1,
-            exp: 'Rambu ini masih dalam tahap penelitian oleh otoritas lalu lintas kota.'
-        };
+        return FLASHCARDS[idx];
     }
 
     function fisherYatesShuffle(array) {
@@ -912,26 +663,26 @@
 
     // 3. Susun Kata (20 Case Skenario - Diacak setiap main)
     const SUSUN_UMUM = [
-        { c: "Skenario: Kamu bersiap mengendarai motor untuk ke sekolah.", w: ["Pakai","helm","sampai","bunyi","klik"] }, 
-        { c: "Skenario: Lampu APILL di persimpangan depan menyala merah terang.", w: ["Berhenti","di","belakang","garis","stop"] }, 
-        { c: "Skenario: Ada nenek-nenek berdiri di pinggir Zebra Cross.", w: ["Utamakan","selalu","hak","pejalan","kaki"] }, 
-        { c: "Skenario: HP kamu berbunyi saat sedang naik motor di jalan raya.", w: ["Jangan","main","hp","saat","berkendara"] }, 
-        { c: "Skenario: Kamu melihat rambu bergambar anak lari (Zona Sekolah).", w: ["Kurangi","laju","dekat","zona","sekolah"] },
-        { c: "Skenario: Baru saja duduk di kursi sopir atau penumpang mobil.", w: ["Pasang","sabuk","pengaman","dalam","mobil"] }, 
-        { c: "Skenario: Kamu ingin menyeberang jalanan yang lumayan ramai.", w: ["Tengok","kanan","kiri","sebelum","menyeberang"] }, 
-        { c: "Skenario: Lampu hijau baru saja berubah menjadi kuning.", w: ["Lampu","kuning","wajib","kurangi","kecepatan"] }, 
-        { c: "Skenario: Kamu ingin makan tapi ada rambu 'P' dicoret.", w: ["Patuhi","rambu","dilarang","parkir","liar"] }, 
-        { c: "Skenario: Kamu berjalan kaki di jalan yang tidak ada trotoarnya.", w: ["Jalan","kaki","di","sebelah","kiri"] },
-        { c: "Skenario: Ada razia/pemeriksaan polisi di depan.", w: ["Selalu","bawa","SIM","dan","STNK"] }, 
-        { c: "Skenario: Jalan sebelah kiri macet, jalur kanan kosong tapi berlawanan arah.", w: ["Sangat","bahaya","melawan","arus","jalan"] }, 
-        { c: "Skenario: Terdengar suara sirine nyaring dari belakangmu.", w: ["Beri","jalan","untuk","mobil","ambulans"] }, 
-        { c: "Skenario: Gerimis mulai turun membasahi aspal.", w: ["Jangan","ngebut","saat","turun","hujan"] }, 
-        { c: "Skenario: Kamu harus bersepeda di malam hari yang gelap.", w: ["Pakai","jaket","terang","saat","malam"] },
-        { c: "Skenario: Ada tanda putar balik namun dicoret silang merah.", w: ["Perhatikan","rambu","larangan","putar","balik"] }, 
-        { c: "Skenario: Mobil di depan melaju kencang, apa yang harus kamu atur?", w: ["Jaga","jarak","aman","antar","kendaraan"] }, 
-        { c: "Skenario: Kamu mau masuk ke pertigaan sebelah kiri.", w: ["Nyalakan","sein","sebelum","anda","belok"] }, 
-        { c: "Skenario: Teng tong teng tong! Palang kereta mulai turun.", w: ["Jangan","terobos","palang","pintu","kereta"] }, 
-        { c: "Skenario: Pagi hari sebelum memanaskan mesin kendaraan.", w: ["Periksa","rem","motor","sebelum","pergi"] }
+        { c: "Kasus: Pelanggaran marka jalan berupa garis utuh (tidak putus) di tengah jalan.", w: ["Dilarang","keras","menyalip","kendaraan","lain"] }, 
+        { c: "Kasus: Kondisi APILL (Alat Pemberi Isyarat Lalu Lintas) menyala warna merah.", w: ["Wajib","berhenti","di","belakang","garis"] }, 
+        { c: "Kasus: Ada pejalan kaki yang sedang menunggu di pinggir zebra cross.", w: ["Berikan","hak","utama","pejalan","kaki"] }, 
+        { c: "Kasus: Bahaya menggunakan ponsel saat mengemudikan kendaraan bermotor.", w: ["Dilarang","main","hp","saat","berkendara"] }, 
+        { c: "Kasus: Memasuki kawasan pendidikan dengan marka Zona Selamat Sekolah.", w: ["Kurangi","kecepatan","di","zona","sekolah"] },
+        { c: "Kasus: Prosedur keselamatan utama saat berada di dalam mobil.", w: ["Wajib","pasang","sabuk","pengaman","mobil"] }, 
+        { c: "Kasus: Persiapan sebelum melintasi persimpangan tanpa lampu lalu lintas.", w: ["Tengok","kanan","kiri","sebelum","lewat"] }, 
+        { c: "Kasus: Tindakan saat lampu hijau berubah menjadi kuning.", w: ["Lampu","kuning","tanda","siap","berhenti"] }, 
+        { c: "Kasus: Melihat rambu lingkaran biru dengan huruf P coret merah.", w: ["Dilarang","parkir","di","bahu","jalan"] }, 
+        { c: "Kasus: Berjalan kaki di jalan raya yang belum memiliki fasilitas trotoar.", w: ["Pejalan","kaki","berjalan","di","kiri"] },
+        { c: "Kasus: Kelengkapan dokumen wajib bagi pengemudi kendaraan bermotor.", w: ["Selalu","bawa","sim","dan","stnk"] }, 
+        { c: "Kasus: Tindakan berbahaya mencari jalan pintas berlawanan arah lalu lintas.", w: ["Sangat","fatal","melawan","arus","jalan"] }, 
+        { c: "Kasus: Terdengar suara sirine kendaraan gawat darurat (Ambulans/Pemadam).", w: ["Beri","jalan","untuk","mobil","darurat"] }, 
+        { c: "Kasus: Cuaca buruk dan hujan deras membuat aspal menjadi sangat licin.", w: ["Kurangi","laju","saat","turun","hujan"] }, 
+        { c: "Kasus: Keselamatan pesepeda di malam hari agar terlihat oleh kendaraan lain.", w: ["Pakai","jaket","terang","di","malam"] },
+        { c: "Kasus: Larangan berbalik arah pada rambu panah putar balik coret merah.", w: ["Patuhi","rambu","dilarang","putar","balik"] }, 
+        { c: "Kasus: Mencegah terjadinya tabrakan beruntun dengan kendaraan di depan.", w: ["Jaga","selalu","jarak","aman","kendaraan"] }, 
+        { c: "Kasus: Akan berpindah lajur atau berbelok arah di persimpangan jalan.", w: ["Nyalakan","lampu","sein","sebelum","belok"] }, 
+        { c: "Kasus: Palang pintu perlintasan sebidang kereta api mulai tertutup.", w: ["Dilarang","terobos","palang","pintu","kereta"] }, 
+        { c: "Kasus: Rambu peringatan turunan tajam dengan gambar mobil menurun curam.", w: ["Gunakan","gigi","rendah","di","turunan"] }
     ];
     
     const SUSUN_DAKSA = [
@@ -995,7 +746,8 @@
         { id: 'g11', title: 'Labirin Jalan', icon: '🏃', desc: 'Ambil kunci & jawab soal umum.' }, 
         { id: 'g7', title: 'Empati Difabel', icon: '🦽', desc: 'Labirin tes empati di jalan.' }, 
         { id: 'g10', title: 'Susun Kata', icon: '📝', desc: 'Pecahkan skenario lalin umum.' }, 
-        { id: 'g9', title: 'Survive Kota', icon: '🏙️', desc: 'Perbaiki jalan kota difabel.' }
+        { id: 'g9', title: 'Survive Kota', icon: '🏙️', desc: 'Perbaiki jalan kota difabel.' },
+        { id: 'r1', title: 'Tebak Bayangan', icon: '👤', desc: 'Tebak bayangan dari rambu.' }
     ];
     const DAKSA_GAMES = [ 
         { id: 'g1', title: 'Tebak Rambu', icon: '🚦', desc: 'Ingat bentuk rambu lalu lintas.' },
@@ -1003,17 +755,19 @@
         { id: 'd2', title: 'Solusi Difabel', icon: '📝', desc: 'Susun kata solusi kasus akses.' }, 
         { id: 'd3', title: 'Survive Kota', icon: '🏙️', desc: 'Simulasi jalan Tuna Daksa.' }, 
         { id: 'd4', title: 'Survival Jalan', icon: '⏳', desc: 'Bertahan dari rintangan lubang.' }, 
-        { id: 'd5', title: 'Puzzle Empati', icon: '🧩', desc: 'Pahami fungsi fasilitas khusus.' } 
+        { id: 'd5', title: 'Puzzle Empati', icon: '🧩', desc: 'Pahami fungsi fasilitas khusus.' },
+        { id: 'r1', title: 'Tebak Bayangan', icon: '👤', desc: 'Tebak bayangan dari rambu.' }
     ];
-    // DAFTAR GAME KHUSUS TUNA RUNGU (Tanpa banyak teks, fokus visual)
+    // DAFTAR GAME KHUSUS TUNA RUNGU & TUNA GRAHITA (Tanpa banyak teks, fokus visual)
     const RUNGU_GAMES = [
         { id: 'g1', title: 'Tebak Rambu', icon: '🚦', desc: 'Ingat bentuk rambu lalu lintas.' },
         { id: 'g4', title: 'Menyeberang', icon: ZEBRA_ICON, desc: 'Maju pelan lewati Zebra Cross.' },
         { id: 'g3', title: 'Helm Hunter', icon: HELMET_ICON, desc: 'Tangkap helm yang jatuh!' },
         { id: 'g6', title: 'Parkir Tepat', icon: STOP_SIGN_ICON, desc: 'Berhenti pas di area hijau.' },
         { id: 'g2', title: 'Puzzle Aman', icon: '🧩', desc: 'Cocokkan pasangan alat keselamatan.' },
-        { id: 'r1', title: 'Tebak Bayangan', icon: '👤', desc: 'Tebak bayangan dari rambu.' } // GAME BARU VISUAL
+        { id: 'r1', title: 'Tebak Bayangan', icon: '👤', desc: 'Tebak bayangan dari rambu.' } 
     ];
+    const GRAHITA_GAMES = [...RUNGU_GAMES]; // Meng-copy keseluruhan game Tuna Rungu
     
     const SHOP_ITEMS = [
         { id: 'hat1', name: 'Topi Polisi', icon: '👮', price: 100 },
@@ -1235,7 +989,9 @@
             qs.push({ q: arr[0], opts: forced.opts, a: forced.a, exp: "Fakta lalu lintas." });
         });
         if(qs.length < 60) {
-            let xtra = fisherYatesShuffle(deepClone(FLASHCARDS));
+            let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
+            let availableCards = FLASHCARDS.slice(0, Math.min(unlockedCount, FLASHCARDS.length));
+            let xtra = fisherYatesShuffle(deepClone(availableCards));
             xtra.forEach(f => {
                 let wrongs = f.opts.filter((_, i) => i !== f.a);
                 let forced = forceAnswerToB(f.opts[f.a], wrongs);
@@ -1258,7 +1014,9 @@
     }
 
     function getShuffledQuestions(count) { 
-        let rawQs = fisherYatesShuffle(deepClone(FLASHCARDS)).slice(0, count);
+        let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
+        let availableCards = FLASHCARDS.slice(0, Math.min(unlockedCount, FLASHCARDS.length));
+        let rawQs = fisherYatesShuffle(deepClone(availableCards)).slice(0, count);
         return rawQs.map(q => {
             let wrongs = q.opts.filter((_, i) => i !== q.a);
             let forced = forceAnswerToB(q.opts[q.a], wrongs);
@@ -1283,10 +1041,11 @@
         
         // PENGATURAN ACAK RAMBU (G1)
         let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
+        let targetLength = Math.min(unlockedCount, FLASHCARDS.length);
         if(!state.g1Order) state.g1Order = [];
-        if(state.g1Order.length < unlockedCount) {
+        if(state.g1Order.length < targetLength) {
             let missingIndices = [];
-            for(let i=0; i<unlockedCount; i++) {
+            for(let i=0; i<targetLength; i++) {
                 if(!state.g1Order.includes(i)) missingIndices.push(i);
             }
             state.g1Order = state.g1Order.concat(fisherYatesShuffle(missingIndices));
@@ -1338,8 +1097,7 @@
 
     function nav(screenId) {
        playSound('pop'); if (activeGameLoop) clearInterval(activeGameLoop);
-       stopSignAnimation();
-       ['orientation', 'splash', 'mode', 'dashboard', 'daily', 'games', 'player', 'shop', 'badges', 'pustaka', 'leaderboard', 'sign-intro'].forEach(s => {
+       ['orientation', 'splash', 'mode', 'dashboard', 'daily', 'games', 'player', 'shop', 'badges', 'pustaka', 'leaderboard'].forEach(s => {
           const el = document.getElementById(`screen-${s}`); if (el) el.classList.add('hidden');
        });
        document.getElementById(`screen-${screenId.toLowerCase()}`).classList.remove('hidden');
@@ -1365,9 +1123,28 @@
     function goToGames() { if (state.dailyCompletedDate !== new Date().toDateString()) { playSound('wrong'); tapPet(); return; } nav('GAMES'); }
 
     function showStreakAnimation() {
+        document.getElementById('streak-overlay-num').innerText = state.streak;
         const overlay = document.getElementById('streak-overlay');
-        overlay.classList.remove('hidden'); overlay.classList.add('streak-anim-active');
-        setTimeout(() => { overlay.classList.remove('streak-anim-active'); overlay.classList.add('hidden'); }, 2500);
+        const fire = document.getElementById('streak-fire');
+        const text = document.getElementById('streak-text');
+        
+        overlay.classList.remove('hidden'); 
+        overlay.classList.add('streak-bg-anim');
+        
+        // Reset animasi agar bisa diulang
+        fire.classList.remove('streak-fire-anim');
+        text.classList.remove('streak-text-anim');
+        void fire.offsetWidth; // trigger reflow
+        
+        fire.classList.add('streak-fire-anim');
+        text.classList.add('streak-text-anim');
+        
+        setTimeout(() => { 
+            overlay.classList.remove('streak-bg-anim'); 
+            fire.classList.remove('streak-fire-anim');
+            text.classList.remove('streak-text-anim');
+            overlay.classList.add('hidden'); 
+        }, 3500);
     }
 
     let pendingCallback = null;
@@ -1401,27 +1178,76 @@
     // --- KUIS HARIAN ---
     let dQuizIdx = 0, dScore = 0, dQuestions = [];
     function initDaily() {
-       dQuizIdx = 0; dScore = 0; dQuestions = getShuffledQuestions(5);
-       const fc = FLASHCARDS[Math.floor(Math.random() * FLASHCARDS.length)];
+       dQuizIdx = 0; dScore = 0; 
+       let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
+       let availableCards = FLASHCARDS.slice(0, Math.min(unlockedCount, FLASHCARDS.length));
+       const fc = availableCards[Math.floor(Math.random() * availableCards.length)];
+       
+       if (activeMode === 'UMUM') {
+           dQuestions = getShuffledQuestions(5);
+       } else {
+           // Mode Rungu & Daksa: 1 Soal Memory dengan 3 Pilihan (A, B, C) - Jawaban selalu di B
+           let wrongCards = fisherYatesShuffle(availableCards.filter(x => x.t !== fc.t)).slice(0, 2); 
+           let forced3 = forceAnswerToB(fc.i, [wrongCards[0].i, wrongCards[1].i]); 
+           dQuestions = [{
+               correctText: fc.t,
+               q: `Pilih gambar untuk rambu:<br><span class="text-yellow-400 text-3xl md:text-4xl mt-2 block drop-shadow-md uppercase">${fc.t}</span>`,
+               opts: forced3.opts,
+               a: forced3.a,
+               exp: fc.exp
+           }];
+       }
+
        document.getElementById('daily-fc-icon').innerHTML = fc.i; document.getElementById('daily-fc-title').innerText = fc.t;
        document.getElementById('daily-fc-desc').innerText = fc.d;
        document.getElementById('daily-flashcard-box').classList.remove('hidden'); document.getElementById('daily-quiz-box').classList.add('hidden'); document.getElementById('daily-result-box').classList.add('hidden'); 
     }
     function startDailyQuiz() { playSound('pop'); document.getElementById('daily-flashcard-box').classList.add('hidden'); document.getElementById('daily-quiz-box').classList.remove('hidden'); loadDailyQ(); }
     function loadDailyQ() {
-       const q = dQuestions[dQuizIdx]; document.getElementById('daily-quiz-title').innerText = `SOAL ${dQuizIdx + 1} / 5`; document.getElementById('daily-quiz-question').innerText = q.q;
-       const optsContainer = document.getElementById('daily-quiz-options'); optsContainer.innerHTML = '';
-       q.opts.forEach((opt, idx) => {
-          optsContainer.innerHTML += `<button onclick="submitDaily(${idx})" class="w-full shrink-0 text-left px-4 py-3 bg-gray-700 hover:bg-[#0891b2] rounded-2xl font-black text-sm md:text-base border-b-4 border-gray-600 hover:border-cyan-400 flex items-center active:translate-y-1 active:border-b-0 shadow-md transition-all uppercase leading-tight"><span class="bg-black/50 w-10 h-10 flex items-center justify-center rounded-full mr-3 shrink-0 text-cyan-300 font-black">${String.fromCharCode(65+idx)}</span> <span class="flex-1">${opt}</span></button>`;
-       });
+       const q = dQuestions[dQuizIdx]; 
+       if (activeMode === 'UMUM') {
+           document.getElementById('daily-quiz-title').innerText = `SOAL ${dQuizIdx + 1} / 5`; 
+           document.getElementById('daily-quiz-question').innerHTML = q.q;
+       } else {
+           document.getElementById('daily-quiz-title').innerText = `SOAL INGATAN`; 
+           document.getElementById('daily-quiz-question').innerHTML = q.q;
+       }
+       
+       const optsContainer = document.getElementById('daily-quiz-options'); 
+       optsContainer.innerHTML = '';
+       
+       if(activeMode === 'UMUM') {
+           optsContainer.className = 'flex flex-col gap-3 w-full shrink-0';
+           q.opts.forEach((opt, idx) => {
+              optsContainer.innerHTML += `<button onclick="submitDaily(${idx})" class="w-full shrink-0 text-left px-4 py-3 bg-gray-700 hover:bg-[#0891b2] rounded-2xl font-black text-sm md:text-base border-b-4 border-gray-600 hover:border-cyan-400 flex items-center active:translate-y-1 active:border-b-0 shadow-md transition-all uppercase leading-tight"><span class="bg-black/50 w-10 h-10 flex items-center justify-center rounded-full mr-3 shrink-0 text-cyan-300 font-black">${String.fromCharCode(65+idx)}</span> <span class="flex-1">${opt}</span></button>`;
+           });
+       } else {
+           optsContainer.className = 'grid grid-cols-1 md:grid-cols-3 gap-3 w-full shrink-0';
+           q.opts.forEach((opt, idx) => {
+              optsContainer.innerHTML += `<button onclick="submitDaily(${idx})" class="w-full flex flex-col justify-center items-center px-4 py-6 bg-gray-700 hover:bg-[#0891b2] rounded-[2rem] font-black border-b-4 border-gray-600 hover:border-cyan-400 active:translate-y-1 active:border-b-0 shadow-md transition-all"><span class="bg-black/50 w-10 h-10 flex items-center justify-center rounded-full mb-4 text-cyan-300 font-black text-lg">${String.fromCharCode(65+idx)}</span> <div class="text-[4rem] md:text-[5rem] drop-shadow-md">${opt}</div></button>`;
+           });
+       }
     }
     function submitDaily(idx) {
        const q = dQuestions[dQuizIdx];
-       if (idx === q.a) { playSound('happy'); dScore++; state.totalCorrect++; dQuizIdx++; if (dQuizIdx < 5) loadDailyQ(); else showDailyRes(); } 
-       else { playSound('wrong'); showExplanation(q.opts[q.a], q.exp, () => { dQuizIdx++; if (dQuizIdx < 5) loadDailyQ(); else showDailyRes(); }, false); }
+       const maxQ = activeMode === 'UMUM' ? 5 : 1;
+       const correctAnsText = activeMode === 'UMUM' ? q.opts[q.a] : q.correctText;
+
+       if (idx === q.a) { 
+           playSound('happy'); dScore++; state.totalCorrect++; dQuizIdx++; 
+           if (dQuizIdx < maxQ) loadDailyQ(); else showDailyRes(); 
+       } else { 
+           playSound('wrong'); 
+           showExplanation(correctAnsText, q.exp, () => { 
+               dQuizIdx++; 
+               if (dQuizIdx < maxQ) loadDailyQ(); else showDailyRes(); 
+           }, false); 
+       }
     }
     function showDailyRes() {
-       document.getElementById('daily-quiz-box').classList.add('hidden'); document.getElementById('daily-result-box').classList.remove('hidden'); document.getElementById('daily-result-score').innerText = `SKOR KAMU: ${dScore} / 5`;
+       document.getElementById('daily-quiz-box').classList.add('hidden'); document.getElementById('daily-result-box').classList.remove('hidden'); 
+       const maxQ = activeMode === 'UMUM' ? 5 : 1;
+       document.getElementById('daily-result-score').innerText = `SKOR KAMU: ${dScore} / ${maxQ}`;
        const icon = document.getElementById('daily-res-icon'); const status = document.getElementById('daily-result-status');
        
        icon.innerText = "🎉"; status.innerText = "MISI SELESAI!"; status.className = "text-5xl font-black mb-4 text-green-400 uppercase";
@@ -1466,9 +1292,9 @@
     function renderPustaka() {
         const grid = document.getElementById('pustaka-grid'); grid.innerHTML = '';
         let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10; 
-        let totalCardsToShow = 1000;
+        let totalCardsToShow = FLASHCARDS.length;
         
-        document.getElementById('pustaka-info-text').innerText = `Terbuka: ${Math.min(unlockedCount, 1000)} / 1000 Rambu`;
+        document.getElementById('pustaka-info-text').innerText = `Terbuka: ${Math.min(unlockedCount, totalCardsToShow)} / ${totalCardsToShow} Rambu`;
         
         let htmlStr = '';
         for(let idx = 0; idx < totalCardsToShow; idx++) {
@@ -1478,7 +1304,7 @@
             
             htmlStr += `<div onclick="${isUnlocked ? `openPustakaDetail(${idx})` : `playSound('wrong')`}" class="bg-gray-800 p-6 rounded-3xl border-4 ${isUnlocked ? 'border-orange-500 cursor-pointer hover:bg-gray-700 hover:scale-[1.02]' : 'border-gray-700 opacity-50 grayscale'} flex flex-col items-center justify-center text-center shadow-lg transition-all active:scale-95 min-h-[160px] relative">
                 ${!isUnlocked ? `<div class="absolute inset-0 flex items-center justify-center z-10"><div class="text-[4rem] bg-black/60 p-4 rounded-full">🔒</div></div>` : ''}
-                <div class="text-[5rem] mb-4 drop-shadow-md ${!isUnlocked ? 'opacity-30' : ''}">${fc.i}</div><h3 class="font-black text-xs leading-tight bg-black/40 px-3 py-2 rounded-xl w-full uppercase tracking-widest ${!isUnlocked ? 'opacity-30' : ''}">${isUnlocked ? fc.t : `Kekunci (Lv.${reqLevel})`}</h3>
+                <div class="text-[5rem] mb-4 drop-shadow-md ${!isUnlocked ? 'opacity-30' : ''}">${fc.i}</div><h3 class="font-black text-xs leading-tight bg-black/40 px-3 py-2 rounded-xl w-full uppercase tracking-widest ${!isUnlocked ? 'opacity-30' : ''}">${isUnlocked ? fc.t : `Terkunci (Lv.${reqLevel})`}</h3>
             </div>`;
         }
         grid.innerHTML = htmlStr;
@@ -1492,7 +1318,7 @@
 
     function renderGamesHub() {
        const grid = document.getElementById('games-grid'); grid.innerHTML = '';
-       const list = activeMode === 'DAKSA' ? DAKSA_GAMES : (activeMode === 'RUNGU' ? RUNGU_GAMES : ALL_GAMES);
+       const list = activeMode === 'DAKSA' ? DAKSA_GAMES : (activeMode === 'RUNGU' ? RUNGU_GAMES : (activeMode === 'GRAHITA' ? GRAHITA_GAMES : ALL_GAMES));
        list.forEach(g => {
           let gLvl = state.gameLevels[g.id] || 1; let maxLvl = 100;
           grid.innerHTML += `<div onclick="playGame('${g.id}')" class="bg-gray-800 p-5 rounded-[2rem] border-4 border-gray-700 cursor-pointer text-left shadow-lg hover:border-cyan-500 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-4">
@@ -1509,22 +1335,11 @@
     }
 
     function playGame(id) {
-       if (activeMode === 'RUNGU' && (id === 'g4' || id === 'g3' || id === 'r1' || id === 'g2' || id === 'g1' || id === 'g6')) { // KHUSUS GAME TUNARUNGU BER-ANIMASI
-           document.getElementById('screen-games').classList.add('hidden');
-           document.getElementById('screen-sign-intro').classList.remove('hidden');
-           playSound('pop');
-           
-           // Sembunyikan tombol skip agar pemain wajib menonton 2x putaran
-           document.getElementById('btn-skip-sign').classList.add('hidden');
-           
-           startSignAnimation(id);
-       } else {
-           continuePlayGame(id);
-       }
+       continuePlayGame(id);
     }
 
     function continuePlayGame(id) {
-       const list = activeMode === 'DAKSA' ? DAKSA_GAMES : (activeMode === 'RUNGU' ? RUNGU_GAMES : ALL_GAMES); 
+       const list = activeMode === 'DAKSA' ? DAKSA_GAMES : (activeMode === 'RUNGU' ? RUNGU_GAMES : (activeMode === 'GRAHITA' ? GRAHITA_GAMES : ALL_GAMES)); 
        currentGameDetails = list.find(x => x.id === id);
        document.getElementById('game-play-area').classList.remove('hidden'); document.getElementById('game-win-area').classList.add('hidden'); document.getElementById('game-lost-area').classList.add('hidden');
        let gLevel = state.gameLevels[id] || 1; document.getElementById('player-lvl-badge').innerText = `LEVEL ${gLevel}/100`;
@@ -1536,13 +1351,16 @@
        const actualLevel = state.gameLevels[id] || 1; const diffLevel = Math.min(20, actualLevel); 
        const container = document.getElementById('game-play-area'); container.innerHTML = '';
 
-       // KHUSUS TUNA RUNGU - TEBAK BAYANGAN
+       // SEMUA MODE - TEBAK BAYANGAN
        if (id === 'r1') {
+           let targetLength = FLASHCARDS.length; // Pastikan seluruh rambu (30 buah) dipakai
+           
            // SISTEM LEVEL: Pastikan level 1-30 tidak ada soal (rambu) yang berulang
-           if(!state.r1Order || state.r1Order.length < FLASHCARDS.length) {
-               state.r1Order = fisherYatesShuffle(Array.from({length: FLASHCARDS.length}, (_, i) => i));
+           if(!state.r1Order || state.r1Order.length < targetLength) {
+               state.r1Order = fisherYatesShuffle(Array.from({length: targetLength}, (_, i) => i));
                saveState();
            }
+           // Jika level 31 ke atas, akan otomatis kembali dari awal dengan urutan yang sudah diacak (jadi nggak masalah kalau berulang)
            let targetIndex = state.r1Order[(actualLevel - 1) % state.r1Order.length];
            let target = FLASHCARDS[targetIndex];
            
@@ -1555,14 +1373,14 @@
                container.innerHTML = `
                <div class="text-center w-full flex flex-col h-full max-w-lg mx-auto overflow-hidden py-2">
                    <h3 class="text-2xl font-black mb-2 text-yellow-400 bg-black/50 px-8 py-3 rounded-full inline-block mx-auto uppercase tracking-widest border border-yellow-500 shadow-md shrink-0">Tebak Bayangan!</h3>
-                   <p class="text-[10px] md:text-xs font-bold text-white mb-4 uppercase tracking-widest bg-cyan-900/80 px-6 py-2 rounded-full inline-block mx-auto border border-cyan-500 shadow-inner shrink-0">Kenali bentuk rambu untuk keselamatan</p>
+                   <p class="text-[12px] md:text-sm font-black text-cyan-300 mb-4 uppercase tracking-widest bg-blue-900/90 px-6 py-2.5 rounded-full inline-block mx-auto border-2 border-cyan-500 shadow-lg shrink-0">🔎 Clue: Cari Rambu "${target.t}"</p>
                    
                    <!-- AREA SCROLL: Biar gambar dan kotak jawaban bisa di-scroll ke bawah kalau kepanjangan -->
                    <div class="flex-1 w-full overflow-y-auto custom-scroll pr-2 pb-6 flex flex-col items-center">
                        <div class="text-[8rem] md:text-[10rem] mb-8 mt-2 drop-shadow-xl animate-pulse shrink-0" style="filter: brightness(0) invert(1) drop-shadow(0 0 15px rgba(255,255,255,0.4));">${target.i}</div>
                        <div class="grid grid-cols-2 gap-4 w-full shrink-0">
                            ${options.map((opt) => `
-                               <button onclick="sR1('${opt.t === target.t}', '${target.t}', '${target.d}')" class="bg-gray-800 p-4 md:p-6 rounded-3xl border-4 border-gray-600 active:translate-y-1 shadow-lg hover:border-cyan-500 hover:bg-gray-700 transition-all flex justify-center items-center text-[4rem] md:text-[5rem] drop-shadow-md min-h-[120px]">
+                               <button onclick="sR1('${opt.t === target.t}', '${target.t.replace(/'/g, "\\'")}', '${target.d.replace(/'/g, "\\'")}')" class="bg-gray-800 p-4 md:p-6 rounded-3xl border-4 border-gray-600 active:translate-y-1 shadow-lg hover:border-cyan-500 hover:bg-gray-700 transition-all flex justify-center items-center text-[4rem] md:text-[5rem] drop-shadow-md min-h-[120px]">
                                    ${opt.i}
                                </button>
                            `).join('')}
@@ -1585,10 +1403,12 @@
        }
        else if (id === 'g1') { 
           let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
+          let targetLength = Math.min(unlockedCount, FLASHCARDS.length);
+
           if(!state.g1Order) state.g1Order = [];
-          if(state.g1Order.length < unlockedCount) {
+          if(state.g1Order.length < targetLength) {
               let missingIndices = [];
-              for(let i = 0; i < unlockedCount; i++) {
+              for(let i = 0; i < targetLength; i++) {
                   if(!state.g1Order.includes(i)) missingIndices.push(i);
               }
               state.g1Order = state.g1Order.concat(fisherYatesShuffle(missingIndices));
@@ -1597,8 +1417,8 @@
 
           const fIndex = state.g1Order[(actualLevel - 1) % state.g1Order.length];
           
-          if (activeMode === 'RUNGU') {
-              // TUNARUNGU MODE: Fase Memorize -> Soal Teks -> Pilihan Gambar Rambu
+          if (activeMode === 'RUNGU' || activeMode === 'GRAHITA') {
+              // TUNARUNGU & TUNAGRAHITA MODE: Fase Memorize -> Soal Teks -> Pilihan Gambar Rambu
               const target = FLASHCARDS[fIndex];
               let otherCards = FLASHCARDS.filter((_, idx) => idx !== fIndex);
               let wrongOpts = fisherYatesShuffle(otherCards).slice(0, 3);
@@ -1646,9 +1466,11 @@
           }
        }
        else if (id === 'g2') { 
+           let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
+           let availableCards = FLASHCARDS.slice(0, Math.min(unlockedCount, FLASHCARDS.length));
            // Menyesuaikan batas kemunculan kartu Puzzle
-           let pCnt = Math.min(FLASHCARDS.length, diffLevel + 1); 
-           let source = fisherYatesShuffle(deepClone(FLASHCARDS)).slice(0, pCnt);
+           let pCnt = Math.min(availableCards.length, diffLevel + 1); 
+           let source = fisherYatesShuffle(deepClone(availableCards)).slice(0, pCnt);
            pCnt = source.length;
            
            let qM = fisherYatesShuffle(source.map(f=>({id: f.t, text: f.t, type:'Q'}))); 
@@ -1753,7 +1575,9 @@
            activeGameLoop = setInterval(() => { if(!iP)return; tk++; if(tk % spawnRate === 0) obs.push({x:Math.floor(Math.random()*3), y:-20, t:Math.random()>0.5?'🕳️':'🚧'}); obs.forEach(o=>o.y += fallSpeed); if(obs.some(o=>o.x===px&&o.y>65&&o.y<95)){iP=false;clearInterval(activeGameLoop);playSound('wrong');setTimeout(()=>completeGame(false),500);return;} obs=obs.filter(o=>o.y<120); if(tk%20===0){tL--;if(tL<=0){iP=false;clearInterval(activeGameLoop);playSound('victory');state.totalCorrect++;setTimeout(()=>completeGame(true),500);return;}} ren(); }, 40); ren();
        }
        else if (id === 'd5') { 
-           const rawD = fisherYatesShuffle(deepClone(FLASHCARDS))[0]; 
+           let unlockedCount = 20 + Math.floor((Math.max(1, state.level) - 1) / 10) * 10;
+           let availableCards = FLASHCARDS.slice(0, Math.min(unlockedCount, FLASHCARDS.length));
+           const rawD = fisherYatesShuffle(deepClone(availableCards))[0]; 
            let wrongs = rawD.opts.filter((_, i) => i !== rawD.a);
            const d = { ...rawD, ...forceAnswerToB(rawD.opts[rawD.a], wrongs), t: [rawD.i, '✅', '🚫', '❓'] };
            
@@ -1873,268 +1697,6 @@
        // Perubahan: Menggunakan continuePlayGame agar bisa langsung coba lagi tanpa ulang intro
        document.getElementById('btn-replay').onclick = () => continuePlayGame(currentGameDetails.id); 
        playSound('wrong');
-    }
-
-    // --- SIGN LANGUAGE ANIMATION LOGIC ---
-    let signAnimActive = false;
-    const slWait = ms => new Promise(r => setTimeout(r, ms));
-
-    async function startSignAnimation(gameId) {
-        if (signAnimActive) return;
-        signAnimActive = true;
-        
-        const char = document.getElementById('sl-character');
-        
-        // Atur subtitle yang tampil sesuai game
-        document.getElementById('sl-subtitles-g4').classList.add('hidden');
-        document.getElementById('sl-subtitles-g3').classList.add('hidden');
-        document.getElementById('sl-subtitles-r1').classList.add('hidden');
-        document.getElementById('sl-subtitles-g2').classList.add('hidden');
-        document.getElementById('sl-subtitles-g1').classList.add('hidden');
-        document.getElementById('sl-subtitles-g6').classList.add('hidden');
-        
-        let t1, t2, t3, t4, t5;
-        if (gameId === 'g4') {
-            document.getElementById('sl-subtitles-g4').classList.remove('hidden');
-            t1 = document.getElementById('sl-txt-click');
-            t2 = document.getElementById('sl-txt-cross');
-            t3 = document.getElementById('sl-txt-avoid');
-            t4 = document.getElementById('sl-txt-car');
-        } else if (gameId === 'g3') {
-            document.getElementById('sl-subtitles-g3').classList.remove('hidden');
-            t1 = document.getElementById('sl-txt-helm');
-            t2 = document.getElementById('sl-txt-angka');
-            t3 = document.getElementById('sl-txt-kanan');
-            t4 = document.getElementById('sl-txt-hindari');
-        } else if (gameId === 'r1') {
-            document.getElementById('sl-subtitles-r1').classList.remove('hidden');
-            t1 = document.getElementById('sl-txt-tebak');
-            t2 = document.getElementById('sl-txt-rambu');
-            t3 = document.getElementById('sl-txt-sesuai');
-            t4 = document.getElementById('sl-txt-bayangan');
-        } else if (gameId === 'g2') {
-            document.getElementById('sl-subtitles-g2').classList.remove('hidden');
-            t1 = document.getElementById('sl-txt-puzzle');
-            t2 = document.getElementById('sl-txt-arti');
-            t3 = document.getElementById('sl-txt-rambu2');
-            t4 = document.getElementById('sl-txt-gambar');
-            t5 = document.getElementById('sl-txt-lanjut');
-        } else if (gameId === 'g1') {
-            document.getElementById('sl-subtitles-g1').classList.remove('hidden');
-            t1 = document.getElementById('sl-txt-ingat');
-            t2 = document.getElementById('sl-txt-rambu-g1');
-            t3 = document.getElementById('sl-txt-uji');
-            t4 = document.getElementById('sl-txt-jawab');
-        } else if (gameId === 'g6') {
-            document.getElementById('sl-subtitles-g6').classList.remove('hidden');
-            t1 = document.getElementById('sl-txt-tekan');
-            t2 = document.getElementById('sl-txt-berhenti');
-            t3 = document.getElementById('sl-txt-mobil');
-            t4 = document.getElementById('sl-txt-parkir');
-        }
-
-        function resetAll() {
-            if(!char) return;
-            char.className = 'sl-character';
-            if(t1) t1.className = 'sl-sub';
-            if(t2) t2.className = 'sl-sub';
-            if(t3) t3.className = 'sl-sub';
-            if(t4) t4.className = 'sl-sub';
-            if(t5) t5.className = 'sl-sub';
-        }
-
-        // Ulang tepat 2 kali putaran
-        for (let loopCount = 0; loopCount < 2; loopCount++) {
-            if (gameId === 'g4') {
-                // 1. KLIK
-                resetAll(); if(!signAnimActive) break;
-                char.classList.add('pose-click'); t1.classList.add('active');
-                await slWait(800); if(!signAnimActive) break;
-                char.classList.add('pose-click-push');
-                await slWait(400); if(!signAnimActive) break;
-                char.classList.remove('pose-click-push');
-                await slWait(1000);
-
-                // 2. MENYEBERANG
-                resetAll(); if(!signAnimActive) break;
-                t2.classList.add('active', 'action'); char.classList.add('pose-cross');
-                await slWait(600); if(!signAnimActive) break;
-                char.classList.add('pose-cross-walk');
-                await slWait(2000);
-
-                // 3. HINDARI
-                resetAll(); if(!signAnimActive) break;
-                char.classList.add('pose-avoid'); t3.classList.add('active', 'danger');
-                await slWait(2200);
-
-                // 4. MOBIL
-                resetAll(); if(!signAnimActive) break;
-                t4.classList.add('active', 'action'); char.classList.add('pose-car');
-                await slWait(400); if(!signAnimActive) break;
-                char.classList.add('pose-car-left');
-                await slWait(700); if(!signAnimActive) break;
-                char.classList.remove('pose-car-left'); char.classList.add('pose-car-right');
-                await slWait(700); if(!signAnimActive) break;
-                char.classList.remove('pose-car-right'); char.classList.add('pose-car-left');
-                await slWait(600);
-            } 
-            else if (gameId === 'g3') {
-                // 1. DAPATKAN HELM
-                resetAll(); if(!signAnimActive) break;
-                char.classList.add('pose-helm'); t1.classList.add('active', 'action');
-                await slWait(1800); 
-
-                // 2. SESUAI ANGKA
-                resetAll(); if(!signAnimActive) break;
-                char.classList.add('pose-angka'); t2.classList.add('active');
-                await slWait(1800);
-
-                // 3. DI KANAN ATAS
-                resetAll(); if(!signAnimActive) break;
-                char.classList.add('pose-kiri'); t3.classList.add('active', 'action');
-                await slWait(1800); 
-
-                // 4. HINDARI BATU
-                resetAll(); if(!signAnimActive) break;
-                t4.classList.add('active', 'danger');
-                char.classList.add('pose-avoid'); 
-                await slWait(1200); if(!signAnimActive) break;
-                char.classList.remove('pose-avoid');
-                char.classList.add('pose-batu');
-                await slWait(1500);
-            }
-            else if (gameId === 'r1') {
-                // 1. TEBAK BAYANGAN
-                resetAll(); if(!signAnimActive) break;
-                t1.classList.add('active', 'action');
-                char.classList.add('pose-tebak'); 
-                await slWait(1200); if(!signAnimActive) break;
-                char.classList.remove('pose-tebak');
-                char.classList.add('pose-bayangan');
-                await slWait(1200);
-
-                // 2. GAMBAR RAMBU
-                resetAll(); if(!signAnimActive) break;
-                t2.classList.add('active', 'warning');
-                char.classList.add('pose-rambu'); 
-                await slWait(2200);
-
-                // 3. MANAKAH YANG SESUAI
-                resetAll(); if(!signAnimActive) break;
-                t3.classList.add('active');
-                char.classList.add('pose-sesuai');
-                await slWait(1200); if(!signAnimActive) break;
-                char.classList.remove('pose-sesuai');
-                char.classList.add('pose-tanya');
-                await slWait(1200); 
-
-                // 4. DENGAN BAYANGAN?
-                resetAll(); if(!signAnimActive) break;
-                t4.classList.add('active', 'danger');
-                char.classList.add('pose-bayangan', 'pose-bayangan-tanya'); 
-                await slWait(1800);
-            }
-            else if (gameId === 'g2') {
-                // 1. COCOKKAN PUZZLE
-                resetAll(); if(!signAnimActive) break;
-                t1.classList.add('active', 'action');
-                char.classList.add('pose-puzzle'); 
-                await slWait(2200); 
-
-                // 2. COCOKKAN ARTI
-                resetAll(); if(!signAnimActive) break;
-                t2.classList.add('active');
-                char.classList.add('pose-sesuai'); 
-                await slWait(1800);
-
-                // 3. RAMBU
-                resetAll(); if(!signAnimActive) break;
-                t3.classList.add('active', 'warning');
-                char.classList.add('pose-rambu');
-                await slWait(1800);
-
-                // 4. DAN GAMBAR YANG...
-                resetAll(); if(!signAnimActive) break;
-                t4.classList.add('active', 'danger');
-                char.classList.add('pose-gambar'); 
-                await slWait(2000);
-
-                // 5. SESUAI
-                resetAll(); if(!signAnimActive) break;
-                t5.classList.add('active', 'action');
-                char.classList.add('pose-sesuai');
-                await slWait(1800);
-            }
-            else if (gameId === 'g1') {
-                // 1. INGAT
-                resetAll(); if(!signAnimActive) break;
-                t1.classList.add('active', 'action');
-                char.classList.add('pose-ingat'); 
-                await slWait(1800); 
-
-                // 2. RAMBU
-                resetAll(); if(!signAnimActive) break;
-                t2.classList.add('active', 'warning');
-                char.classList.add('pose-rambu'); 
-                await slWait(1800);
-
-                // 3. UJI INGATANMU
-                resetAll(); if(!signAnimActive) break;
-                t3.classList.add('active');
-                char.classList.add('pose-ingat'); 
-                await slWait(800); if(!signAnimActive) break;
-                char.classList.remove('pose-ingat');
-                char.classList.add('pose-uji'); 
-                await slWait(1400);
-
-                // 4. MENJAWAB SOAL
-                resetAll(); if(!signAnimActive) break;
-                t4.classList.add('active', 'danger');
-                char.classList.add('pose-jawab'); 
-                await slWait(2200);
-            }
-            else if (gameId === 'g6') {
-                // 1. TEKAN TOMBOL MERAH
-                resetAll(); if(!signAnimActive) break;
-                t1.classList.add('active', 'danger');
-                char.classList.add('pose-tekan'); 
-                await slWait(2200); 
-
-                // 2. UNTUK BERHENTI
-                resetAll(); if(!signAnimActive) break;
-                t2.classList.add('active', 'warning');
-                char.classList.add('pose-berhenti'); 
-                await slWait(1800);
-
-                // 3. PARKIRKAN MOBILMU
-                resetAll(); if(!signAnimActive) break;
-                t3.classList.add('active'); 
-                char.classList.add('pose-mobil'); 
-                await slWait(2000);
-
-                // 4. DI KOTAK HIJAU
-                resetAll(); if(!signAnimActive) break;
-                t4.classList.add('active', 'action');
-                char.classList.add('pose-parkir'); 
-                await slWait(2200);
-            }
-
-            // ISTIRAHAT (Berlaku untuk semua game)
-            resetAll(); if(!signAnimActive) break;
-            char.classList.add('pose-rest');
-            await slWait(1500);
-        }
-
-        // Otomatis pindah ke game jika animasi selesai normal (tidak di-cancel)
-        if (signAnimActive) {
-            document.getElementById('screen-sign-intro').classList.add('hidden');
-            stopSignAnimation();
-            continuePlayGame(gameId);
-        }	
-    }
-
-    function stopSignAnimation() {
-        signAnimActive = false;
     }
 
   </script>
